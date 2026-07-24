@@ -51,3 +51,11 @@ Thumbs.db
 .angular
 
 test-output
+
+# env / secrets (echte Werte niemals committen)
+.env
+.env.*
+!.env.example
+
+# Prisma: generierter Client (wird bei db:generate erzeugt)
+/libs/backend/shared/database/generated

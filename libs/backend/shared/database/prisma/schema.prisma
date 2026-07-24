@@ -1,0 +1,119 @@
+// =====================================================================
+//  StitchLab-YVR  --  Datenmodell (Shop-Kern, 7 Tabellen)
+//  Entspricht dem ER-Diagramm aus Kapitel 7 des Tutorials.
+//  EN-only (eine name-Spalte) - Geld als Integer-Cent (priceCents).
+//  Alle Fremdschluessel: onDelete Cascade.
+// =====================================================================
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  // Prisma 7: die Verbindungs-URL steht in prisma.config.ts (nicht mehr hier).
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+/// Konten & Rollen
+model User {
+  id                 String     @id @default(uuid()) @db.Uuid
+  email              String     @unique
+  hashedPassword     String
+  hashedRefreshToken String?
+  role               Role       @default(USER)
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+
+  favorites          Favorite[]
+  cartItems          CartItem[]
+}
+
+/// Produkt-Kategorien im Shop
+model Category {
+  id          String            @id @default(uuid()) @db.Uuid
+  slug        String            @unique
+  name        String
+  description String?
+  sortOrder   Int               @default(0)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  products    ProductCategory[]
+}
+
+/// Zentrales Ding: bestickte Produkte (Shop + "Beauties"-Schaufenster)
+model Product {
+  id          String            @id @default(uuid()) @db.Uuid
+  slug        String            @unique
+  name        String
+  description String?
+  priceCents  Int
+  isShowcased Boolean           @default(false)
+  isPublished Boolean           @default(true)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  images      ProductImage[]
+  categories  ProductCategory[]
+  favorites   Favorite[]
+  cartItems   CartItem[]
+}
+
+/// Bilder zu einem Produkt (1:n) - liegen im Supabase-Storage-Bucket
+model ProductImage {
+  id          String   @id @default(uuid()) @db.Uuid
+  productId   String   @db.Uuid
+  storagePath String
+  altText     String?
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+}
+
+/// Verbindungstabelle Produkt <-> Kategorie (n:m)
+model ProductCategory {
+  productId  String @db.Uuid
+  categoryId String @db.Uuid
+
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([productId, categoryId])
+  @@index([categoryId])
+}
+
+/// Verbindungstabelle User <-> Produkt: Favoriten (n:m)
+model Favorite {
+  userId    String   @db.Uuid
+  productId String   @db.Uuid
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@id([userId, productId])
+  @@index([productId])
+}
+
+/// Verbindungstabelle User <-> Produkt: Warenkorb, mit Nutzlast quantity (n:m)
+model CartItem {
+  userId    String   @db.Uuid
+  productId String   @db.Uuid
+  quantity  Int      @default(1)
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@id([userId, productId])
+  @@index([productId])
+}
