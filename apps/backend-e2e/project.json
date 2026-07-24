@@ -7,10 +7,7 @@
     "e2e": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{e2eProjectRoot}"],
-      "dependsOn": [
-        "backend:build",
-        "backend:serve"
-      ],
+      "dependsOn": ["backend:build", "backend:serve"],
       "options": {
         "jestConfig": "apps/backend-e2e/jest.config.cts",
         "passWithNoTests": true

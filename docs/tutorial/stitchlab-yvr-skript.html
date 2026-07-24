@@ -1,0 +1,1981 @@
+<title>Tutorial-Skript · StitchLab-YVR</title>
+<style>
+  /* ============ TOKENS ============ */
+  :root {
+    --paper:      #f7f3ec;
+    --surface:    #fffdf9;
+    --surface-2:  #f1ebe0;
+    --ink:        #241d1b;
+    --ink-soft:   #6c615b;
+    --ink-faint:  #938880;
+    --accent:     #8a1620;
+    --accent-2:   #a8323a;
+    --accent-tint:#f3e4e2;
+    --line:       #e4dccf;
+    --line-soft:  #efe8dc;
+    --vo-ground:  #fffaf3;
+    --note-ground:#f1ede3;
+    --shadow:     0 1px 2px rgba(60,30,20,.05), 0 8px 28px rgba(60,30,20,.06);
+    --ok:         #2fa563;
+
+    --font-display: "Palatino Linotype", "Book Antiqua", "Iowan Old Style", Georgia, serif;
+    --font-body: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", sans-serif;
+    --font-mono: "Cascadia Code", "Consolas", ui-monospace, "SFMono-Regular", monospace;
+
+    --maxw: 820px;
+    --radius: 4px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper:      #17110f;
+      --surface:    #201917;
+      --surface-2:  #2a201d;
+      --ink:        #efe6df;
+      --ink-soft:   #b3a79f;
+      --ink-faint:  #8a7e76;
+      --accent:     #e88a86;
+      --accent-2:   #f0a6a0;
+      --accent-tint:#3a201f;
+      --line:       #362a26;
+      --line-soft:  #2b211e;
+      --vo-ground:  #251c19;
+      --note-ground:#241d1a;
+      --shadow:     0 1px 2px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="light"] {
+    --paper:#f7f3ec; --surface:#fffdf9; --surface-2:#f1ebe0; --ink:#241d1b;
+    --ink-soft:#6c615b; --ink-faint:#938880; --accent:#8a1620; --accent-2:#a8323a;
+    --accent-tint:#f3e4e2; --line:#e4dccf; --line-soft:#efe8dc; --vo-ground:#fffaf3;
+    --note-ground:#f1ede3; --shadow:0 1px 2px rgba(60,30,20,.05),0 8px 28px rgba(60,30,20,.06);
+  }
+  :root[data-theme="dark"] {
+    --paper:#17110f; --surface:#201917; --surface-2:#2a201d; --ink:#efe6df;
+    --ink-soft:#b3a79f; --ink-faint:#8a7e76; --accent:#e88a86; --accent-2:#f0a6a0;
+    --accent-tint:#3a201f; --line:#362a26; --line-soft:#2b211e; --vo-ground:#251c19;
+    --note-ground:#241d1a; --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+  }
+
+  /* ============ BASE ============ */
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 clamp(1.1rem, 4vw, 2rem); }
+  p { margin: 0; }
+  h1,h2,h3 { margin: 0; text-wrap: balance; font-weight: 600; }
+
+  /* ============ PLATZHALTER (Projekt-spezifisch — später füllen) ============ */
+  .ph {
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    color: var(--accent-2);
+    border-bottom: 1px dashed var(--accent);
+    padding: 0 .3em; border-radius: 3px;
+    font-style: normal;
+    font-family: var(--font-mono); font-size: .9em;
+  }
+  .ph::before { content: "« "; opacity: .55; }
+  .ph::after  { content: " »"; opacity: .55; }
+
+  /* ============ TOP BAR ============ */
+  .topbar {
+    position: sticky; top: 0; z-index: 20;
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .topbar-inner {
+    max-width: var(--maxw); margin: 0 auto;
+    padding: .7rem clamp(1.1rem, 4vw, 2rem);
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  }
+  .topbar-title {
+    font-family: var(--font-mono); font-size: .78rem; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .topbar-title b { color: var(--accent); font-weight: 700; }
+  .printbtn {
+    font-family: var(--font-mono); font-size: .74rem; letter-spacing: .04em;
+    text-transform: uppercase; color: var(--ink-soft);
+    background: var(--surface); border: 1px solid var(--line);
+    padding: .42rem .8rem; border-radius: var(--radius); cursor: pointer;
+    transition: color .15s, border-color .15s;
+  }
+  .printbtn:hover { color: var(--accent); border-color: var(--accent); }
+  .printbtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ============ CHAPTER NAV ============ */
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  .chapter, header.mast { scroll-margin-top: 78px; }
+  .topbar-actions { display: flex; gap: .55rem; align-items: center; }
+  .chapnav { position: relative; display: inline-flex; }
+  .navbtn {
+    font-family: var(--font-mono); font-size: .74rem; letter-spacing: .04em;
+    text-transform: uppercase; color: var(--ink-soft);
+    background: var(--surface); border: 1px solid var(--line);
+    padding: .42rem .8rem; border-radius: var(--radius); cursor: pointer;
+    transition: color .15s, border-color .15s; display: inline-flex; align-items: center; gap: .4rem;
+  }
+  .navbtn:hover { color: var(--accent); border-color: var(--accent); }
+  .navbtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .navbtn .chev { transition: transform .2s; font-size: .7em; }
+  .navbtn[aria-expanded="true"] .chev { transform: rotate(180deg); }
+  .chapnav-panel {
+    position: absolute; top: calc(100% + 8px); right: 0;
+    width: min(360px, calc(100vw - 2rem)); max-height: 72vh; overflow-y: auto;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+    box-shadow: var(--shadow); padding: .5rem; z-index: 40;
+  }
+  .chapnav-group + .chapnav-group { margin-top: .3rem; }
+  .chapnav-group h4 {
+    font-family: var(--font-mono); font-size: .67rem; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--ink-faint); margin: .5rem .6rem .25rem;
+  }
+  .chapnav a {
+    display: flex; gap: .55rem; align-items: baseline; padding: .4rem .6rem;
+    border-radius: 5px; text-decoration: none; color: var(--ink); font-size: .9rem; line-height: 1.3;
+  }
+  .chapnav a:hover { background: var(--surface-2); color: var(--accent); }
+  .chapnav a:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .chapnav a .n {
+    font-family: var(--font-mono); font-size: .8rem; font-weight: 700; color: var(--accent);
+    min-width: 1.5rem; text-align: right; flex-shrink: 0;
+  }
+  .chapnav a.active { background: var(--accent-tint); color: var(--accent); font-weight: 600; }
+  .chapnav a.top { color: var(--ink-soft); font-family: var(--font-mono); font-size: .8rem; margin-bottom: .2rem; }
+  .chapnav .soon {
+    font-family: var(--font-mono); font-size: .72rem; color: var(--ink-faint);
+    padding: .5rem .6rem .3rem; border-top: 1px solid var(--line-soft); margin-top: .35rem;
+  }
+  @media print { .chapnav { display: none; } }
+
+  /* ============ MASTHEAD ============ */
+  header.mast { padding: clamp(2.4rem, 7vw, 4.2rem) 0 clamp(1.6rem, 4vw, 2.4rem); }
+  .eyebrow {
+    font-family: var(--font-mono); font-size: .76rem; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 1rem;
+    display: flex; align-items: center; gap: .7rem;
+  }
+  .eyebrow::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+  header.mast h1 {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: clamp(2.1rem, 6vw, 3.3rem); line-height: 1.08; letter-spacing: -.01em;
+  }
+  header.mast .sub {
+    margin-top: 1rem; color: var(--ink-soft); font-size: 1.08rem; max-width: 60ch;
+  }
+  header.mast .sub + .sub { margin-top: .6rem; }
+  .method-note {
+    margin-top: 1.6rem; padding: .9rem 1.1rem; background: var(--surface);
+    border: 1px solid var(--line); border-left: 3px solid var(--accent);
+    border-radius: var(--radius); font-size: .95rem; color: var(--ink-soft);
+    box-shadow: var(--shadow);
+  }
+  .method-note b { color: var(--ink); }
+  .method-note + .method-note { margin-top: .7rem; }
+
+  /* ============ ROADMAP ============ */
+  .roadmap { margin: 2.4rem 0 1rem; }
+  .section-label {
+    font-family: var(--font-mono); font-size: .8rem; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--ink-faint); margin-bottom: 1.1rem;
+  }
+  .parts { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px,1fr)); gap: .7rem; }
+  .part {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: .85rem .95rem; box-shadow: var(--shadow);
+    position: relative;
+  }
+  .part.done { border-color: color-mix(in srgb, var(--ok) 45%, var(--line)); }
+  .part .pnum {
+    font-family: var(--font-mono); font-size: .72rem; color: var(--accent);
+    font-weight: 700; letter-spacing: .05em;
+  }
+  .part .pstatus {
+    position: absolute; top: .8rem; right: .9rem;
+    font-family: var(--font-mono); font-size: .64rem; letter-spacing: .05em;
+    text-transform: uppercase; font-weight: 700;
+    padding: .12rem .45rem; border-radius: 100px;
+  }
+  .part.done .pstatus { color: var(--ok); background: color-mix(in srgb, var(--ok) 14%, transparent); }
+  .part.todo .pstatus { color: var(--ink-faint); background: var(--surface-2); }
+  .part .ptitle { font-weight: 600; font-size: .98rem; margin: .15rem 0 .3rem; }
+  .part .pchaps { font-size: .82rem; color: var(--ink-soft); line-height: 1.45; }
+
+  /* ============ CHAPTER ============ */
+  .chapter { padding: 2.6rem 0; border-top: 1px solid var(--line); }
+  .chapter-head { margin-bottom: 1.8rem; }
+  .chip {
+    display: inline-flex; align-items: baseline; gap: .55rem;
+    font-family: var(--font-mono); font-size: .82rem; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--accent); font-weight: 700;
+    margin-bottom: .7rem;
+  }
+  .chip .num {
+    font-family: var(--font-display); font-size: 2.1rem; line-height: 1;
+    color: var(--accent); font-weight: 700;
+  }
+  .chapter-head h2 {
+    font-family: var(--font-display); font-size: clamp(1.7rem, 4.5vw, 2.5rem);
+    line-height: 1.12; font-weight: 700;
+  }
+  .meta-row {
+    display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem;
+  }
+  .meta {
+    font-family: var(--font-mono); font-size: .74rem; letter-spacing: .03em;
+    color: var(--ink-soft); background: var(--surface-2);
+    padding: .3rem .6rem; border-radius: 100px; border: 1px solid var(--line-soft);
+  }
+
+  /* ============ SECTION (within chapter) ============ */
+  .beat { margin: 2rem 0; }
+  .beat > h3 {
+    font-size: 1.05rem; font-weight: 700; color: var(--ink);
+    display: flex; align-items: center; gap: .6rem; margin-bottom: 1rem;
+  }
+  .beat > h3 .dot {
+    width: .5rem; height: .5rem; border-radius: 50%; background: var(--accent);
+    flex-shrink: 0;
+  }
+  .beat > h3 .dur {
+    font-family: var(--font-mono); font-weight: 400; font-size: .76rem;
+    color: var(--ink-faint); letter-spacing: .02em; margin-left: auto;
+  }
+
+  /* block tag */
+  .tag {
+    font-family: var(--font-mono); font-size: .68rem; letter-spacing: .1em;
+    text-transform: uppercase; font-weight: 700; display: inline-block;
+    margin-bottom: .5rem;
+  }
+
+  /* screen action */
+  .screen {
+    margin: .9rem 0; padding: .8rem 1rem; background: var(--surface);
+    border: 1px dashed var(--line); border-radius: var(--radius);
+  }
+  .screen .tag { color: var(--ink-faint); }
+  .screen p { font-size: .95rem; color: var(--ink-soft); font-style: italic; }
+
+  /* voiceover — the star block */
+  .vo {
+    margin: .9rem 0; padding: 1.15rem 1.3rem 1.25rem;
+    background: var(--vo-ground); border: 1px solid var(--line);
+    border-left: 4px solid var(--accent); border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+  .vo .tag { color: var(--accent); }
+  .vo p {
+    font-family: var(--font-display); font-size: 1.28rem; line-height: 1.62;
+    color: var(--ink);
+  }
+  .vo p + p { margin-top: .9rem; }
+
+  /* director note */
+  .note {
+    margin: .9rem 0; padding: .75rem 1rem; background: var(--note-ground);
+    border-radius: var(--radius); font-size: .92rem; color: var(--ink-soft);
+    border: 1px solid var(--line-soft);
+  }
+  .note b { color: var(--ink); }
+
+  /* on-screen bullets */
+  .onscreen {
+    margin: .9rem 0; padding: 1rem 1.2rem; background: var(--surface);
+    border: 1px solid var(--line); border-radius: var(--radius);
+  }
+  .onscreen .tag { color: var(--ink-faint); }
+  .onscreen ul { margin: .3rem 0 0; padding-left: 1.2rem; }
+  .onscreen li { margin: .35rem 0; }
+  .onscreen li b { color: var(--accent); }
+
+  /* folder tree */
+  .tree {
+    margin: .9rem 0; padding: 1rem 1.2rem; background: var(--surface-2);
+    border: 1px solid var(--line); border-radius: var(--radius);
+    font-family: var(--font-mono); font-size: .82rem; line-height: 1.8;
+    color: var(--ink-soft); overflow-x: auto;
+  }
+  .tree .r { color: var(--accent); font-weight: 700; }
+  .tree .c { color: var(--ink-faint); }
+
+  /* terminal / command block */
+  .cmd {
+    margin: .9rem 0; border: 1px solid var(--line); border-radius: var(--radius);
+    overflow: hidden; box-shadow: var(--shadow);
+  }
+  .cmd-bar {
+    display: flex; align-items: center; gap: .45rem;
+    padding: .5rem .8rem; background: var(--surface); border-bottom: 1px solid var(--line-soft);
+  }
+  .cmd-bar .d { width: .62rem; height: .62rem; border-radius: 50%; background: var(--line); flex-shrink: 0; }
+  .cmd-bar .lbl {
+    margin-left: .4rem; font-family: var(--font-mono); font-size: .68rem;
+    letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint);
+  }
+  .cmd pre {
+    margin: 0; padding: .9rem 1.1rem; background: var(--surface-2);
+    font-family: var(--font-mono); font-size: .86rem; line-height: 1.75;
+    color: var(--ink); overflow-x: auto; white-space: pre;
+  }
+  .cmd .p { color: var(--accent); font-weight: 700; }
+  .cmd .o { color: var(--ink-faint); }
+  .cmd .g { color: var(--ok); }
+  .cmd .e { color: var(--accent-2); font-weight: 600; }
+  .cmd-cwd {
+    padding: .42rem 1.1rem; background: var(--surface);
+    border-bottom: 1px solid var(--line-soft);
+    font-family: var(--font-mono); font-size: .72rem; color: var(--ink-soft);
+    display: flex; flex-wrap: wrap; gap: .1rem .4rem; align-items: baseline;
+  }
+  .cmd-cwd b { color: var(--accent); font-weight: 700; word-break: break-all; }
+  .cmd-cwd code { color: var(--ink); background: var(--surface-2); padding: 0 .25rem; border-radius: 2px; }
+
+  /* resource links */
+  .links {
+    margin: .9rem 0; padding: .95rem 1.15rem; background: var(--surface);
+    border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow);
+  }
+  .links .tag { color: var(--accent); }
+  .links ul { list-style: none; margin: .3rem 0 0; padding: 0; display: grid; gap: .55rem; }
+  .links li { font-size: .93rem; display: flex; flex-wrap: wrap; gap: .1rem .55rem; align-items: baseline; }
+  .links a {
+    font-family: var(--font-mono); font-size: .84rem; color: var(--accent);
+    text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--accent) 32%, transparent);
+    word-break: break-all;
+  }
+  .links a:hover { border-bottom-color: var(--accent); }
+  .links a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .links .desc { color: var(--ink-soft); }
+
+  /* warning / security callout */
+  .warn {
+    margin: .9rem 0; padding: .8rem 1rem .8rem 2.7rem; position: relative;
+    background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+    border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    border-left: 4px solid var(--accent); border-radius: var(--radius);
+    font-size: .94rem; color: var(--ink);
+  }
+  .warn::before {
+    content: "\26A0"; position: absolute; left: 1rem; top: .72rem;
+    color: var(--accent); font-weight: 800; font-size: 1rem;
+  }
+  .warn .h {
+    display: block; font-family: var(--font-mono); font-size: .72rem; font-weight: 700;
+    letter-spacing: .06em; text-transform: uppercase; color: var(--accent); margin-bottom: .2rem;
+  }
+
+  /* success check */
+  .check {
+    margin: .9rem 0; padding: .8rem 1rem .8rem 2.7rem; position: relative;
+    background: color-mix(in srgb, var(--ok) 10%, var(--surface));
+    border: 1px solid color-mix(in srgb, var(--ok) 35%, transparent);
+    border-left: 4px solid var(--ok); border-radius: var(--radius);
+    font-size: .94rem; color: var(--ink);
+  }
+  .check::before {
+    content: "\2713"; position: absolute; left: 1rem; top: .72rem;
+    color: var(--ok); font-weight: 800; font-size: 1rem;
+  }
+  .check .h {
+    display: block; font-family: var(--font-mono); font-size: .72rem; font-weight: 700;
+    letter-spacing: .06em; text-transform: uppercase;
+    color: color-mix(in srgb, var(--ok) 75%, var(--ink)); margin-bottom: .2rem;
+  }
+
+  /* definition box */
+  .def {
+    margin: 1.1rem 0; background: var(--surface); border: 1px solid var(--accent);
+    border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
+  }
+  .def-head {
+    background: var(--accent-tint); color: var(--accent);
+    font-family: var(--font-mono); font-size: .82rem; font-weight: 700;
+    letter-spacing: .04em; padding: .6rem 1rem;
+    border-bottom: 1px solid var(--accent);
+  }
+  .def dl { margin: 0; padding: .9rem 1.1rem; display: grid; gap: .55rem; }
+  .def .row { display: grid; grid-template-columns: 8.5rem 1fr; gap: .5rem; }
+  .def dt {
+    font-family: var(--font-mono); font-size: .74rem; text-transform: uppercase;
+    letter-spacing: .04em; color: var(--ink-faint); padding-top: .12rem;
+  }
+  .def dd { margin: 0; font-size: .96rem; color: var(--ink); }
+  @media (max-width: 520px) { .def .row { grid-template-columns: 1fr; gap: .1rem; } }
+
+  /* checklist */
+  .checklist {
+    margin: 1.4rem 0; padding: 1.1rem 1.3rem; background: var(--surface-2);
+    border: 1px solid var(--line); border-radius: var(--radius);
+  }
+  .checklist h4 {
+    font-family: var(--font-mono); font-size: .8rem; text-transform: uppercase;
+    letter-spacing: .06em; color: var(--accent); margin: 0 0 .7rem;
+  }
+  .checklist ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; }
+  .checklist li { display: flex; gap: .6rem; align-items: flex-start; font-size: .96rem; }
+  .checklist li::before {
+    content: ""; width: 1.05rem; height: 1.05rem; border: 1.5px solid var(--accent);
+    border-radius: 3px; flex-shrink: 0; margin-top: .2rem;
+  }
+
+  /* next up */
+  .nextup {
+    margin: 2.4rem 0 1rem; padding: 1.2rem 1.4rem;
+    background: var(--accent-tint); border-radius: var(--radius);
+    border: 1px solid var(--accent);
+  }
+  .nextup .tag { color: var(--accent); }
+  .nextup h3 { font-family: var(--font-display); font-size: 1.3rem; margin: .2rem 0 .4rem; }
+  .nextup p { color: var(--ink-soft); font-size: .96rem; }
+
+  footer.foot {
+    padding: 2.5rem 0 3.5rem; text-align: center; color: var(--ink-faint);
+    font-family: var(--font-mono); font-size: .76rem; letter-spacing: .04em;
+    border-top: 1px solid var(--line);
+  }
+
+  /* ============ PRINT ============ */
+  @media print {
+    :root { --paper:#fff; --surface:#fff; --surface-2:#fff; --ink:#000;
+            --ink-soft:#333; --ink-faint:#555; --accent:#8a1620; --line:#ccc;
+            --vo-ground:#fbf6ee; --note-ground:#f3f0ea; --accent-tint:#f6eae9;
+            --shadow:none; }
+    .topbar { display: none; }
+    body { font-size: 12pt; }
+    .chapter, .beat { break-inside: auto; }
+    .vo, .def, .checklist, .nextup { break-inside: avoid; }
+    .chapter { break-before: page; border-top: none; }
+    .part { break-inside: avoid; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="topbar-title">StitchLab-YVR · <b>Fullstack-Tutorial</b></span>
+    <div class="topbar-actions">
+      <div class="chapnav">
+        <button class="navbtn" id="chapnav-btn" type="button" aria-expanded="false" aria-haspopup="true" aria-controls="chapnav-panel">&#9776; Kapitel <span class="chev" aria-hidden="true">&#9662;</span></button>
+        <nav class="chapnav-panel" id="chapnav-panel" hidden aria-label="Kapitel&uuml;bersicht">
+          <a class="top" href="#start">&#9650; Start / Roadmap</a>
+          <div class="chapnav-group">
+            <h4>Teil 0 &middot; &Uuml;berblick</h4>
+            <a href="#kap1"><span class="n">1</span> Was bauen wir &amp; warum?</a>
+            <a href="#kap2"><span class="n">2</span> Wie denkt ein Senior-Team?</a>
+            <a href="#kap3"><span class="n">3</span> Die 4 S&auml;ulen</a>
+          </div>
+          <div class="chapnav-group">
+            <h4>Teil 1 &middot; Fundament</h4>
+            <a href="#kap4"><span class="n">4</span> Warum ein Monorepo (NX)?</a>
+            <a href="#kap5"><span class="n">5</span> Angular &amp; NestJS</a>
+            <a href="#kap6"><span class="n">6</span> Sauberer Code (TS/ESLint/Prettier)</a>
+          </div>
+          <div class="chapnav-group">
+            <h4>Anhang</h4>
+            <a href="#praxis"><span class="n">&#9873;</span> Fallstricke aus der Praxis</a>
+          </div>
+          <div class="soon">Kapitel 7&ndash;38 folgen &mdash; Skript wird pro Video erweitert.</div>
+        </nav>
+      </div>
+      <button class="printbtn" onclick="window.print()">&#128424; Drucken / PDF</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="mast" id="start">
+    <div class="eyebrow">Video-Tutorial &middot; Super-Simple-Dev-Methode</div>
+    <h1>StitchLab-YVR &mdash; von Null bis Live</h1>
+    <p class="sub"><span class="ph">PLATZHALTER: In 1&ndash;2 S&auml;tzen &mdash; was StitchLab-YVR fachlich tut und f&uuml;r wen</span></p>
+    <p class="sub">Aufnahme-Skripte f&uuml;r eine Fullstack-Website: NX&nbsp;23 (Monorepo) &middot; Angular&nbsp;22 &middot; NestJS&nbsp;11 &middot; Prisma&nbsp;7 &middot; PostgreSQL (Supabase) &middot; Tailwind&nbsp;v4 &middot; JWT-Auth &middot; Deployment.</p>
+    <div class="method-note">
+      <b>So liest du diese Mappe:</b> &nbsp;&#127916; = was auf dem Bildschirm passiert &nbsp;&middot;&nbsp; &#127897;&#65039; = was du sagst (die gro&szlig;en Bl&ouml;cke &mdash; wie ein Teleprompter) &nbsp;&middot;&nbsp; &#128221; = Regie- &amp; Erkl&auml;r-Hinweis nur f&uuml;r dich.
+    </div>
+    <div class="method-note">
+      <b>&#128308; Platzhalter:</b> Alles rot markierte wie <span class="ph">&hellip;</span> beschreibt <em>StitchLab-YVR ganz konkret</em> &mdash; diese Stellen f&uuml;llst du sp&auml;ter mit deinen echten Inhalten. Der technische Teil (Stack, Architektur, Befehle) ist bereits fertig.
+    </div>
+  </header>
+
+  <!-- ============ ROADMAP ============ -->
+  <section class="roadmap">
+    <div class="section-label">Die Roadmap &middot; 8 Teile &middot; 38 Kapitel &middot; <span style="color:var(--ok)">Kap. 1&ndash;6 skriptet</span></div>
+    <div class="parts">
+      <div class="part done">
+        <div class="pnum">TEIL 0</div><span class="pstatus">&#10003; skriptet</span>
+        <div class="ptitle">Das gro&szlig;e Bild</div>
+        <div class="pchaps">Kap. 1&ndash;3 &middot; Was &amp; warum &middot; Team-Denke &middot; die 4 S&auml;ulen</div>
+      </div>
+      <div class="part done">
+        <div class="pnum">TEIL 1</div><span class="pstatus">&#10003; skriptet</span>
+        <div class="ptitle">Fundament &amp; Werkzeuge</div>
+        <div class="pchaps">Kap. 4&ndash;6 &middot; Monorepo (NX) &middot; Setup &middot; TypeScript &amp; Lint</div>
+      </div>
+      <div class="part todo">
+        <div class="pnum">TEIL 2</div><span class="pstatus">geplant</span>
+        <div class="ptitle">Die Datenbank</div>
+        <div class="pchaps">Kap. 7&ndash;10 &middot; Relationale DB &middot; Supabase &middot; Prisma &middot; Datenmodell</div>
+      </div>
+      <div class="part todo">
+        <div class="pnum">TEIL 3</div><span class="pstatus">geplant</span>
+        <div class="ptitle">Backend &amp; Architektur</div>
+        <div class="pchaps">Kap. 11&ndash;16 &middot; NestJS &middot; DDD &middot; Schichten &middot; CQRS &middot; Dom&auml;nen</div>
+      </div>
+      <div class="part todo">
+        <div class="pnum">TEIL 4</div><span class="pstatus">geplant</span>
+        <div class="ptitle">Security &#128274;</div>
+        <div class="pchaps">Kap. 17&ndash;21 &middot; Auth &middot; bcrypt &middot; JWT-Cookies &middot; Rollen &middot; Signed URLs</div>
+      </div>
+      <div class="part todo">
+        <div class="pnum">TEIL 5</div><span class="pstatus">geplant</span>
+        <div class="ptitle">Frontend mit Angular</div>
+        <div class="pchaps">Kap. 22&ndash;28 &middot; Libs &middot; data-access &middot; Seiten &middot; Login &middot; Admin &middot; i18n</div>
+      </div>
+      <div class="part todo">
+        <div class="pnum">TEIL 6</div><span class="pstatus">geplant</span>
+        <div class="ptitle">Design &amp; UI &#10024;</div>
+        <div class="pchaps">Kap. 29&ndash;32 &middot; Tailwind v4 &middot; Tokens &middot; Dark-Mode &middot; Responsive</div>
+      </div>
+      <div class="part todo">
+        <div class="pnum">TEIL 7</div><span class="pstatus">geplant</span>
+        <div class="ptitle">Qualit&auml;t sichern</div>
+        <div class="pchaps">Kap. 33&ndash;34 &middot; Unit-Tests (Jest) &middot; E2E-Tests (Playwright)</div>
+      </div>
+      <div class="part todo">
+        <div class="pnum">TEIL 8</div><span class="pstatus">geplant</span>
+        <div class="ptitle">Live gehen &#128640;</div>
+        <div class="pchaps">Kap. 35&ndash;38 &middot; Deployment &middot; Secrets &middot; Live schalten &middot; Abschluss</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CHAPTER 1 ============ -->
+  <article class="chapter" id="kap1">
+    <div class="chapter-head">
+      <div class="chip"><span class="num">01</span> Kapitel &middot; Teil 0</div>
+      <h2>Was bauen wir &amp; warum?</h2>
+      <div class="meta-row">
+        <span class="meta">&#9201; 6&ndash;9 Min</span>
+        <span class="meta">&#9000; 0 Zeilen Code</span>
+        <span class="meta">&#127919; Lust aufs Mitbauen wecken</span>
+      </div>
+    </div>
+
+    <!-- Beat 1 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 1 &middot; Begr&uuml;&szlig;ung <span class="dur">~30 Sek</span></h3>
+      <div class="screen">
+        <span class="tag">&#127916; Bildschirm</span>
+        <p>Du (oder nur deine Stimme) + fertige StitchLab-YVR-Website offen im Browser, Startseite.</p>
+      </div>
+      <div class="vo">
+        <span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Hey, willkommen! In dieser Serie bauen wir zusammen &mdash; von komplett null &mdash; eine <em>echte Website namens StitchLab-YVR</em>: <span class="ph">PLATZHALTER: was die Seite fachlich tut, in einem Satz</span>. Kein Spielzeug-Projekt, sondern eine Seite, die am Ende wirklich im Internet online ist &mdash; mit Login, Admin-Bereich und Dark-Mode.</p>
+        <p>Ich bin selbst noch am Anfang meiner Reise als Entwickler &mdash; deshalb erkl&auml;re ich dir <em>jeden Begriff in einfacher Sprache</em>, so als w&uuml;rde ich ihn einem Freund erkl&auml;ren. Wenn du HTML, CSS und ein bisschen JavaScript schon mal gesehen hast, kannst du hier mitmachen. Los geht&rsquo;s.&ldquo;</p>
+      </div>
+      <p class="note">&#128221; <b>Super-Simple-Dev-Trick:</b> Ruhig sprechen, ein L&auml;cheln in der Stimme. Nicht hetzen. Die erste Minute entscheidet, ob jemand dranbleibt.</p>
+    </div>
+
+    <!-- Beat 2 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 2 &middot; Das fertige Ergebnis zeigen <span class="dur">2&ndash;3 Min</span></h3>
+      <p class="note">&#128221; <b>Wichtigste Regel:</b> Zeige zuerst das Ziel. Der Zuschauer muss sehen, wohin die Reise geht &mdash; sonst versteht er nicht, wof&uuml;r der ganze Code gut ist. Klicke jetzt langsam durch deine echte Seite.</p>
+
+      <div class="screen"><span class="tag">&#127916; Bildschirm</span><p>Startseite (/). Zeige Banner oben, Logo, Navigation.</p></div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Das hier ist die fertige Seite. Ganz oben die Navigationsleiste &mdash; mit Logo, einem Umschalter f&uuml;r Tag und Nacht, einem Login-Button und einem Men&uuml;. Schauen wir uns an, was diese Website alles kann.&ldquo;</p>
+      </div>
+
+      <div class="screen"><span class="tag">&#127916; Bildschirm</span><p><span class="ph">PLATZHALTER: Kern-Feature von StitchLab-YVR zeigen &mdash; die wichtigste Ansicht/Seite &ouml;ffnen</span></p></div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Das Herzst&uuml;ck ist <span class="ph">PLATZHALTER: das Kern-Feature &mdash; was der Nutzer hier haupts&auml;chlich tut</span>. <span class="ph">PLATZHALTER: 1&ndash;2 S&auml;tze, was man auf dem Bildschirm sieht und anklickt</span>.&ldquo;</p>
+      </div>
+
+      <div class="screen"><span class="tag">&#127916; Bildschirm</span><p><span class="ph">PLATZHALTER: ein Detail / eine zweite Funktion zeigen</span></p></div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;<span class="ph">PLATZHALTER: eine zweite, spannende Funktion &mdash; merk dir das, das wird sp&auml;ter technisch interessant</span>.&ldquo;</p>
+      </div>
+
+      <div class="screen"><span class="tag">&#127916; Bildschirm</span><p><span class="ph">PLATZHALTER: personalisierte Aktion als eingeloggter Nutzer (z. B. speichern / merken / hochladen)</span></p></div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Als eingeloggter Nutzer kann ich <span class="ph">PLATZHALTER: was der eingeloggte Nutzer pers&ouml;nlich tun kann</span>.&ldquo;</p>
+      </div>
+
+      <div class="screen"><span class="tag">&#127916; Bildschirm</span><p>Tag/Nacht-Umschalter klicken &rarr; Seite wechselt in Dark-Mode.</p></div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Und hier &mdash; mein Lieblingsdetail &mdash; ein <em>Dark-Mode</em>. Ein Klick, und die ganze Seite wechselt von hell zu dunkel. Das bauen wir sp&auml;ter mit einer sehr eleganten Technik, ganz ohne die Seite neu zu laden.&ldquo;</p>
+      </div>
+
+      <div class="screen"><span class="tag">&#127916; Bildschirm</span><p>Sprach-Men&uuml; &ouml;ffnen und Sprachen durchschalten. <span class="ph">PLATZHALTER: falls eine RTL-Sprache dabei ist &mdash; zeigen, wie sich die Seite rechts&ndash;links dreht</span>.</p></div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Und die Seite spricht mehrere Sprachen: <span class="ph">PLATZHALTER: Sprachliste von StitchLab-YVR</span>. <span class="ph">PLATZHALTER: falls RTL &mdash; hier dreht sich die ganze Seite von rechts nach links</span>. So etwas nennt man <em>Internationalisierung</em>, und das ist &uuml;berraschend knifflig &mdash; aber wir kriegen das hin.&ldquo;</p>
+      </div>
+
+      <div class="screen"><span class="tag">&#127916; Bildschirm</span><p>Als Admin einloggen &rarr; /admin &ouml;ffnen.</p></div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Ganz wichtig: Es gibt zwei Arten von Nutzern. Ein normaler Besucher kann <span class="ph">PLATZHALTER: was ein normaler Besucher darf</span>. Aber ein <em>Admin</em> &mdash; ein Verwalter &mdash; hat einen gesch&uuml;tzten Bereich, in dem er <span class="ph">PLATZHALTER: was der Admin verwaltet</span>. Als normaler Nutzer kommst du hier gar nicht rein. Diese Trennung &mdash; wer darf was &mdash; ist ein zentrales Thema, wenn es um <em>Sicherheit</em> geht.&ldquo;</p>
+      </div>
+
+      <p class="note">&#128221; Nicht zu tief gehen! Nur zeigen und antippen. Details kommen in sp&auml;teren Kapiteln. Ziel hier: &bdquo;Wow, das kann man alles bauen?&ldquo;</p>
+    </div>
+
+    <!-- Beat 3 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 3 &middot; Was du dabei lernst <span class="dur">1&ndash;2 Min</span></h3>
+      <div class="screen"><span class="tag">&#127916; Bildschirm</span><p>Einfache &Uuml;bersicht/Folie, oder sprich &uuml;ber einer ruhigen Ansicht der Seite.</p></div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Und das Beste: W&auml;hrend wir das bauen, lernst du die Werkzeuge, mit denen <em>echte Firmen</em> heute arbeiten. Wir teilen das in vier gro&szlig;e Themen auf.&ldquo;</p>
+      </div>
+      <div class="onscreen">
+        <span class="tag">&#128421;&#65039; Stichpunkte einblenden</span>
+        <ul>
+          <li>&#127963;&#65039; <b>Architektur</b> &mdash; ein gro&szlig;es Projekt sauber ordnen, damit es nicht im Chaos endet.</li>
+          <li>&#128272; <b>Security</b> &mdash; wie Login, Passw&ouml;rter und gesch&uuml;tzte Bereiche wirklich sicher funktionieren.</li>
+          <li>&#127912; <b>UI &amp; Design</b> &mdash; die Seite sch&ouml;n <em>und</em> bedienbar machen, hell wie dunkel.</li>
+          <li>&#128452;&#65039; <b>Datenbank</b> &mdash; wo all deine <span class="ph">PLATZHALTER: Inhalte/Daten</span>, Nutzer und Einstellungen gespeichert werden.</li>
+        </ul>
+      </div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Keine Sorge, wenn dir diese W&ouml;rter noch nichts sagen &mdash; genau daf&uuml;r ist dieser Kurs da. Jeden Begriff erkl&auml;re ich dir, sobald wir ihn zum ersten Mal brauchen.&ldquo;</p>
+      </div>
+    </div>
+
+    <!-- Beat 4 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 4 &middot; Erster Begriff &mdash; die 3-Teile-Regel <span class="dur">1&ndash;2 Min</span></h3>
+      <p class="note">&#128221; Hier kommt zum ersten Mal deine <b>Definition &middot; Vorteile &middot; Nachteile</b>-Box. Konzept immer mit einer Alltags-Analogie einf&uuml;hren &mdash; hier: das Restaurant.</p>
+      <div class="screen"><span class="tag">&#127916; Bildschirm</span><p>Simple Grafik mit 3 K&auml;sten: &bdquo;Frontend&ldquo; &mdash; &bdquo;Backend&ldquo; &mdash; &bdquo;Datenbank&ldquo;. Optional Restaurant-Bilder daneben.</p></div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Bevor wir loslegen, ein einziges Konzept, das den ganzen Kurs zusammenh&auml;lt. Jede gro&szlig;e Website besteht aus <em>drei Teilen</em>. Stell dir ein Restaurant vor:</p>
+        <p><em>Erstens, das Frontend.</em> Alles, was <em>du</em> im Browser siehst und anklickst &mdash; Buttons, Bilder, Men&uuml;. Im Restaurant ist das der <em>Gastraum mit dem Kellner</em>: das, was der Gast erlebt.</p>
+        <p><em>Zweitens, das Backend.</em> Es arbeitet im Verborgenen auf einem Server. Pr&uuml;ft dein Passwort, entscheidet ob du Admin bist, holt die richtigen <span class="ph">PLATZHALTER: Inhalte/Daten</span>. Das ist die <em>K&uuml;che</em> &mdash; der Gast sieht sie nie, aber ohne sie gibt&rsquo;s kein Essen.</p>
+        <p><em>Und drittens, die Datenbank.</em> Der Ort, an dem <em>dauerhaft</em> alles gespeichert wird &mdash; alle Nutzer und <span class="ph">PLATZHALTER: Inhalte/Daten</span>. Das ist die <em>Vorratskammer</em>.&ldquo;</p>
+      </div>
+      <div class="def">
+        <div class="def-head">&#128230; Begriff: Frontend / Backend / Datenbank</div>
+        <dl>
+          <div class="row"><dt>Definition</dt><dd>Die drei Schichten, aus denen fast jede Web-App besteht: Anzeige &middot; Logik &middot; Speicher.</dd></div>
+          <div class="row"><dt>Vorteil</dt><dd>Jeder Teil hat <em>eine</em> klare Aufgabe &rarr; leichter zu bauen, zu verstehen und zu reparieren.</dd></div>
+          <div class="row"><dt>Nachteil</dt><dd>Man muss drei Dinge lernen statt nur eins &mdash; am Anfang mehr Aufwand.</dd></div>
+          <div class="row"><dt>Alternative</dt><dd>Man <em>k&ouml;nnte</em> alles in eine Datei packen. Macht bei echten Projekten niemand, weil es sofort un&uuml;bersichtlich wird &mdash; deshalb trennen auch wir sauber.</dd></div>
+        </dl>
+      </div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Merk dir diese drei W&ouml;rter &mdash; Frontend, Backend, Datenbank. Den ganzen Kurs &uuml;ber wirst du genau wissen, an welchem der drei Teile wir gerade arbeiten.&ldquo;</p>
+      </div>
+    </div>
+
+    <!-- Beat 5 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 5 &middot; Abschluss &amp; Ausblick <span class="dur">~30 Sek</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Das war der &Uuml;berblick. Im <em>n&auml;chsten Kapitel</em> schauen wir uns an, wie ein echtes Entwickler-Team so ein Projekt aufbaut &mdash; und wir installieren unsere allerersten Werkzeuge, damit wir loslegen k&ouml;nnen.</p>
+        <p>Wenn dir das gef&auml;llt, lass ein Like da, und dann sehen wir uns im n&auml;chsten Video. Bis gleich!&ldquo;</p>
+      </div>
+      <p class="note">&#128221; Immer mit einer klaren &bdquo;Was kommt als N&auml;chstes&ldquo;-Br&uuml;cke enden. Nie einfach abbrechen &mdash; Vorfreude aufs n&auml;chste Kapitel machen.</p>
+    </div>
+
+    <!-- Checklist -->
+    <div class="checklist">
+      <h4>&#127909; Aufnahme-Checkliste f&uuml;r dieses Kapitel</h4>
+      <ul>
+        <li>Fertige Seite l&auml;uft lokal <em>oder</em> live (<span class="ph">PLATZHALTER: Kern-Seite mit echten Inhalten bef&uuml;llt</span>)</li>
+        <li>Ein Admin-Account und ein normaler Account bereit zum Vorf&uuml;hren</li>
+        <li><span class="ph">PLATZHALTER: das eine Feature, das du unbedingt live zeigen willst, ist vorbereitet</span></li>
+        <li>Bildschirm-Recorder (z. B. OBS) + Mikro getestet</li>
+        <li>Browser sauber: keine privaten Tabs, Zoom ~100&ndash;110 %, Lesezeichenleiste aus</li>
+      </ul>
+    </div>
+  </article>
+
+  <!-- ============ CHAPTER 2 ============ -->
+  <article class="chapter" id="kap2">
+    <div class="chapter-head">
+      <div class="chip"><span class="num">02</span> Kapitel &middot; Teil 0</div>
+      <h2>Wie denkt ein Senior-Team?</h2>
+      <div class="meta-row">
+        <span class="meta">&#9201; 6&ndash;8 Min</span>
+        <span class="meta">&#9000; 0 Zeilen Code</span>
+        <span class="meta">&#127919; Struktur &amp; Denkweise verstehen</span>
+      </div>
+    </div>
+
+    <!-- Beat 1 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 1 &middot; Kurzer R&uuml;ckblick &amp; heute <span class="dur">~30 Sek</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Willkommen zur&uuml;ck! Im letzten Kapitel haben wir gesehen, <em>was</em> wir bauen &mdash; und die drei Teile jeder Website kennengelernt: Frontend, Backend, Datenbank. Heute schauen wir uns an, <em>wie</em> ein echtes Entwickler-Team an so ein Projekt herangeht. Denn Profis fangen nicht einfach an zu tippen &mdash; sie denken erst nach. Und genau diese Denkweise nehme ich dir heute ab.&ldquo;</p>
+      </div>
+      <p class="note">&#128221; Noch immer kein Code. Erst die Denkweise, dann die Werkzeuge (ab Kapitel 4). Super Simple Dev baut Verst&auml;ndnis <b>vor</b> Tastatur.</p>
+    </div>
+
+    <!-- Beat 2 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 2 &middot; Das Team &amp; die Rollen <span class="dur">~2 Min</span></h3>
+      <div class="screen"><span class="tag">&#127916; Bildschirm</span><p>Einfache Grafik: eine K&uuml;chen-Brigade / ein Team mit Rollen-K&auml;rtchen.</p></div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Bleiben wir bei unserem Restaurant. Ein gutes Restaurant wird nicht von einer Person allein gef&uuml;hrt &mdash; es gibt Rollen. Genauso ist es in einem Software-Team. Schauen wir uns die wichtigsten an:</p>
+        <p><em>Der Architekt</em> entscheidet, wie das Geb&auml;ude aufgeteilt wird &mdash; wo die K&uuml;che ist, wo die Vorratskammer. In Software hei&szlig;t das: Welche Teile gibt es, und wie reden sie miteinander?</p>
+        <p><em>Der Backend-Entwickler</em> ist der Koch &mdash; er sorgt daf&uuml;r, dass im Verborgenen alles richtig zubereitet wird. <em>Der Frontend-Entwickler</em> ist der Kellner &mdash; er bringt das Ergebnis sch&ouml;n angerichtet zum Gast. Und alle folgen demselben <em>Rezeptbuch</em>, damit nichts durcheinanderger&auml;t.&ldquo;</p>
+      </div>
+      <p class="note">&#128221; Die Rollen sind eine Denkhilfe, keine echten Personen &mdash; du &uuml;bernimmst sie alle. Der Punkt: F&uuml;r jede Aufgabe gibt es eine klare Verantwortung.</p>
+    </div>
+
+    <!-- Beat 3 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 3 &middot; Die goldene Regel: erst denken in K&auml;stchen <span class="dur">~1,5 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Die wichtigste Gewohnheit von Profis ist einfach: <em>Jedes Ding hat genau eine Aufgabe.</em> Man mischt nicht alles zusammen. Der Kellner kocht nicht, der Koch bedient nicht. In Software nennt man das &bdquo;Trennung der Zust&auml;ndigkeiten&ldquo;. Klingt fancy, hei&szlig;t aber nur: Kleine, ordentliche K&auml;stchen statt einem riesigen Chaos-Klumpen.&ldquo;</p>
+      </div>
+      <div class="def">
+        <div class="def-head">&#128230; Begriff: Trennung der Zust&auml;ndigkeiten <span style="opacity:.7">(Separation of Concerns)</span></div>
+        <dl>
+          <div class="row"><dt>Definition</dt><dd>Jeder Teil des Codes k&uuml;mmert sich um <em>eine</em> Sache &mdash; nicht um mehrere gleichzeitig.</dd></div>
+          <div class="row"><dt>Vorteil</dt><dd>Wenn etwas kaputt ist, wei&szlig;t du sofort <em>wo</em> du suchen musst. &Auml;nderungen bleiben lokal, statt alles umzuwerfen.</dd></div>
+          <div class="row"><dt>Nachteil</dt><dd>Mehr Dateien und Ordner &mdash; am Anfang f&uuml;hlt es sich nach &bdquo;viel&ldquo; an.</dd></div>
+          <div class="row"><dt>Alternative</dt><dd>Alles in eine Datei stopfen. Geht bei winzigen Projekten, wird aber ab Gr&ouml;&szlig;e X zur H&ouml;lle &mdash; deshalb machen es Profis nie.</dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <!-- Beat 4 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 4 &middot; Wie unser Projekt aufgeteilt ist <span class="dur">~2 Min</span></h3>
+      <div class="screen"><span class="tag">&#127916; Bildschirm</span><p>VS&nbsp;Code &ouml;ffnen, den Datei-Explorer links zeigen. Ordner <span style="font-family:var(--font-mono)">apps/</span> und <span style="font-family:var(--font-mono)">libs/</span> aufklappen.</p></div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Und jetzt der clevere Teil. Unser ganzes Projekt &mdash; Frontend <em>und</em> Backend &mdash; wohnt in <em>einem einzigen Ordner</em>. Man nennt das ein <em>Monorepo</em>: ein Haus mit vielen Zimmern, statt vieler kleiner H&auml;user, zwischen denen man st&auml;ndig hin und her rennen muss. Schauen wir rein.&ldquo;</p>
+      </div>
+      <div class="tree">
+<span class="r">apps/</span>            <span class="c"># die lauff&auml;higen Programme</span>
+  frontend/       <span class="c"># die Website, die man im Browser sieht</span>
+  backend/        <span class="c"># der Server, der im Verborgenen arbeitet</span>
+<span class="r">libs/</span>            <span class="c"># die Bausteine, ordentlich sortiert</span>
+  frontend/       <span class="c"># Seiten: home, <span class="ph">deine Seiten</span></span>
+  backend/        <span class="c"># Bereiche: identity, <span class="ph">deine Dom&auml;nen</span></span>
+  shared/         <span class="c"># das gemeinsame Rezeptbuch (contracts)</span>
+      </div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Siehst du, wie ordentlich das ist? In <em>apps</em> liegen die zwei laufenden Programme &mdash; Website und Server. Und in <em>libs</em> liegen die einzelnen Bausteine, sauber nach Thema sortiert. Jeder Bereich hat sein eigenes Zimmer. Genau die Trennung, &uuml;ber die wir gerade gesprochen haben, nur zum Anfassen.&ldquo;</p>
+      </div>
+      <div class="def">
+        <div class="def-head">&#128230; Begriff: Monorepo</div>
+        <dl>
+          <div class="row"><dt>Definition</dt><dd>Ein einziges Projekt-Verzeichnis, das mehrere Programme (Frontend, Backend) und alle Bausteine zusammen enth&auml;lt.</dd></div>
+          <div class="row"><dt>Vorteil</dt><dd>Alles an einem Ort, ein gemeinsames Rezeptbuch, &Auml;nderungen &uuml;ber Frontend + Backend in <em>einem</em> Schritt.</dd></div>
+          <div class="row"><dt>Nachteil</dt><dd>Der eine Ordner wird gro&szlig;; man braucht ein Werkzeug, das Ordnung h&auml;lt (bei uns: NX &mdash; kommt in Kapitel 4).</dd></div>
+          <div class="row"><dt>Alternative</dt><dd>Getrennte Repos (&bdquo;Polyrepo&ldquo;) &mdash; jedes Programm f&uuml;r sich. Nutzen gro&szlig;e Firmen manchmal, ist aber f&uuml;r ein Solo-Projekt wie unseres mehr Verwaltungsaufwand. Deshalb: Monorepo.</dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <!-- Beat 5 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 5 &middot; Das gemeinsame Rezeptbuch <span class="dur">~1 Min</span></h3>
+      <div class="screen"><span class="tag">&#127916; Bildschirm</span><p>Auf <span style="font-family:var(--font-mono)">libs/shared/contracts</span> zeigen.</p></div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Ein letzter Gedanke, den Profis lieben. Damit Kellner und Koch nicht aneinander vorbeireden, gibt es ein gemeinsames Rezeptbuch. Bei uns hei&szlig;t es <em>contracts</em> &mdash; also &bdquo;Vertr&auml;ge&ldquo;. Darin steht ganz genau, wie ein <span class="ph">PLATZHALTER: Kern-Objekt von StitchLab-YVR</span> aussieht: welche Felder es hat, <span class="ph">PLATZHALTER: ggf. in welchen Sprachen</span>. Frontend und Backend halten sich beide daran. So kann sich niemand vertun &mdash; und wenn wir sp&auml;ter etwas &auml;ndern, meckert der Computer sofort, falls es nicht mehr passt.&ldquo;</p>
+      </div>
+      <p class="note">&#128221; <b>Verbesserung / Detail f&uuml;rs Video:</b> Alle Bausteine sprechen denselben Import-Namen <code style="font-family:var(--font-mono)">@stitchlab-yvr/&hellip;</code> (bewusst kleingeschrieben). Das <em>contracts</em>-Paket ist <code style="font-family:var(--font-mono)">@stitchlab-yvr/shared-contracts</code> &mdash; die <em>einzige</em> Br&uuml;cke zwischen Frontend und Backend.</p>
+      <p class="note">&#128221; Das ist der erste Aha-Moment f&uuml;r &bdquo;warum diese Kombination&ldquo;: geteilte Vertr&auml;ge sind der Grund, warum Fehler fr&uuml;h auffallen statt beim Nutzer.</p>
+    </div>
+
+    <!-- Beat 6 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 6 &middot; Abschluss &amp; Ausblick <span class="dur">~30 Sek</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Fassen wir zusammen: Profis denken erst in <em>K&auml;stchen mit klaren Aufgaben</em>, packen alles ordentlich in <em>ein Monorepo</em> und einigen sich &uuml;ber ein <em>gemeinsames Rezeptbuch</em>. Mehr Magie steckt gar nicht dahinter.</p>
+        <p>Im n&auml;chsten Kapitel gehen wir die <em>vier gro&szlig;en S&auml;ulen</em> unseres Projekts durch &mdash; Architektur, Security, Design und Datenbank &mdash; damit du das ganze Bild hast, bevor wir die erste Zeile Code schreiben. Bis gleich!&ldquo;</p>
+      </div>
+    </div>
+
+    <!-- Checklist -->
+    <div class="checklist">
+      <h4>&#127909; Aufnahme-Checkliste f&uuml;r dieses Kapitel</h4>
+      <ul>
+        <li>VS&nbsp;Code offen, Datei-Explorer sichtbar, <em>apps/</em> und <em>libs/</em> vorbereitet zum Aufklappen</li>
+        <li>Optional: simple Grafik &bdquo;Team-Rollen&ldquo; (Architekt &middot; Koch &middot; Kellner &middot; Rezeptbuch)</li>
+        <li>Schrift im Editor gro&szlig; genug (mind. 16&ndash;18px), damit Ordnernamen lesbar sind</li>
+        <li>Nichts anklicken/&ouml;ffnen, was noch nicht erkl&auml;rt wurde &mdash; nur die Ordner-Struktur zeigen</li>
+      </ul>
+    </div>
+  </article>
+
+  <!-- ============ CHAPTER 3 ============ -->
+  <article class="chapter" id="kap3">
+    <div class="chapter-head">
+      <div class="chip"><span class="num">03</span> Kapitel &middot; Teil 0</div>
+      <h2>Die 4 S&auml;ulen deines Projekts</h2>
+      <div class="meta-row">
+        <span class="meta">&#9201; 8&ndash;10 Min</span>
+        <span class="meta">&#9000; 0 Zeilen Code</span>
+        <span class="meta">&#127919; Das ganze Bild + &bdquo;warum diese Kombination?&ldquo;</span>
+      </div>
+    </div>
+
+    <!-- Beat 1 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 1 &middot; R&uuml;ckblick &amp; heute <span class="dur">~30 Sek</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Willkommen zur&uuml;ck! Wir wissen jetzt <em>was</em> wir bauen und <em>wie</em> ein Team denkt. Heute das letzte Theorie-Kapitel &mdash; danach schreiben wir wirklich Code. Ich zeige dir die <em>vier S&auml;ulen</em>, auf denen unser Projekt steht. Wenn eine davon wackelt, wackelt die ganze Seite. Am Ende beantworte ich die wichtigste Frage: <em>Warum ausgerechnet diese Kombination von Werkzeugen?</em>&ldquo;</p>
+      </div>
+      <div class="onscreen">
+        <span class="tag">&#128421;&#65039; Stichpunkte einblenden</span>
+        <ul>
+          <li>&#127963;&#65039; <b>Architektur</b> &mdash; die Ordnung</li>
+          <li>&#128272; <b>Security</b> &mdash; der Schutz</li>
+          <li>&#127912; <b>UI &amp; Design</b> &mdash; das Erlebnis</li>
+          <li>&#128452;&#65039; <b>Datenbank</b> &mdash; das Ged&auml;chtnis</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Beat 2 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 2 &middot; S&auml;ule 1 &mdash; Architektur <span class="dur">~2 Min</span></h3>
+      <div class="screen"><span class="tag">&#127916; Bildschirm</span><p>Ordner-Baum aus Kapitel 2 kurz zeigen, dann in <span style="font-family:var(--font-mono)">libs/backend/<span class="ph">deine-dom&auml;ne</span></span> hineinzoomen (Unterordner domain / application / infrastructure / adapters).</p></div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;S&auml;ule eins: die Architektur &mdash; also die <em>Ordnung</em>. Wir bauen keinen gro&szlig;en Klumpen, sondern getrennte <em>Bereiche</em>: <span class="ph">PLATZHALTER: deine Dom&auml;nen, z. B. identity, &hellip;</span>. Jeder Bereich ist wie ein eigenes kleines Gesch&auml;ft mit klaren W&auml;nden drumherum. Fachleute nennen das <em>Domain-Driven Design</em> &mdash; man ordnet den Code nach echten Themen aus der Wirklichkeit, nicht nach Technik.</p>
+        <p>Und innerhalb jedes Bereichs gibt es Schichten: eine f&uuml;r die reinen Regeln, eine f&uuml;r die Abl&auml;ufe, eine f&uuml;r die Technik-Anbindung. Das klingt viel &mdash; aber es sorgt daf&uuml;r, dass wir sp&auml;ter eine Sache &auml;ndern k&ouml;nnen, ohne dass zehn andere kaputtgehen.&ldquo;</p>
+      </div>
+      <div class="def">
+        <div class="def-head">&#128230; Begriff: Modular Monolith &amp; Domain-Driven Design (DDD)</div>
+        <dl>
+          <div class="row"><dt>Definition</dt><dd>Ein einziges Programm (Monolith), aber innen sauber in fachliche Bereiche mit klaren Grenzen aufgeteilt.</dd></div>
+          <div class="row"><dt>Vorteil</dt><dd>Ordnung wie bei den &bdquo;gro&szlig;en&ldquo; verteilten Systemen, aber viel einfacher zu bauen und zu starten &mdash; perfekt f&uuml;r ein Team von einer Person.</dd></div>
+          <div class="row"><dt>Nachteil</dt><dd>Am Anfang mehr Ordner und etwas Disziplin n&ouml;tig; die Vorteile zeigen sich erst, wenn das Projekt w&auml;chst.</dd></div>
+          <div class="row"><dt>Alternative</dt><dd><em>Microservices</em> &mdash; viele winzige Einzel-Programme. Sehr m&auml;chtig, aber f&uuml;r uns massiv &uuml;berzogen (viel mehr Aufwand, Kosten, Komplexit&auml;t). Deshalb: Modular Monolith.</dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <!-- Beat 3 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 3 &middot; S&auml;ule 2 &mdash; Security <span class="dur">~2 Min</span></h3>
+      <div class="screen"><span class="tag">&#127916; Bildschirm</span><p>Als <em>normaler</em> Nutzer versuchen, die Adresse /admin direkt aufzurufen &rarr; wird abgewiesen/umgeleitet. Danach kurz die Login-Seite zeigen.</p></div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;S&auml;ule zwei: Security &mdash; der <em>Schutz</em>. Schau: Wenn ich als normaler Nutzer versuche, in den Admin-Bereich zu kommen, l&auml;sst die Seite mich gar nicht rein. Das ist kein Zufall, das ist ein <em>W&auml;chter</em>, der an der T&uuml;r steht.</p>
+        <p>Drei Dinge machen wir richtig sicher. Erstens: Passw&ouml;rter speichern wir <em>niemals</em> im Klartext &mdash; sie werden mit einem Verfahren namens <em>bcrypt</em> unkenntlich gemacht. Zweitens: Wer eingeloggt ist, bekommt einen digitalen Ausweis in einem sicheren Keks &mdash; einem <em>Cookie</em> &mdash;, der sich sogar regelm&auml;&szlig;ig selbst erneuert. Und drittens: <span class="ph">PLATZHALTER: gesch&uuml;tzte Dateien/Downloads, falls vorhanden</span> gibt es nur &uuml;ber <em>zeitlich begrenzte Links</em>, die nach kurzer Zeit ablaufen. Wer verstanden hat, wer was darf, hat Security zur H&auml;lfte verstanden.&ldquo;</p>
+      </div>
+      <div class="def">
+        <div class="def-head">&#128230; Begriff: Authentifizierung &amp; Autorisierung</div>
+        <dl>
+          <div class="row"><dt>Definition</dt><dd><em>Authentifizierung</em> = wer bist du? (Login). <em>Autorisierung</em> = was darfst du? (Nutzer vs. Admin).</dd></div>
+          <div class="row"><dt>Vorteil</dt><dd>JWT-Cookie + Rollen sind Industrie-Standard: sicher, bew&auml;hrt, funktioniert auf jedem Ger&auml;t.</dd></div>
+          <div class="row"><dt>Nachteil</dt><dd>Man muss es <em>genau</em> richtig machen &mdash; kleine Fehler sind hier gef&auml;hrlich. Deshalb erkl&auml;ren wir es Schritt f&uuml;r Schritt.</dd></div>
+          <div class="row"><dt>Alternative</dt><dd>Fertige Login-Dienste (z. B. Auth0, Firebase Auth). Bequem, aber du lernst nichts &uuml;ber den Kern &mdash; und wir wollen es <em>verstehen</em>. Deshalb bauen wir es selbst.</dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <!-- Beat 4 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 4 &middot; S&auml;ule 3 &mdash; UI &amp; Design <span class="dur">~2 Min</span></h3>
+      <div class="screen"><span class="tag">&#127916; Bildschirm</span><p>Live: Tag/Nacht umschalten, dann Sprache wechseln (<span class="ph">falls RTL: Seite dreht auf rechts-links</span>). Auf Handy-Gr&ouml;&szlig;e verkleinern, um &bdquo;responsive&ldquo; zu zeigen.</p></div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;S&auml;ule drei: UI und Design &mdash; das <em>Erlebnis</em>. Eine Seite kann noch so klug gebaut sein &mdash; wenn sie h&auml;sslich oder unbedienbar ist, kommt niemand wieder. Wir nutzen <em>Angular</em>, um die Oberfl&auml;che aus kleinen, wiederverwendbaren Bausteinen zusammenzusetzen, und <em>Tailwind</em>, um sie schnell und einheitlich zu gestalten.</p>
+        <p>Das Sch&ouml;ne: Farben und Abst&auml;nde definieren wir <em>einmal</em> zentral &mdash; als &bdquo;Design-Tokens&ldquo;. Deshalb funktioniert der Dark-Mode mit einem einzigen Umschalter, und deshalb sieht alles zusammengeh&ouml;rig aus. Und weil unsere Seite mehrsprachig ist &mdash; <span class="ph">PLATZHALTER: Sprachen, ggf. inkl. RTL von rechts nach links</span> &mdash;, denken wir Design von Anfang an flexibel.&ldquo;</p>
+      </div>
+      <div class="def">
+        <div class="def-head">&#128230; Begriff: Design-Tokens &amp; Tailwind</div>
+        <dl>
+          <div class="row"><dt>Definition</dt><dd>Zentrale Werte f&uuml;r Farben, Abst&auml;nde, Schriften. Alle Bausteine benutzen sie &mdash; niemand schreibt Farben doppelt.</dd></div>
+          <div class="row"><dt>Vorteil</dt><dd>Einheitliches Aussehen, Dark-Mode &amp; Themes fast geschenkt, &Auml;nderungen an einer Stelle wirken &uuml;berall.</dd></div>
+          <div class="row"><dt>Nachteil</dt><dd>Tailwind-Klassen im HTML sehen anfangs &bdquo;voll&ldquo; aus &mdash; Gew&ouml;hnungssache.</dd></div>
+          <div class="row"><dt>Alternative</dt><dd>Klassisches CSS von Hand oder gro&szlig;e Fertig-Bibliotheken (Bootstrap). Wir nehmen bewusst <em>Tailwind v4</em> &mdash; weil es schneller und konsistenter ist.</dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <!-- Beat 5 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 5 &middot; S&auml;ule 4 &mdash; Datenbank <span class="dur">~2 Min</span></h3>
+      <div class="screen"><span class="tag">&#127916; Bildschirm</span><p>Optional: Supabase-Tabellenansicht ODER die Datei <span style="font-family:var(--font-mono)">schema.prisma</span> zeigen &mdash; die Tabellen <span class="ph">deine Tabellen, z. B. User, &hellip;</span>.</p></div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;S&auml;ule vier: die Datenbank &mdash; das <em>Ged&auml;chtnis</em>. Alles, was dauerhaft bleiben soll, landet hier: jeder Nutzer und <span class="ph">PLATZHALTER: deine Kern-Daten von StitchLab-YVR</span>. Wir nutzen <em>PostgreSQL</em>, eine sehr solide, kostenlose Datenbank, die in der Cloud bei <em>Supabase</em> l&auml;uft &mdash; wir m&uuml;ssen also keinen eigenen Server aufsetzen.</p>
+        <p>Und statt kryptische Datenbank-Befehle von Hand zu schreiben, reden wir &uuml;ber ein Werkzeug namens <em>Prisma</em> mit ihr &mdash; in normalem, lesbarem Code. Der Clou: Prisma kennt unsere Tabellen ganz genau, und diese Struktur passt exakt zum <em>Rezeptbuch</em> aus Kapitel 2. So spielt alles zusammen.&ldquo;</p>
+      </div>
+      <div class="def">
+        <div class="def-head">&#128230; Begriff: Relationale Datenbank &amp; Prisma (ORM)</div>
+        <dl>
+          <div class="row"><dt>Definition</dt><dd>Daten in Tabellen mit Beziehungen. Prisma ist der &Uuml;bersetzer zwischen unserem Code und der Datenbank.</dd></div>
+          <div class="row"><dt>Vorteil</dt><dd>Verl&auml;sslich, weit verbreitet, und mit Prisma <em>typsicher</em> &mdash; der Computer warnt dich, bevor du einen Fehler machst.</dd></div>
+          <div class="row"><dt>Nachteil</dt><dd>Man muss die Struktur (das &bdquo;Schema&ldquo;) im Voraus planen &mdash; spontanes Chaos ist nicht erlaubt (was gut ist).</dd></div>
+          <div class="row"><dt>Alternative</dt><dd>Dokument-Datenbanken wie MongoDB. Flexibler, aber weniger streng &mdash; und f&uuml;r klar verkn&uuml;pfte Daten wie unsere sind Tabellen die bessere Wahl. Deshalb: PostgreSQL.</dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <!-- Beat 6 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 6 &middot; Warum genau diese Kombination? <span class="dur">~1,5 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Jetzt die wichtigste Frage: Warum <em>diese</em> Werkzeuge und nicht tausend andere? Es gibt einen roten Faden, der alles verbindet.&ldquo;</p>
+      </div>
+      <div class="onscreen">
+        <span class="tag">&#128421;&#65039; Stichpunkte einblenden &mdash; der rote Faden</span>
+        <ul>
+          <li><b>Eine Sprache von vorne bis hinten:</b> Alles ist <em>TypeScript</em> &mdash; Frontend, Backend, Datenbank-Zugriff. Du lernst <em>eine</em> Sprache statt drei.</li>
+          <li><b>Alles greift ineinander:</b> Das Rezeptbuch (contracts), Prisma und Angular sprechen dieselbe Struktur &mdash; Fehler fallen sofort auf, nicht erst beim Nutzer.</li>
+          <li><b>Werkzeuge, die Ordnung erzwingen:</b> Angular und NestJS sind &bdquo;streng&ldquo; &mdash; genau richtig f&uuml;r Einsteiger, weil sie dir gute Gewohnheiten beibringen.</li>
+          <li><b>Kostenlos live zu bringen:</b> Vercel + Render + Supabase haben Gratis-Stufen &mdash; du kannst das Ergebnis wirklich ins Internet stellen, ohne zu zahlen.</li>
+          <li><b>Echte Industrie-Werkzeuge:</b> Genau dieser Stack steht in echten Job-Ausschreibungen &mdash; du lernst nichts &bdquo;nur f&uuml;r Tutorials&ldquo;.</li>
+        </ul>
+      </div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Deshalb ist diese Kombination empfohlen: <em>eine</em> Sprache, alles typsicher verzahnt, streng genug zum Lernen, kostenlos zu betreiben und in der echten Arbeitswelt gefragt. Genau das bekommst du hier.&ldquo;</p>
+      </div>
+    </div>
+
+    <!-- Beat 7 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 7 &middot; Abschluss &amp; Ausblick <span class="dur">~30 Sek</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Und das war die letzte Theorie! Du kennst jetzt das ganze Bild: die vier S&auml;ulen und den roten Faden dahinter. Ab dem n&auml;chsten Kapitel wird&rsquo;s praktisch &mdash; wir installieren unsere ersten Werkzeuge und legen unser Projekt an. Endlich H&auml;nde an die Tastatur. Wir sehen uns im n&auml;chsten Video!&ldquo;</p>
+      </div>
+      <p class="note">&#128221; Das ist der &Uuml;bergang von Teil 0 (Theorie) zu Teil 1 (Praxis). Mach hier bewusst Vorfreude: &bdquo;jetzt geht&rsquo;s richtig los&ldquo;.</p>
+    </div>
+
+    <!-- Checklist -->
+    <div class="checklist">
+      <h4>&#127909; Aufnahme-Checkliste f&uuml;r dieses Kapitel</h4>
+      <ul>
+        <li>Normaler Account bereit, um den blockierten /admin-Zugriff vorzuf&uuml;hren</li>
+        <li>Tag/Nacht + Sprachwechsel zum Live-Zeigen vorbereitet</li>
+        <li>Optional: Supabase-Tabellenansicht offen ODER <em>schema.prisma</em> im Editor</li>
+        <li>Die 4 S&auml;ulen-Stichpunkte + der &bdquo;rote Faden&ldquo; als einblendbare Grafik</li>
+        <li>Ruhig bleiben: jede S&auml;ule nur <em>&uuml;berblicksartig</em> &mdash; Details kommen in den sp&auml;teren Teilen</li>
+      </ul>
+    </div>
+  </article>
+
+  <!-- ============ CHAPTER 4 ============ -->
+  <article class="chapter" id="kap4">
+    <div class="chapter-head">
+      <div class="chip"><span class="num">04</span> Kapitel &middot; Teil 1</div>
+      <h2>Warum ein Monorepo mit NX?</h2>
+      <div class="meta-row">
+        <span class="meta">&#9201; 12&ndash;15 Min</span>
+        <span class="meta">&#9000; create-nx-workspace</span>
+        <span class="meta">&#127919; NX verstehen + leeres Projekt erstellen</span>
+      </div>
+    </div>
+
+    <!-- Beat 1 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 1 &middot; Teil 1 beginnt &mdash; jetzt wird&rsquo;s praktisch <span class="dur">~40 Sek</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Willkommen im praktischen Teil! Die Theorie liegt hinter uns &mdash; ab jetzt machen wir echte Dinge am Rechner. In diesem Kapitel lernen wir das Werkzeug kennen, das unser ganzes Projekt zusammenh&auml;lt: <em>NX</em>. Und am Ende erstellen wir zum ersten Mal unser <em>leeres Projekt</em>. Fangen wir mit einer einfachen Frage an.&ldquo;</p>
+      </div>
+      <p class="note">&#128221; Wichtiger &Uuml;bergang: Ab hier zeigst du auch das <b>Terminal</b>. Halte das Fenster gro&szlig; und die Schrift lesbar (mind. 16&ndash;18px).</p>
+      <p class="note">&#128193; <b>Zum Pfad-Feld:</b> &Uuml;ber jedem Befehl steht jetzt das <b>Arbeitsverzeichnis</b> &mdash; also <em>wo</em> du den Befehl ausf&uuml;hren musst. <code style="font-family:var(--font-mono)">&lt;du&gt;</code> steht f&uuml;r deinen Windows-Benutzernamen. Pr&uuml;fen kannst du deinen aktuellen Ordner mit <code style="font-family:var(--font-mono)">pwd</code> (bzw. in PowerShell auch <code style="font-family:var(--font-mono)">cd</code> ohne Argument). Der Projekt-Ordner ist immer der, in dem <code style="font-family:var(--font-mono)">nx.json</code> liegt.</p>
+    </div>
+
+    <!-- Ressourcen / Links -->
+    <div class="links">
+      <span class="tag">&#128279; Offizielle Links (im Video einblenden / in die Beschreibung packen)</span>
+      <ul>
+        <li><a href="https://nx.dev" target="_blank" rel="noreferrer">https://nx.dev</a> <span class="desc">&mdash; NX (unser Monorepo-Werkzeug)</span></li>
+        <li><a href="https://nodejs.org" target="_blank" rel="noreferrer">https://nodejs.org</a> <span class="desc">&mdash; Node.js (LTS herunterladen &mdash; wir nutzen Node&nbsp;22)</span></li>
+        <li><a href="https://www.npmjs.com" target="_blank" rel="noreferrer">https://www.npmjs.com</a> <span class="desc">&mdash; npm (Paket-Registry)</span></li>
+        <li><a href="https://code.visualstudio.com" target="_blank" rel="noreferrer">https://code.visualstudio.com</a> <span class="desc">&mdash; VS&nbsp;Code (unser Editor)</span></li>
+        <li><a href="https://angular.dev" target="_blank" rel="noreferrer">https://angular.dev</a> <span class="desc">&mdash; Angular (Frontend, kommt in Kap. 5)</span></li>
+        <li><a href="https://nestjs.com" target="_blank" rel="noreferrer">https://nestjs.com</a> <span class="desc">&mdash; NestJS (Backend, kommt in Kap. 5)</span></li>
+        <li><a href="https://nx.dev/getting-started/editor-setup" target="_blank" rel="noreferrer">nx.dev/getting-started/editor-setup</a> <span class="desc">&mdash; NX Console (optionale VS-Code-Erweiterung)</span></li>
+      </ul>
+    </div>
+
+    <!-- Beat 2 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 2 &middot; Was ist NX wirklich? <span class="dur">~2 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Erinnerst du dich an unser Bild aus Kapitel 2 &mdash; das Haus mit vielen Zimmern, das Monorepo? Ein gro&szlig;es Haus braucht einen guten <em>Hausverwalter</em>. Genau das ist NX. Ein Monorepo ist nur ein Ordner &mdash; NX ist das Werkzeug, das darin f&uuml;r Ordnung sorgt.</p>
+        <p>NX macht drei Dinge f&uuml;r uns. Erstens: Es <em>erzeugt</em> neue Bausteine per Befehl, immer in derselben sauberen Struktur &mdash; du musst nie bei Null anfangen. Zweitens: Es <em>versteht</em>, welcher Baustein von welchem abh&auml;ngt. Und drittens &mdash; das ist der Zauber &mdash; es ist <em>schlau und faul</em>: Wenn du nur eine Kleinigkeit &auml;nderst, baut und testet NX auch nur das, was wirklich betroffen ist. Das spart bei einem gro&szlig;en Projekt enorm viel Zeit.&ldquo;</p>
+      </div>
+      <div class="def">
+        <div class="def-head">&#128230; Begriff: NX (Monorepo-Werkzeug)</div>
+        <dl>
+          <div class="row"><dt>Definition</dt><dd>Ein &bdquo;Verwalter&ldquo; f&uuml;r Monorepos: erzeugt Bausteine, kennt ihre Abh&auml;ngigkeiten und baut/testet nur das, was sich ge&auml;ndert hat.</dd></div>
+          <div class="row"><dt>Vorteil</dt><dd>Einheitliche Struktur per Knopfdruck, klare Grenzen zwischen Bereichen, sp&uuml;rbar schnellere Builds &amp; Tests.</dd></div>
+          <div class="row"><dt>Nachteil</dt><dd>Ein weiteres Werkzeug mit eigenen Befehlen, das man lernen muss &mdash; ein bisschen Einstiegsh&uuml;rde.</dd></div>
+          <div class="row"><dt>Alternative</dt><dd>Turborepo, Lerna oder pure npm-Workspaces. Alle k&ouml;nnen Monorepos &mdash; aber NX bringt f&uuml;r Angular <em>und</em> NestJS die beste Integration mit. Deshalb: NX.</dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <!-- Beat 3 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 3 &middot; Warum NX und nicht getrennte Repos? <span class="dur">~1,5 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Man k&ouml;nnte Frontend und Backend auch in <em>zwei getrennte Ordner</em> stecken &mdash; zwei getrennte Projekte. Das nennt man &bdquo;Polyrepo&ldquo;. Klingt erstmal einfacher, hat aber einen fiesen Haken: Sobald sich unser gemeinsames Rezeptbuch &auml;ndert, musst du an <em>zwei</em> Stellen nachziehen und hoffen, dass beide zusammenpassen. Genau da schleichen sich Fehler ein.&ldquo;</p>
+      </div>
+      <div class="onscreen">
+        <span class="tag">&#128421;&#65039; Stichpunkte einblenden &mdash; NX-Monorepo vs. getrennte Repos</span>
+        <ul>
+          <li><b>Ein Ort f&uuml;r alles:</b> Frontend, Backend, Vertr&auml;ge &mdash; du wechselst nie das Projekt.</li>
+          <li><b>Eine &Auml;nderung, ein Schritt:</b> Rezeptbuch anpassen und beide Seiten in <em>einem</em> Rutsch mitziehen.</li>
+          <li><b>Der Computer passt auf:</b> NX warnt, wenn ein Baustein etwas benutzt, das er nicht darf.</li>
+          <li><b>Weniger Verwaltung:</b> eine Installation, ein Regelwerk &mdash; statt zweimal alles doppelt.</li>
+        </ul>
+      </div>
+      <p class="note">&#128221; Kurz halten &mdash; das Monorepo-Warum kam schon in Kap. 2. Hier nur der direkte Vergleich, warum wir es <b>mit NX</b> machen.</p>
+    </div>
+
+    <!-- Beat 4 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 4 &middot; Unser neues Hauptwerkzeug: das Terminal <span class="dur">~1,5 Min</span></h3>
+      <div class="screen"><span class="tag">&#127916; Bildschirm</span><p>Terminal &ouml;ffnen (in VS&nbsp;Code: Men&uuml; <em>Terminal &rarr; New Terminal</em>, oder Strg+&ouml;). Das leere Fenster zeigen.</p></div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Um mit NX zu reden, brauchen wir ein neues Werkzeug: das <em>Terminal</em>. Keine Angst davor &mdash; das ist einfach ein Textfenster, in das wir Befehle tippen, statt irgendwo zu klicken. Entwickler lieben es, weil es schnell und pr&auml;zise ist. Wir tippen einen Befehl, dr&uuml;cken Enter, und der Computer macht genau das.&ldquo;</p>
+      </div>
+      <div class="def">
+        <div class="def-head">&#128230; Begriff: Terminal (Kommandozeile)</div>
+        <dl>
+          <div class="row"><dt>Definition</dt><dd>Ein Textfenster, in dem du dem Computer per getippten Befehlen Anweisungen gibst.</dd></div>
+          <div class="row"><dt>Vorteil</dt><dd>Schnell, exakt und wiederholbar &mdash; viele Entwickler-Werkzeuge (wie NX) gibt es nur hier.</dd></div>
+          <div class="row"><dt>Nachteil</dt><dd>Wirkt am Anfang einsch&uuml;chternd, weil man Befehle kennen muss statt sie zu sehen.</dd></div>
+          <div class="row"><dt>Alternative</dt><dd>Alles per Maus/Oberfl&auml;che. Bequemer f&uuml;r Einsteiger, aber langsamer und f&uuml;r viele Dev-Werkzeuge gar nicht m&ouml;glich. Wir gew&ouml;hnen uns langsam ans Terminal.</dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <!-- Beat 5 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 5 &middot; Rechner startklar machen: Node pr&uuml;fen <span class="dur">~2 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Bevor NX laufen kann, brauchen wir eine Grundlage namens <em>Node.js</em>. Ganz kurz: Node ist das Programm, das JavaScript-Code au&szlig;erhalb des Browsers ausf&uuml;hrt &mdash; unser ganzes Werkzeug-Universum, inklusive NX, l&auml;uft darauf. Wir nehmen <em>Node&nbsp;22</em>, weil unsere Angular-22-Werkzeuge das verlangen. Pr&uuml;fen wir, ob es schon da ist. Tipp diese Befehle und dr&uuml;ck jeweils Enter:&ldquo;</p>
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">Terminal</span></div>
+        <div class="cmd-cwd">&#128193; <b>egal wo</b> &mdash; funktioniert in jedem Ordner (pr&uuml;ft nur die Installation)</div>
+        <pre><span class="p">$</span> node -v
+<span class="g">v22.12.0</span>   <span class="o"># eine 22er-Nummer = perfekt f&uuml;r uns</span>
+
+<span class="p">$</span> npm -v
+<span class="g">10.9.0</span>     <span class="o"># npm kommt automatisch mit Node mit</span></pre>
+      </div>
+      <div class="check">
+        <span class="h">Erfolgskontrolle</span>
+        Zwei Versionsnummern erscheinen (idealerweise <b>Node 22</b>, mindestens v20.19). <b>Kein</b> Fehler wie &bdquo;node&ldquo; wird nicht erkannt.
+      </div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Siehst du zwei Nummern &mdash; super, du bist startklar. Falls stattdessen ein Fehler kommt wie &bdquo;node wird nicht erkannt&ldquo;, ist Node noch nicht installiert. Dann gehst du auf <em>nodejs.org</em>, l&auml;dst die Version mit dem Hinweis &bdquo;LTS&ldquo; herunter (das ist Node&nbsp;22), installierst sie mit Weiter, Weiter, Fertig, und startest das Terminal danach einmal neu.&ldquo;</p>
+      </div>
+      <div class="def">
+        <div class="def-head">&#128230; Begriff: Node.js &amp; npm</div>
+        <dl>
+          <div class="row"><dt>Definition</dt><dd><em>Node.js</em> f&uuml;hrt JavaScript au&szlig;erhalb des Browsers aus. <em>npm</em> ist der mitgelieferte &bdquo;App-Store&ldquo; f&uuml;r Code-Pakete.</dd></div>
+          <div class="row"><dt>Vorteil</dt><dd>Die Basis fast aller moderner Web-Werkzeuge &mdash; einmal installiert, l&auml;uft alles andere darauf.</dd></div>
+          <div class="row"><dt>Nachteil</dt><dd>Man sollte die passende Version nehmen; ganz neue oder zu alte Versionen k&ouml;nnen mit manchen Werkzeugen zicken.</dd></div>
+          <div class="row"><dt>Tipp</dt><dd>Nimm <em>Node&nbsp;22 (LTS)</em> von nodejs.org &mdash; und halte die Version &uuml;berall gleich (lokal, CI, Server).</dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <!-- Beat 6 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 6 &middot; Das leere NX-Projekt erstellen <span class="dur">~3 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Jetzt der gro&szlig;e Moment &mdash; wir erstellen unser Projekt. <em>Wo</em> machen wir das? In einem Terminal, in dem Ordner, in dem dein Projekt wohnen soll &mdash; zum Beispiel auf dem Desktop. NX legt gleich einen neuen Unterordner an. Wir m&uuml;ssen NX nicht extra installieren: <em>npx</em> l&auml;dt es kurz, f&uuml;hrt es aus, fertig. Tipp diesen einen Befehl:&ldquo;</p>
+      </div>
+      <div class="screen"><span class="tag">&#127916; Bildschirm</span><p>Terminal im gew&uuml;nschten Ziel-Ordner &ouml;ffnen (z.&nbsp;B. Desktop). In VS&nbsp;Code alternativ: leeren Ziel-Ordner &ouml;ffnen und dort das Terminal nutzen.</p></div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">Terminal &mdash; im Ziel-Ordner</span></div>
+        <div class="cmd-cwd">&#128193; <b>C:\Users\&lt;du&gt;\Desktop</b> &mdash; der Ordner, in dem das Projekt entstehen soll (das Projekt existiert noch nicht)</div>
+        <pre><span class="o"># genau dieser Befehl erzeugt unser Projekt:</span>
+<span class="p">$</span> npx create-nx-workspace@23 stitchlab-yvr --preset=empty --packageManager=npm --nxCloud=skip
+
+<span class="o"># danach in den neuen Ordner wechseln:</span>
+<span class="p">$</span> cd stitchlab-yvr
+
+<span class="o"># und im Editor &ouml;ffnen:</span>
+<span class="p">$</span> code .</pre>
+      </div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Ganz wichtig: Beim allerersten Mal fragt <em>npx</em> kurz nach, ob es sich das Werkzeug herunterladen darf. Das ist v&ouml;llig normal und ungef&auml;hrlich &mdash; einfach <em>y</em> tippen und Enter dr&uuml;cken:&ldquo;</p>
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">Terminal &mdash; die R&uuml;ckfrage von npx</span></div>
+        <div class="cmd-cwd">&#9995; <b>erscheint nur beim ersten Mal</b> &mdash; npx l&auml;dt kurz <code>create-nx-workspace</code></div>
+        <pre>Need to install the following packages:
+create-nx-workspace@23.x
+<span class="e">? Ok to proceed? (y)</span>   &rarr;   <span class="g">y</span>   dr&uuml;cken + <span class="g">Enter</span></pre>
+      </div>
+      <p class="note">&#128221; Das ist keine Warnung, sondern eine harmlose R&uuml;ckfrage: npx installiert das Erstell-Werkzeug nicht dauerhaft, sondern l&auml;dt es nur kurz, um es auszuf&uuml;hren. Also: <b>y</b> + Enter &mdash; und NX legt los (~1&ndash;2 Min).</p>
+      <div class="warn">
+        <span class="h">Namens-Tipp</span>
+        Der Projektname sollte <b>nur Kleinbuchstaben mit Bindestrichen</b> sein (z.&nbsp;B. <code style="font-family:var(--font-mono)">stitchlab-yvr</code>). <b>Gro&szlig;buchstaben</b> und <b>Unterstriche</b> (z.&nbsp;B. <code style="font-family:var(--font-mono)">StitchLab_YVR</code>) mag npm nicht &mdash; NX meckert dann oder schreibt den Namen um. Am saubersten also: <code style="font-family:var(--font-mono)">npx create-nx-workspace@23 <b>stitchlab-yvr</b> &hellip;</code>
+      </div>
+      <div class="def">
+        <div class="def-head">&#128269; Was bedeutet jedes St&uuml;ck des Befehls?</div>
+        <dl>
+          <div class="row"><dt>npx</dt><dd>F&uuml;hrt ein npm-Werkzeug aus, ohne es dauerhaft zu installieren &mdash; ideal f&uuml;r Einmal-Befehle.</dd></div>
+          <div class="row"><dt>create-nx-workspace@23</dt><dd>Der offizielle NX-Ersteller, festgenagelt auf <em>Version 23</em> (genau unsere Version).</dd></div>
+          <div class="row"><dt>stitchlab-yvr</dt><dd>Der Projektname &mdash; wird auch der Name des neuen Ordners.</dd></div>
+          <div class="row"><dt>--preset=empty</dt><dd>Startet ein <em>leeres</em> Workspace &mdash; noch keine App. Wir bauen Frontend &amp; Backend bewusst selbst (in Kap. 5).</dd></div>
+          <div class="row"><dt>--packageManager=npm</dt><dd>Nutzt npm zum Verwalten der Pakete (nicht yarn/pnpm).</dd></div>
+          <div class="row"><dt>--nxCloud=skip</dt><dd>Keine Cloud-Anbindung &mdash; brauchen wir f&uuml;r den Kurs nicht.</dd></div>
+        </dl>
+      </div>
+      <p class="note">&#128221; Beim Ausf&uuml;hren fragt NX evtl. ein, zwei Dinge und l&auml;dt danach ~1&ndash;2&nbsp;Min Pakete. Das im Video ruhig raffen/zeitraffern, nicht stumm warten lassen.</p>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;NX rattert jetzt kurz und l&auml;dt ein paar Sachen herunter. Wenn es fertig ist, pr&uuml;fen wir, ob wirklich alles geklappt hat. Daf&uuml;r lassen wir uns die NX-Version anzeigen und &ouml;ffnen einmal die Projekt-Landkarte:&ldquo;</p>
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">Terminal &mdash; im Projekt-Ordner</span></div>
+        <div class="cmd-cwd">&#128193; <b>C:\Users\&lt;du&gt;\Desktop\stitchlab-yvr</b> &mdash; dein Projekt-Ordner (dort liegt <code>nx.json</code>)</div>
+        <pre><span class="p">$</span> npx nx --version
+<span class="g">Nx Version: 23.1.0</span>   <span class="o"># eine 23er-Nummer = gegl&uuml;ckt</span>
+
+<span class="p">$</span> npx nx graph
+<span class="o"># &ouml;ffnet den Browser mit der (noch fast leeren) Projekt-Landkarte</span></pre>
+      </div>
+      <div class="check">
+        <span class="h">Erfolgskontrolle</span>
+        Der Ordner <b>stitchlab-yvr/</b> existiert und enth&auml;lt die Dateien <b>nx.json</b>, <b>package.json</b> und <b>tsconfig.base.json</b>. <b>npx nx --version</b> zeigt eine 23er-Version, und <b>npx nx graph</b> &ouml;ffnet im Browser die Projekt-Landkarte.
+      </div>
+    </div>
+
+    <!-- Beat 7 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 7 &middot; Wo bin ich? Den Prompt lesen &amp; in den Projekt-Ordner <span class="dur">~2 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Eine winzige Sache, die dir <em>enorm</em> viel &Auml;rger erspart &mdash; und die am Anfang fast jeder &uuml;bersieht: <em>Wo</em> stehst du gerade? Schau immer <b>links</b> im Terminal. Der Text vor der Stelle, in die du tippst, hei&szlig;t <em>Prompt</em> &mdash; und er verr&auml;t dir immer den Ordner, in dem du gerade bist.&ldquo;</p>
+        <p>&bdquo;Das ist wichtig, weil unser Erstell-Befehl den neuen Projekt-Ordner <em>eine Ebene tiefer</em> anlegt. Direkt nach dem Erstellen stehst du also noch <em>daneben</em>, nicht drin. Wir m&uuml;ssen erst hineinwechseln &mdash; mit <em>cd</em>, kurz f&uuml;r &bdquo;change directory&ldquo;.&ldquo;</p>
+      </div>
+      <p class="note">&#128193; <b>Prompt lesen:</b> <code style="font-family:var(--font-mono)">PS C:\Users\&lt;du&gt;\Desktop&gt;</code> hei&szlig;t &bdquo;ich bin im Desktop-Ordner&ldquo;. Endet der Prompt auf <code style="font-family:var(--font-mono)">\stitchlab-yvr&gt;</code>, bist du im Projekt. Der Teil <b>hinter dem letzten</b> <code style="font-family:var(--font-mono)">\</code> ist immer dein aktueller Ordner.</p>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">Terminal &mdash; vom Ziel-Ordner in den Projekt-Ordner</span></div>
+        <div class="cmd-cwd">&#128193; <b>C:\Users\&lt;du&gt;\Desktop</b> &mdash; hier stehst du direkt nach dem Erstellen (noch <em>neben</em> dem Projekt)</div>
+        <pre><span class="o"># der Prompt links zeigt: du bist noch im Desktop &mdash;</span>
+<span class="o"># PS C:\Users\&lt;du&gt;\Desktop&gt;</span>
+<span class="p">$</span> cd stitchlab-yvr
+
+<span class="o"># jetzt endet der Prompt auf dem Projekt-Ordner:</span>
+<span class="g">PS C:\Users\&lt;du&gt;\Desktop\stitchlab-yvr&gt;</span></pre>
+      </div>
+      <p class="note">&#128221; <b>Zwei fast gleich benannte Ordner?</b> Wenn du dir <em>vorher selbst</em> einen Ordner <code style="font-family:var(--font-mono)">stitchlab-yvr</code> angelegt und <em>darin</em> den Erstell-Befehl ausgef&uuml;hrt hast, liegt jetzt ein <code style="font-family:var(--font-mono)">stitchlab-yvr</code> <em>im</em> <code style="font-family:var(--font-mono)">stitchlab-yvr</code>. Nicht schlimm &mdash; der <em>innere</em> ist das echte Projekt (dort liegt <code style="font-family:var(--font-mono)">nx.json</code>). Sauberer ist es, den Erstell-Befehl direkt auf dem Desktop laufen zu lassen, dann gibt&rsquo;s nur <em>einen</em>.</p>
+      <div class="warn">
+        <span class="h">Der wichtigste Test: stehe ich im falschen Ordner?</span>
+        <b>Im</b> Projekt ist <code style="font-family:var(--font-mono)">nx</code> bereits installiert &mdash; ein <code style="font-family:var(--font-mono)">npx nx &hellip;</code> l&auml;uft <em>sofort</em> los. Kommt dagegen die Frage <code style="font-family:var(--font-mono)">Need to install the following packages: nx@&hellip;</code> (eine andere, neuere Version), dann bist du im <b>falschen Ordner</b>: npx findet lokal kein NX und will sich die neueste Version holen. Merksatz: <em>Muss npx erst</em> <code style="font-family:var(--font-mono)">nx</code> <em>installieren, stehe ich falsch</em> &mdash; dann zuerst <code style="font-family:var(--font-mono)">cd</code> in den Projekt-Ordner.
+      </div>
+      <div class="check">
+        <span class="h">Erfolgskontrolle</span>
+        Der Prompt endet auf <b>\stitchlab-yvr&gt;</b>, und <b>npx nx report</b> zeigt <em>sofort</em> eine Versionsliste (u.&nbsp;a. <b>nx : 23.x</b>) &mdash; <b>ohne</b> die R&uuml;ckfrage &bdquo;Need to install nx@&hellip;&ldquo;. Dann stehst du sauber im Projekt.
+      </div>
+    </div>
+
+    <!-- Beat 8 · Scope -->
+    <div class="beat">
+      <h3><span class="dot"></span> 8 &middot; Projekt-Scope setzen: <code style="font-family:var(--font-mono)">@org</code> &rarr; <code style="font-family:var(--font-mono)">@stitchlab-yvr</code> <span class="dur">~2 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Eine Sache machen wir <em>sofort</em>, solange das Projekt noch leer ist &mdash; das spart uns sp&auml;ter viel &Auml;rger. Nx hat unseren Workspace unter einem Platzhalter-Namen angelegt: <em>@org</em> &mdash; wie ein Zettel &bdquo;Firma hier eintragen". Wir taufen ihn jetzt auf unseren echten Projekt-Scope <em>@stitchlab-yvr</em> um. Warum genau jetzt? Weil sp&auml;ter <em>jede</em> Bibliothek und <em>jeder</em> Import diesen Namen tr&auml;gt &mdash; je fr&uuml;her wir umbenennen, desto weniger m&uuml;ssen wir anfassen. Im Moment sind es nur zwei Stellen.&ldquo;</p>
+      </div>
+      <div class="def">
+        <div class="def-head">&#128230; Begriff: Workspace-Scope</div>
+        <dl>
+          <div class="row"><dt>Definition</dt><dd>Das <em>@name</em>-Pr&auml;fix, das alle projekteigenen Pakete teilen &mdash; z.&nbsp;B. <code style="font-family:var(--font-mono)">@stitchlab-yvr/shared-contracts</code>. So sieht man sofort &bdquo;unser Code" statt fremdes npm-Paket.</dd></div>
+          <div class="row"><dt>Wo es lebt</dt><dd>Im modernen Nx-Setup im <em>Paketnamen</em> (Root-<code style="font-family:var(--font-mono)">package.json</code>) und in <code style="font-family:var(--font-mono)">customConditions</code> der <code style="font-family:var(--font-mono)">tsconfig.base.json</code> &mdash; nicht mehr in <code style="font-family:var(--font-mono)">paths</code> wie im alten Nx-Stil.</dd></div>
+          <div class="row"><dt>Vorteil</dt><dd>Sprechende Imports, keine Namenskollisionen, professioneller Eindruck (statt Default <em>@org</em>).</dd></div>
+          <div class="row"><dt>Warum jetzt</dt><dd>Je fr&uuml;her, desto billiger &mdash; bei 0 Bibliotheken nur 2 Zeilen; sp&auml;ter w&auml;ren es Dutzende Imports.</dd></div>
+        </dl>
+      </div>
+      <div class="onscreen">
+        <span class="tag">&#128421;&#65039; Diese 2 Stellen &auml;ndern (Suchen &amp; Ersetzen: @org &rarr; @stitchlab-yvr)</span>
+        <ul>
+          <li><b>package.json</b> (Projekt-Wurzel): <code style="font-family:var(--font-mono)">"name": "@org/source"</code> &rarr; <code style="font-family:var(--font-mono)">"@stitchlab-yvr/source"</code></li>
+          <li><b>tsconfig.base.json</b>: <code style="font-family:var(--font-mono)">"customConditions": ["@org/source"]</code> &rarr; <code style="font-family:var(--font-mono)">["@stitchlab-yvr/source"]</code></li>
+        </ul>
+      </div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Danach einmal die Abh&auml;ngigkeiten neu verkn&uuml;pfen und pr&uuml;fen, dass Nx alles noch sauber l&auml;dt:&ldquo;</p>
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">Terminal &mdash; im Projekt-Ordner</span></div>
+        <div class="cmd-cwd">&#128193; <b>C:\Users\&lt;du&gt;\Desktop\stitchlab-yvr</b> &mdash; dein Projekt-Ordner (dort liegt <code>nx.json</code>)</div>
+        <pre><span class="p">$</span> npm install
+<span class="o"># synchronisiert package-lock.json mit dem neuen Namen</span>
+
+<span class="p">$</span> npx nx show projects
+<span class="o"># l&auml;dt den Projektgraph &mdash; darf keinen Fehler werfen (Liste noch leer)</span></pre>
+      </div>
+      <div class="check">
+        <span class="h">Erfolgskontrolle</span>
+        <b>npx nx show projects</b> l&auml;uft fehlerfrei (leere Liste <b>[]</b> ist v&ouml;llig ok). In <b>package.json</b> und <b>tsconfig.base.json</b> steht jetzt &uuml;berall <b>@stitchlab-yvr</b> statt <b>@org</b>.
+      </div>
+      <div class="warn">
+        <span class="h">Sp&auml;ter deutlich teurer</span>
+        Machst du das erst, wenn schon viele Bibliotheken existieren, musst du <em>jeden</em> Paketnamen und <em>jeden</em> Import umbenennen. Deshalb: gleich am Anfang, bei 0 Libs.
+      </div>
+      <p class="note">&#128221; Der Scope <code style="font-family:var(--font-mono)">@stitchlab-yvr</code> muss <b>klein</b> geschrieben sein (npm mag keine Gro&szlig;buchstaben/Unterstriche) &mdash; passt zum Namens-Tipp aus Beat&nbsp;6.</p>
+    </div>
+
+    <!-- Beat 9 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 9 &middot; Abschluss &amp; Ausblick <span class="dur">~30 Sek</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Geschafft! NX ist unser <em>Hausverwalter</em>, das <em>Terminal</em> unser neues Werkzeug, <em>Node&nbsp;22</em> l&auml;uft &mdash; und unser leeres Projekt steht, schon getauft auf unseren Scope <em>@stitchlab-yvr</em>. Es ist zwar noch fast leer, aber das Fundament ist gelegt. Im n&auml;chsten Kapitel f&uuml;llen wir es: Wir installieren die NX-Plugins und lassen NX unsere Angular- und NestJS-App generieren. Bis gleich!&ldquo;</p>
+      </div>
+    </div>
+
+    <!-- Checklist -->
+    <div class="checklist">
+      <h4>&#127909; Aufnahme-Checkliste f&uuml;r dieses Kapitel</h4>
+      <ul>
+        <li>VS&nbsp;Code offen, Terminal per <em>Terminal &rarr; New Terminal</em> vorf&uuml;hrbar</li>
+        <li>Terminal-Schrift gro&szlig; genug (Einstellungen &rarr; <em>terminal.integrated.fontSize</em>)</li>
+        <li><em>node -v</em> und <em>npm -v</em> vorher testen, dass echte Nummern erscheinen (Node&nbsp;22)</li>
+        <li>Ziel-Ordner (z.&nbsp;B. Desktop) bereit, in dem das Projekt entstehen soll</li>
+        <li><em>create-nx-workspace</em>-Befehl vorher einmal durchspielen (dann im Video zeitraffern)</li>
+        <li><b>Prompt-Lesen zeigen:</b> Terminal <em>vor</em> und <em>nach</em> <em>cd stitchlab-yvr</em> &mdash; der Pfad links &auml;ndert sich sichtbar</li>
+        <li>Den &bdquo;falscher Ordner&ldquo;-Test parat: <em>npx nx report</em> l&auml;uft sofort (kein &bdquo;Need to install nx@&hellip;&ldquo;)</li>
+        <li>Erfolgskontrolle vorbereiten: <em>npx nx --version</em> + <em>npx nx graph</em> &ouml;ffnen</li>
+        <li>Scope-Umbenennung parat: <em>@org</em> &rarr; <em>@stitchlab-yvr</em> in <em>package.json</em> + <em>tsconfig.base.json</em>, dann <em>npm install</em></li>
+        <li>Alle Links in die Video-Beschreibung kopieren</li>
+      </ul>
+    </div>
+  </article>
+
+  <!-- ============ CHAPTER 5 ============ -->
+  <article class="chapter" id="kap5">
+    <div class="chapter-head">
+      <div class="chip"><span class="num">05</span> Kapitel &middot; Teil 1</div>
+      <h2>Angular &amp; NestJS ins Projekt holen</h2>
+      <div class="meta-row">
+        <span class="meta">&#9201; 10&ndash;13 Min</span>
+        <span class="meta">&#9000; nx generate</span>
+        <span class="meta">&#127919; Frontend + Backend laufen im Browser</span>
+      </div>
+    </div>
+
+    <!-- Beat 1 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 1 &middot; R&uuml;ckblick &amp; heute <span class="dur">~30 Sek</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Willkommen zur&uuml;ck! Wir haben ein leeres NX-Projekt &mdash; ein Haus ohne Zimmer. Heute ziehen die zwei wichtigsten Bewohner ein: unser <em>Frontend</em> mit Angular und unser <em>Backend</em> mit NestJS. Am Ende laufen beide, und wir sehen sie zum ersten Mal im Browser. Legen wir los.&ldquo;</p>
+      </div>
+      <p class="note">&#128221; Alle Befehle hier im Projekt-Ordner ausf&uuml;hren (dort, wo <em>nx.json</em> liegt). In VS&nbsp;Code: Terminal ist automatisch im richtigen Ordner. <b>Faustregel aus Kap.&nbsp;4:</b> Muss <em>npx</em> erst <em>nx</em> installieren, stehst du im falschen Ordner &mdash; dann zuerst <em>cd</em> in den Projekt-Ordner.</p>
+    </div>
+
+    <!-- Beat 2 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 2 &middot; Die NX-Plugins installieren <span class="dur">~2 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;NX allein wei&szlig; noch nicht, wie man eine Angular- oder NestJS-App baut. Daf&uuml;r braucht es <em>Plugins</em> &mdash; kleine Erweiterungen, die NX genau das beibringen. Installieren wir alle, die wir im Kurs brauchen, in einem Rutsch:&ldquo;</p>
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">Terminal &mdash; im Projekt-Ordner</span></div>
+        <div class="cmd-cwd">&#128193; <b>C:\Users\&lt;du&gt;\Desktop\stitchlab-yvr</b> &mdash; dein Projekt-Ordner (dort liegt <code>nx.json</code>)</div>
+        <pre><span class="p">$</span> npm install --save-dev @nx/angular @nx/nest @nx/node @nx/jest @nx/playwright @nx/eslint @nx/webpack</pre>
+      </div>
+      <div class="def">
+        <div class="def-head">&#128230; Begriff: NX-Plugin &amp; devDependency</div>
+        <dl>
+          <div class="row"><dt>Definition</dt><dd>Ein <em>Plugin</em> bringt NX bei, mit einer Technologie umzugehen (Angular, Nest, Tests &hellip;). <em>--save-dev</em> = ein Werkzeug nur f&uuml;rs Entwickeln, nicht f&uuml;rs fertige Produkt.</dd></div>
+          <div class="row"><dt>Vorteil</dt><dd>Jedes Plugin liefert fertige &bdquo;Generatoren&ldquo; &mdash; du erzeugst Apps &amp; Bausteine per Befehl statt von Hand.</dd></div>
+          <div class="row"><dt>Nachteil</dt><dd>Die Versionen von NX und Plugins m&uuml;ssen zusammenpassen &mdash; deshalb installieren wir sie passend zur NX-22-Version.</dd></div>
+          <div class="row"><dt>Merke</dt><dd><em>@nx/angular</em> &rarr; Frontend, <em>@nx/nest</em>/<em>@nx/node</em> &rarr; Backend, <em>@nx/jest</em>/<em>@nx/playwright</em> &rarr; Tests, <em>@nx/eslint</em> &rarr; Code-Regeln.</dd></div>
+        </dl>
+      </div>
+      <div class="check">
+        <span class="h">Erfolgskontrolle</span>
+        Der Befehl endet ohne roten Fehler. In der <b>package.json</b> stehen die <b>@nx/*</b>-Pakete jetzt unter <b>devDependencies</b>.
+      </div>
+      <p class="note">&#128221; Falls dein Netzwerk zickt (z. B. Firmen-Proxy), kann ein zus&auml;tzliches <em>--strict-ssl=false</em> n&ouml;tig sein. Normalerweise <b>weglassen</b> &mdash; SSL nicht ohne Grund abschalten.</p>
+    </div>
+
+    <!-- Beat 3 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 3 &middot; Kurz: Was ist Angular? <span class="dur">~1,5 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Angular ist unser Frontend-Werkzeug &mdash; damit bauen wir alles, was der Nutzer im Browser sieht. Wir nehmen <em>Angular 22</em>: modern, mit sogenannten <em>standalone</em>-Komponenten und <em>Signals</em>. Das Sch&ouml;ne: Angular setzt die Oberfl&auml;che aus kleinen, wiederverwendbaren <em>Bausteinen</em> zusammen, die man <em>Komponenten</em> nennt. Eine Komponente f&uuml;r die Navigation, eine f&uuml;r eine <span class="ph">PLATZHALTER: Karte/Element aus StitchLab-YVR</span>, und so weiter. Und Angular ist <em>streng</em> &mdash; es gibt dir eine klare Struktur vor, statt dich raten zu lassen. Genau richtig, um saubere Gewohnheiten zu lernen.&ldquo;</p>
+      </div>
+      <div class="def">
+        <div class="def-head">&#128230; Begriff: Angular (Frontend-Framework)</div>
+        <dl>
+          <div class="row"><dt>Definition</dt><dd>Ein komplettes Werkzeug, um Browser-Oberfl&auml;chen aus Komponenten zu bauen &mdash; inkl. Routing, Formularen und mehr &bdquo;ab Werk&ldquo;.</dd></div>
+          <div class="row"><dt>Vorteil</dt><dd>Alles aus einer Hand, klare Struktur, sehr gut f&uuml;r gr&ouml;&szlig;ere Apps und f&uuml;r Teams &mdash; TypeScript von Grund auf.</dd></div>
+          <div class="row"><dt>Nachteil</dt><dd>Mehr zu lernen am Anfang als bei kleineren Bibliotheken.</dd></div>
+          <div class="row"><dt>Alternative</dt><dd>React oder Vue. Beliebt und flexibler, aber weniger &bdquo;alles inklusive&ldquo;. Wir nehmen Angular wegen Struktur, TypeScript-Fokus und toller NX-Integration.</dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <!-- Beat 4 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 4 &middot; Kurz erkl&auml;rt: Was hei&szlig;t &bdquo;zoneless&ldquo;? <span class="dur">~1 Min</span></h3>
+      <div class="screen"><span class="tag">&#127916; Bildschirm</span><p>Einfaches Kellner-Bild: links &bdquo;l&auml;uft st&auml;ndig herum&ldquo;, rechts &bdquo;G&auml;ste klingeln&ldquo;.</p></div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Gleich taucht im Befehl das Wort <em>zoneless</em> auf &mdash; lass mich das kurz erkl&auml;ren. Angular muss wissen, <em>wann</em> es den Bildschirm neu zeichnen soll. Der alte Weg: ein Helfer namens <em>Zone.js</em> l&auml;uft wie ein Kellner st&auml;ndig durch den ganzen Saal und fragt an jedem Tisch &bdquo;Hat sich was ge&auml;ndert?&ldquo; &mdash; auch wenn nichts los ist.</p>
+        <p><em>Zoneless</em> hei&szlig;t: Wir schalten diesen Dauerl&auml;ufer ab. Stattdessen <em>klingeln die G&auml;ste selbst</em>, wenn sie etwas brauchen &mdash; &uuml;ber eine moderne Technik namens <em>Signals</em>. Der Kellner kommt nur noch gezielt. Das ist schneller und der neue Standard von Angular. Deshalb bauen wir von Anfang an zoneless.&ldquo;</p>
+      </div>
+      <div class="def">
+        <div class="def-head">&#128230; Begriff: Zoneless Angular</div>
+        <dl>
+          <div class="row"><dt>Definition</dt><dd>Angular ohne das automatische &bdquo;&Auml;nderungs-Radar&ldquo; Zone.js &mdash; Updates laufen gezielt &uuml;ber Signals.</dd></div>
+          <div class="row"><dt>Vorteil</dt><dd>Schneller (weniger unn&ouml;tige Pr&uuml;fungen), kleineres Bundle (Zone.js f&auml;llt weg), moderner Standard &mdash; die Zukunft von Angular.</dd></div>
+          <div class="row"><dt>Nachteil</dt><dd>Neuer, weniger alte Tutorials/Antworten im Netz; man muss in Signals denken.</dd></div>
+          <div class="row"><dt>Alternative</dt><dd>Der klassische Weg <em>mit</em> Zone.js. Funktioniert weiter, ist aber der alte Stil. Wir nehmen zoneless, weil es schneller ist und der Richtung von Angular entspricht.</dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <!-- Beat 5 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 5 &middot; Die Angular-App generieren <span class="dur">~2,5 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Jetzt lassen wir NX unsere Frontend-App bauen &mdash; komplett per Befehl. Keine Sorge &uuml;ber die vielen Optionen, ich erkl&auml;re gleich jede einzelne. Tipp das als <em>eine</em> Zeile:&ldquo;</p>
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">Terminal &mdash; im Projekt-Ordner (eine Zeile)</span></div>
+        <div class="cmd-cwd">&#128193; <b>C:\Users\&lt;du&gt;\Desktop\stitchlab-yvr</b> &mdash; dein Projekt-Ordner (dort liegt <code>nx.json</code>)</div>
+        <pre><span class="p">$</span> npx nx generate @nx/angular:application apps/frontend --style=css --routing=true --e2eTestRunner=playwright --unitTestRunner=jest --ssr=false --zoneless=true</pre>
+      </div>
+      <div class="def">
+        <div class="def-head">&#128269; Was bedeutet jede Option?</div>
+        <dl>
+          <div class="row"><dt>@nx/angular:application</dt><dd>Der Generator, der eine komplette Angular-App erstellt.</dd></div>
+          <div class="row"><dt>apps/frontend</dt><dd>Das <em>Verzeichnis</em> der App (Positional-Argument). In Nx&nbsp;23 ist das erste Argument der Ordner &mdash; den Projektnamen (<em>frontend</em>) leitet Nx daraus ab.</dd></div>
+          <div class="row"><dt>--style=css</dt><dd>Wir nutzen normales CSS (passt sp&auml;ter zu Tailwind &mdash; kein SCSS).</dd></div>
+          <div class="row"><dt>--routing=true</dt><dd>Legt gleich das Seiten-Routing an (mehrere Seiten wie /home, /about).</dd></div>
+          <div class="row"><dt>--e2eTestRunner=playwright</dt><dd>Klick-Tests der ganzen Seite mit Playwright.</dd></div>
+          <div class="row"><dt>--unitTestRunner=jest</dt><dd>Kleine, schnelle Tests mit Jest.</dd></div>
+          <div class="row"><dt>--ssr=false</dt><dd>Kein Server-Side-Rendering &mdash; eine reine Browser-App (einfacher).</dd></div>
+          <div class="row"><dt>--zoneless=true</dt><dd>Genau das aus Beat 4: die App startet <em>zoneless</em> (in Angular&nbsp;22 hei&szlig;t das Flag <em>--zoneless</em>, nicht mehr <em>--experimentalZoneless</em>).</dd></div>
+        </dl>
+      </div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Fertig? Dann starten wir die App zum ersten Mal:&ldquo;</p>
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">Terminal &mdash; im Projekt-Ordner</span></div>
+        <div class="cmd-cwd">&#128193; <b>C:\Users\&lt;du&gt;\Desktop\stitchlab-yvr</b> &mdash; dein Projekt-Ordner (dort liegt <code>nx.json</code>)</div>
+        <pre><span class="p">$</span> npx nx serve frontend
+<span class="o"># baut die App und startet einen Dev-Server</span>
+<span class="g">&#10132;  Local:   http://localhost:4000/</span></pre>
+      </div>
+      <div class="check">
+        <span class="h">Erfolgskontrolle</span>
+        Der Ordner <b>apps/frontend/</b> ist entstanden. <b>npx nx serve frontend</b> l&auml;uft ohne Fehler, und <b>http://localhost:4000</b> zeigt im Browser die Angular-Startseite. (Zum Stoppen: <b>Strg + C</b>.)
+      </div>
+      <p class="note">&#128221; <b>Zum Port:</b> Frisch generiert startet der Dev-Server auf <b>4200</b>. In StitchLab-YVR haben wir ihn auf <b>4000</b> gestellt &mdash; in <code style="font-family:var(--font-mono)">apps/frontend/project.json</code> unter <code style="font-family:var(--font-mono)">targets.serve.options.port</code>. Deshalb siehst du oben schon 4000.</p>
+      <div class="warn">
+        <span class="h">Falls Fehler: &bdquo;doesn&rsquo;t support project references&ldquo;</span>
+        In modernen Nx-23-Workspaces (TS-&bdquo;Solution&ldquo;-Setup) kann der Angular-Generator mit <code style="font-family:var(--font-mono)">The &quot;@nx/angular:application&quot; generator doesn&rsquo;t support the existing TypeScript setup</code> abbrechen &mdash; Angular unterst&uuml;tzt TypeScript <em>project references</em> (noch) nicht offiziell. Abhilfe: den Befehl mit gesetzter Umgebungsvariable ausf&uuml;hren. PowerShell: <code style="font-family:var(--font-mono)">$env:NX_IGNORE_UNSUPPORTED_TS_SETUP=&quot;true&quot;</code> davor, dann den Generier-Befehl. (Der <em>Nest</em>-Generator in Kap.&nbsp;7 ist davon nicht betroffen.)
+      </div>
+    </div>
+
+    <!-- Beat 6 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 6 &middot; Kurz: Was ist NestJS? <span class="dur">~1,5 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Jetzt die andere Seite: das Backend &mdash; unser Koch in der K&uuml;che. Daf&uuml;r nutzen wir <em>NestJS 11</em>. Es ist bewusst so aufgebaut wie Angular: dieselbe Denkweise, dieselbe Struktur, dieselbe Sprache TypeScript. Wenn du also das eine verstehst, f&auml;llt dir das andere leicht. NestJS k&uuml;mmert sich um alles Unsichtbare: Anfragen entgegennehmen, Passw&ouml;rter pr&uuml;fen, mit der Datenbank reden.&ldquo;</p>
+      </div>
+      <div class="def">
+        <div class="def-head">&#128230; Begriff: NestJS (Backend-Framework)</div>
+        <dl>
+          <div class="row"><dt>Definition</dt><dd>Ein strukturiertes Werkzeug, um Server/APIs in TypeScript zu bauen &mdash; die Backend-Entsprechung zu Angular.</dd></div>
+          <div class="row"><dt>Vorteil</dt><dd>Klare Struktur, dieselbe Denkweise wie Angular, riesiges &Ouml;kosystem &mdash; ideal f&uuml;r saubere, wachsende Backends.</dd></div>
+          <div class="row"><dt>Nachteil</dt><dd>Etwas mehr &bdquo;Ger&uuml;st&ldquo; als ein minimalistischer Ansatz.</dd></div>
+          <div class="row"><dt>Alternative</dt><dd>Nacktes Express oder Fastify. Schlanker, aber du baust die Struktur selbst. Wir nehmen NestJS f&uuml;r Ordnung &amp; die N&auml;he zu Angular.</dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <!-- Beat 7 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 7 &middot; Die NestJS-App generieren <span class="dur">~2 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Gleiches Spiel wie beim Frontend &mdash; ein Befehl, und NX baut unser Backend:&ldquo;</p>
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">Terminal &mdash; im Projekt-Ordner (eine Zeile)</span></div>
+        <div class="cmd-cwd">&#128193; <b>C:\Users\&lt;du&gt;\Desktop\stitchlab-yvr</b> &mdash; dein Projekt-Ordner (dort liegt <code>nx.json</code>)</div>
+        <pre><span class="p">$</span> npx nx generate @nx/nest:application apps/backend --unitTestRunner=jest --linter=eslint --useProjectJson=true</pre>
+      </div>
+      <div class="def">
+        <div class="def-head">&#128269; Was bedeutet jede Option?</div>
+        <dl>
+          <div class="row"><dt>@nx/nest:application</dt><dd>Der Generator f&uuml;r eine komplette NestJS-App.</dd></div>
+          <div class="row"><dt>apps/backend</dt><dd>Das <em>Verzeichnis</em> (Positional-Argument). In Nx&nbsp;23 leitet Nx den Projektnamen (<em>backend</em>) daraus ab &mdash; kein separates <code style="font-family:var(--font-mono)">--directory</code> mehr.</dd></div>
+          <div class="row"><dt>--unitTestRunner=jest</dt><dd>Tests des Backends mit Jest.</dd></div>
+          <div class="row"><dt>--linter=eslint</dt><dd>Nutzt ESLint. <b>Wichtig:</b> die sp&auml;teren Architektur-Grenzen (domain &rarr; application &rarr; &hellip;) sind ESLint-Regeln &mdash; mit <em>none</em> w&uuml;rden sie nicht greifen.</dd></div>
+          <div class="row"><dt>--useProjectJson=true</dt><dd>Erzeugt eine <code style="font-family:var(--font-mono)">project.json</code> &mdash; konsistent mit der <em>frontend</em>-App (n&ouml;tig f&uuml;r die Architektur-Tags aus CLAUDE.md).</dd></div>
+        </dl>
+      </div>
+      <p class="note">&#128221; L&auml;sst du <em>--linter=eslint</em> weg, fragt Nx interaktiv <em>&bdquo;Which linter would you like to use?"</em> &mdash; dann mit den Pfeiltasten <b>eslint</b> w&auml;hlen und Enter dr&uuml;cken.</p>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Und jetzt der Moment der Wahrheit &mdash; wir starten den Server:&ldquo;</p>
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">Terminal &mdash; im Projekt-Ordner</span></div>
+        <div class="cmd-cwd">&#128193; <b>C:\Users\&lt;du&gt;\Desktop\stitchlab-yvr</b> &mdash; dein Projekt-Ordner (dort liegt <code>nx.json</code>)</div>
+        <pre><span class="p">$</span> npx nx serve backend
+<span class="g">&#128640; Application is running on: http://localhost:3000/</span></pre>
+      </div>
+      <div class="check">
+        <span class="h">Erfolgskontrolle</span>
+        Der Ordner <b>apps/backend/</b> existiert. <b>npx nx serve backend</b> startet ohne Fehler, und im Browser zeigt <b>http://localhost:3000/api</b> die Nachricht <b>&#123;"message":"Hello API"&#125;</b>.
+      </div>
+      <p class="note">&#128221; Der Server l&auml;uft auf Port <b>3000</b> mit dem Pfad <b>/api</b> &mdash; so lassen wir ihn. Der Generator legt nebenbei ein zweites Projekt <code style="font-family:var(--font-mono)">apps/backend-e2e</code> f&uuml;r sp&auml;tere End-to-End-Tests an.</p>
+    </div>
+
+    <!-- Beat 8 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 8 &middot; Die Projekt-Landkarte &mdash; jetzt mit Leben <span class="dur">~1 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Erinnerst du dich an die leere Landkarte aus Kapitel 4? Schauen wir sie uns nochmal an &mdash; jetzt ist was drauf:&ldquo;</p>
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">Terminal &mdash; im Projekt-Ordner</span></div>
+        <div class="cmd-cwd">&#128193; <b>C:\Users\&lt;du&gt;\Desktop\stitchlab-yvr</b> &mdash; dein Projekt-Ordner (dort liegt <code>nx.json</code>)</div>
+        <pre><span class="p">$</span> npx nx graph
+<span class="o"># zeigt jetzt zwei K&auml;stchen: frontend und @stitchlab-yvr/backend</span></pre>
+      </div>
+      <div class="check">
+        <span class="h">Erfolgskontrolle</span>
+        Die Projekt-Landkarte im Browser zeigt jetzt <b>frontend</b> und <b>@stitchlab-yvr/backend</b> als eigene Projekte. Damit stehen unsere zwei wichtigsten Bewohner. &#127881;
+      </div>
+      <p class="note">&#128221; <b>Warum <code style="font-family:var(--font-mono)">@stitchlab-yvr/backend</code>, aber nur <code style="font-family:var(--font-mono)">frontend</code>?</b> Das Backend hat wegen <em>--useProjectJson</em> eine eigene <code style="font-family:var(--font-mono)">package.json</code> &mdash; deren scoped Paketname wird zugleich sein Nx-Name; das Frontend hat keine, daher der Kurzname. <b>Optional</b> f&uuml;r symmetrische Befehle (<code style="font-family:var(--font-mono)">nx serve backend</code>): in <code style="font-family:var(--font-mono)">apps/backend/package.json</code> ein <code style="font-family:var(--font-mono)">"nx": &#123; "name": "backend" &#125;</code> erg&auml;nzen, in <code style="font-family:var(--font-mono)">project.json</code> den <code>name</code> auf <code>backend</code> setzen und die internen Target-Referenzen mitziehen. Der npm-/Import-Name bleibt scoped.</p>
+    </div>
+
+    <!-- Beat 9 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 9 &middot; Abschluss &amp; Ausblick <span class="dur">~30 Sek</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Riesenschritt heute! Wir haben die NX-Plugins installiert, unsere <em>Angular</em>-App (zoneless!) und unsere <em>NestJS</em>-App generiert &mdash; und beide laufen im Browser. Das Haus hat jetzt seine zwei Hauptzimmer. Im n&auml;chsten Kapitel machen wir das Fundament noch stabiler: Wir richten unsere Qualit&auml;ts-Werkzeuge ein &mdash; TypeScript, ESLint und Prettier &mdash;, damit unser Code von Anfang an sauber bleibt. Bis gleich!&ldquo;</p>
+      </div>
+    </div>
+
+    <!-- Checklist -->
+    <div class="checklist">
+      <h4>&#127909; Aufnahme-Checkliste f&uuml;r dieses Kapitel</h4>
+      <ul>
+        <li>Leeres NX-Projekt aus Kap. 4 vorhanden, VS&nbsp;Code im Projekt-Ordner offen</li>
+        <li>Beide Generier-Befehle vorab einmal durchspielen (dann im Video zeitraffern)</li>
+        <li>Kellner-Grafik f&uuml;r den Zoneless-Beat vorbereiten (Dauerl&auml;ufer vs. Klingeln)</li>
+        <li>Browser-Tabs bereit: <em>localhost:4000</em> (Frontend) und <em>localhost:3000/api</em> (Backend)</li>
+        <li>Wissen, wie man den Dev-Server stoppt: <em>Strg + C</em> im Terminal</li>
+        <li>Optionsdetails (Flag-Tabellen) als einblendbare Grafik</li>
+      </ul>
+    </div>
+
+    <!-- Next up -->
+    <div class="nextup">
+      <span class="tag">&#9654; Als N&auml;chstes</span>
+      <h3>Kapitel 6 &middot; Sauberer Code: TypeScript, ESLint &amp; Prettier</h3>
+      <p>Unsere drei Qualit&auml;ts-W&auml;chter &mdash; der Faktenpr&uuml;fer, der Regelh&uuml;ter und der Stylist. Plus ein echter Windows-Fallstrick, an dem <em>prettier --check</em> pl&ouml;tzlich 78 Dateien anmeckert &mdash; und wie man ihn an der Wurzel l&ouml;st. Weiter geht es direkt unten. &#8595;</p>
+    </div>
+  </article>
+
+  <!-- ============ CHAPTER 6 ============ -->
+  <article class="chapter" id="kap6">
+    <div class="chapter-head">
+      <div class="chip"><span class="num">06</span> Kapitel &middot; Teil 1</div>
+      <h2>Sauberer Code: TypeScript, ESLint &amp; Prettier</h2>
+      <div class="meta-row">
+        <span class="meta">&#9201; 14&ndash;17 Min</span>
+        <span class="meta">&#9000; lint &amp; format</span>
+        <span class="meta">&#127909; Verstehen, warum &bdquo;streng&ldquo; gut ist</span>
+      </div>
+    </div>
+
+    <!-- Beat 1 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 1 &middot; R&uuml;ckblick &amp; heute <span class="dur">~30 Sek</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Willkommen zur&uuml;ck! Frontend und Backend laufen &mdash; aus dem letzten Kapitel. Bevor wir jetzt echten Code schreiben, richten wir unsere drei <em>Qualit&auml;ts-W&auml;chter</em> ein: <em>TypeScript</em>, <em>ESLint</em> und <em>Prettier</em>. Die gute Nachricht: NX hat sie beim Erstellen schon mitinstalliert. Heute verstehen wir, was sie tun &mdash; und warum sie dir gerade als Anf&auml;nger das Leben leichter machen.&ldquo;</p>
+      </div>
+      <p class="note">&#128221; Nichts extra installieren &mdash; alle drei kamen mit dem Workspace. Dieses Kapitel ist &bdquo;verstehen &amp; benutzen&ldquo;, nicht &bdquo;installieren&ldquo;.</p>
+    </div>
+
+    <!-- Einschub &middot; Herkunft der Dateien -->
+    <div class="beat">
+      <h3><span class="dot"></span> &#128194; Woher kommen diese Dateien? &mdash; schon da, selbst gemacht oder erweitert? <span class="dur">~1,5 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Eine Frage, die am Anfang oft verwirrt: <em>Muss ich diese Werkzeuge jetzt installieren? Und wo kommen all die Konfig-Dateien her?</em> Ganz klar: <em>Installieren m&uuml;ssen wir gar nichts.</em> ESLint, Prettier und TypeScript kamen fertig mit dem NX-Workspace &mdash; sie stehen schon als <em>devDependencies</em> in der <code>package.json</code>, und ihre Konfig-Dateien hat NX beim Erstellen gleich mitgeneriert. Selbst Hand angelegt haben wir nur an <em>zwei</em> Stellen &mdash; und ich sage dir genau, wo und warum.&ldquo;</p>
+      </div>
+      <div class="def">
+        <div class="def-head">&#9989; Schon da &mdash; von NX generiert (nichts zu tun)</div>
+        <dl>
+          <div class="row"><dt>package.json</dt><dd>Listet <code>eslint</code>, <code>prettier</code>, <code>typescript</code>, <code>typescript-eslint</code> &amp; Co. als <em>devDependencies</em>. Ein <code>npm install</code> &mdash; und alle drei W&auml;chter sind da. <b>Kein Extra-Install n&ouml;tig.</b></dd></div>
+          <div class="row"><dt>tsconfig.base.json</dt><dd>Die strengen TypeScript-Regeln f&uuml;rs ganze Monorepo &mdash; war schon im <em>Initial&nbsp;commit</em> dabei.</dd></div>
+          <div class="row"><dt>.prettierrc</dt><dd>Prettiers Einstellung (<code>singleQuote</code>). Auch aus dem <em>Initial&nbsp;commit</em>.</dd></div>
+          <div class="row"><dt>.prettierignore</dt><dd>Gab es <em>schon</em> (Initial&nbsp;commit), mit Basis-Eintr&auml;gen wie <code>/dist</code>. Wir haben sie sp&auml;ter nur <em>erweitert</em> (s.&nbsp;u.).</dd></div>
+          <div class="row"><dt>eslint.config.mjs</dt><dd>ESLints Flat-Config inkl. <code>enforce-module-boundaries</code>. Kam in <em>Commit&nbsp;01</em>, als NX die Angular-App anlegte.</dd></div>
+          <div class="row"><dt>.vscode/extensions.json</dt><dd>Empfiehlt bereits die Prettier- &amp; ESLint-Erweiterung. Ebenfalls von NX.</dd></div>
+        </dl>
+      </div>
+      <div class="def">
+        <div class="def-head">&#127381; Neu &mdash; von uns selbst erstellt (mit Grund)</div>
+        <dl>
+          <div class="row"><dt>.gitattributes</dt><dd><b>Gab es noch nicht.</b> Wir haben sie angelegt, weil unter Windows die Zeilenenden (CRLF) Prettier reihenweise fehlschlagen lie&szlig;en. <code>* text=auto eol=lf</code> erzwingt &uuml;berall LF &mdash; die <em>Wurzel</em>-L&ouml;sung (s.&nbsp;Fallstrick unten).</dd></div>
+          <div class="row"><dt>.vscode/settings.json</dt><dd><b>Gab es noch nicht</b> (nur <code>extensions.json</code> war da). Wir legen sie an, damit <em>Format-on-Save</em> und LF-Zeilenenden f&uuml;r <em>jeden</em> im Team automatisch gelten &mdash; nicht nur bei dem, der es zuf&auml;llig eingestellt hat.</dd></div>
+        </dl>
+      </div>
+      <div class="def">
+        <div class="def-head">&#10133; Erweitert &mdash; bestehende Datei von uns erg&auml;nzt (mit Grund)</div>
+        <dl>
+          <div class="row"><dt>.prettierignore</dt><dd>Wir haben die <em>generierten</em> KI-Assistenten-Ordner (<code>.agents/</code>, <code>.cursor/</code>&hellip;) erg&auml;nzt. <b>Warum:</b> fremder, neu-erzeugter Code &mdash; unser Formatter soll nur <em>unseren</em> Code regeln.</dd></div>
+          <div class="row"><dt>4&times; Jest/e2e-Dateien</dt><dd>Aus vier NX-generierten Dateien haben wir ein totes <code>/* eslint-disable */</code> entfernt. <b>Warum:</b> Es unterdr&uuml;ckte nichts mehr (ESLint warnte deshalb) &mdash; weg damit, dann bewacht ESLint auch diese Dateien wieder.</dd></div>
+        </dl>
+      </div>
+      <p class="note">&#128221; <b>Faustregel:</b> <em>Werkzeuge</em> (eslint, prettier, typescript) und ihre <em>Standard-Konfig</em> kommen mit NX &mdash; du <b>benutzt</b> sie nur. Selbst anfassen musst du erst, wenn die <em>Realit&auml;t</em> es verlangt: hier waren das Windows-Zeilenenden (<code>.gitattributes</code>), Team-Komfort (<code>.vscode/settings.json</code>) und generierter Fremd-Code (<code>.prettierignore</code>).</p>
+    </div>
+
+    <!-- Ressourcen / Links -->
+    <div class="links">
+      <span class="tag">&#128279; Offizielle Links (f&uuml;r die Video-Beschreibung)</span>
+      <ul>
+        <li><a href="https://www.typescriptlang.org" target="_blank" rel="noreferrer">https://www.typescriptlang.org</a> <span class="desc">&mdash; TypeScript</span></li>
+        <li><a href="https://eslint.org" target="_blank" rel="noreferrer">https://eslint.org</a> <span class="desc">&mdash; ESLint</span></li>
+        <li><a href="https://prettier.io" target="_blank" rel="noreferrer">https://prettier.io</a> <span class="desc">&mdash; Prettier</span></li>
+        <li><a href="https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode" target="_blank" rel="noreferrer">Prettier &mdash; VS-Code-Erweiterung</a> <span class="desc">&mdash; f&uuml;r &bdquo;Format on Save&ldquo;</span></li>
+      </ul>
+    </div>
+
+    <!-- Beat 2 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 2 &middot; Warum &bdquo;strenge&ldquo; Werkzeuge? <span class="dur">~1 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Vielleicht denkst du: <em>Ich fange gerade erst an &mdash; warum soll ich mir Regeln aufhalsen?</em> Genau umgekehrt! Diese Werkzeuge sind wie St&uuml;tzr&auml;der und ein Rechtschreib-Pr&uuml;fer in einem. Sie fangen deine Fehler ab, <em>bevor</em> sie zum Problem werden, und nehmen dir langweilige Entscheidungen ab. Man kann sich die drei als Team vorstellen:&ldquo;</p>
+      </div>
+      <div class="onscreen">
+        <span class="tag">&#128421;&#65039; Stichpunkte einblenden &mdash; die drei W&auml;chter</span>
+        <ul>
+          <li>&#129504; <b>TypeScript</b> &mdash; der <em>Faktenpr&uuml;fer</em>: passt auf, dass Daten zusammenpassen.</li>
+          <li>&#128207; <b>ESLint</b> &mdash; der <em>Regelh&uuml;ter</em>: warnt bei gef&auml;hrlichen oder verbotenen Mustern.</li>
+          <li>&#10024; <b>Prettier</b> &mdash; der <em>Stylist</em>: formatiert deinen Code automatisch sch&ouml;n &amp; einheitlich.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Beat 3 &middot; TypeScript -->
+    <div class="beat">
+      <h3><span class="dot"></span> 3 &middot; TypeScript &mdash; der Faktenpr&uuml;fer <span class="dur">~2,5 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;JavaScript ist locker: Du kannst in eine Schublade mit der Aufschrift <em>Jahr</em> auch mal aus Versehen das Wort <em>zweitausend</em> legen &mdash; JavaScript meckert nicht, und sp&auml;ter kracht es. TypeScript ist JavaScript <em>mit Etiketten</em>: Du sagst dem Editor &mdash; in diese Schublade kommen nur Zahlen &mdash; und wenn du etwas Falsches reinlegst, sagt er dir das <em>sofort</em>, mit einer roten Wellenlinie. Schauen wir es live an:&ldquo;</p>
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">VS Code &mdash; Editor (Live-Demo)</span></div>
+        <div class="cmd-cwd">&#128196; <b>Demo</b> &mdash; in einer beliebigen <code>.ts</code>-Datei (z.&nbsp;B. <code>apps\frontend\src\main.ts</code>) zum Zeigen eintippen, danach wieder l&ouml;schen</div>
+        <pre>let jahr: number = 2026;      <span class="o">// Etikett: nur Zahlen erlaubt</span>
+jahr = 'zweitausend';         <span class="e">// &#10006; Type 'string' is not assignable to type 'number'</span></pre>
+      </div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Siehst du die rote Linie? Der Fehler erscheint schon beim Tippen &mdash; nicht erst, wenn ein Nutzer die Seite benutzt. Das ist Gold wert. Die Einstellungen daf&uuml;r stehen in <em>tsconfig.base.json</em> im Projekt-Hauptordner, die NX f&uuml;r uns angelegt hat &mdash; und sie ist bewusst <em>streng</em>: <code>strict</code>, <code>noUnusedLocals</code>, <code>noImplicitReturns</code> und mehr sind schon an. Da drin lebt auch unser Baustein-Name <em>@stitchlab-yvr/&hellip;</em>. Wir m&uuml;ssen da f&uuml;rs Erste nichts anfassen.&ldquo;</p>
+      </div>
+      <div class="def">
+        <div class="def-head">&#128230; Begriff: TypeScript</div>
+        <dl>
+          <div class="row"><dt>Definition</dt><dd>JavaScript mit &bdquo;Typ-Etiketten&ldquo;. Ein Pr&uuml;fer meldet Fehler schon beim Schreiben, statt erst zur Laufzeit.</dd></div>
+          <div class="row"><dt>Vorteil</dt><dd>F&auml;ngt eine ganze Klasse von Fehlern fr&uuml;h ab, super Autovervollst&auml;ndigung im Editor, selbstdokumentierender Code.</dd></div>
+          <div class="row"><dt>Nachteil</dt><dd>Etwas mehr Tipparbeit (die Etiketten) &mdash; zahlt sich aber schnell aus.</dd></div>
+          <div class="row"><dt>Bei uns</dt><dd>Der ganze Stack &mdash; Angular <em>und</em> NestJS &mdash; ist TypeScript. Deshalb bleiben wir konsequent dabei.</dd></div>
+        </dl>
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">Terminal &mdash; TypeScript &uuml;ber alle Projekte pr&uuml;fen</span></div>
+        <div class="cmd-cwd">&#128193; <b>C:\Users\&lt;du&gt;\Desktop\stitchlab-yvr</b> &mdash; dein Projekt-Ordner (dort liegt <code>nx.json</code>)</div>
+        <pre><span class="p">$</span> npx nx run-many -t typecheck
+<span class="g">&#10003;  Successfully ran target typecheck for 4 projects</span></pre>
+      </div>
+    </div>
+
+    <!-- Beat 4 &middot; Prettier -->
+    <div class="beat">
+      <h3><span class="dot"></span> 4 &middot; Prettier &mdash; der Stylist <span class="dur">~3 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Prettier k&uuml;mmert sich nur ums <em>Aussehen</em> des Codes: Einr&uuml;ckungen, Anf&uuml;hrungszeichen, Zeilenumbr&uuml;che. Warum ist das wichtig? Weil man dann nie wieder dar&uuml;ber nachdenkt, wie man etwas formatiert &mdash; Prettier macht es automatisch, und im ganzen Projekt sieht alles gleich aus. Unsere Einstellung ist winzig &mdash; wir wollen einfache Anf&uuml;hrungszeichen:&ldquo;</p>
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">.prettierrc &mdash; schon da (von NX)</span></div>
+        <div class="cmd-cwd">&#128196; <b>C:\Users\&lt;du&gt;\Desktop\stitchlab-yvr\.prettierrc</b> &mdash; im Projekt-Hauptordner</div>
+        <pre>{
+  <span class="g">"singleQuote": true</span>    <span class="o">// 'so' statt "so"</span>
+}</pre>
+      </div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Und so l&auml;sst du Prettier einmal &uuml;ber das ganze Projekt laufen &mdash; es formatiert alle Dateien automatisch:&ldquo;</p>
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">Terminal &mdash; im Projekt-Ordner</span></div>
+        <div class="cmd-cwd">&#128193; <b>C:\Users\&lt;du&gt;\Desktop\stitchlab-yvr</b> &mdash; dein Projekt-Ordner</div>
+        <pre><span class="p">$</span> npx prettier --write .
+<span class="g">&#10003; formatiert alle Dateien (unsch&ouml;ne werden gegl&auml;ttet)</span>
+
+<span class="o"># nur pr&uuml;fen, ohne zu &auml;ndern:</span>
+<span class="p">$</span> npx prettier --check .</pre>
+      </div>
+      <p class="note">&#128221; Profi-Tipp: die <em>Prettier</em>-VS-Code-Erweiterung installieren und &bdquo;Format On Save&ldquo; aktivieren &mdash; dann formatiert sich Code bei jedem Speichern von selbst. Wir legen das gleich als <em>Projekt</em>-Einstellung an, damit es teamweit gilt:</p>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">.vscode/settings.json &mdash; NEU, von uns (gilt teamweit)</span></div>
+        <div class="cmd-cwd">&#128196; <b>C:\Users\&lt;du&gt;\Desktop\stitchlab-yvr\.vscode\settings.json</b></div>
+        <pre>{
+  <span class="g">"editor.formatOnSave": true</span>,
+  <span class="g">"editor.defaultFormatter": "esbenp.prettier-vscode"</span>,
+  <span class="g">"files.eol": "\n"</span>              <span class="o">// LF erzwingen (wichtig &mdash; s. Fallstrick)</span>
+}</pre>
+      </div>
+
+      <!-- Der reale Fallstrick -->
+      <div class="warn">
+        <span class="h">Fallstrick (real, kein Bug) &mdash; Windows &amp; Zeilenenden</span>
+        Der allererste <b>prettier --check .</b> meldete <b>78 Dateien</b> mit &bdquo;Code style issues&ldquo; &mdash; obwohl inhaltlich <em>nichts</em> falsch war. Ursache: Windows.
+      </div>
+      <div class="def">
+        <div class="def-head">&#128269; Warum 78 Dateien &bdquo;falsch&ldquo; sind, obwohl sie es nicht sind</div>
+        <dl>
+          <div class="row"><dt>Die Wurzel</dt><dd>Git steht auf <code>core.autocrlf=true</code> und legt Dateien beim Checkout mit <em>Windows-Zeilenenden</em> (CRLF, <code>\r\n</code>) ab. Prettier erwartet aber <em>LF</em> (<code>\n</code>) &mdash; und meldet jede CRLF-Datei als &bdquo;unformatiert&ldquo;.</dd></div>
+          <div class="row"><dt>Der Beweis</dt><dd>Ein Vergleich zeigte: der Inhalt ist <b>Zeichen f&uuml;r Zeichen identisch</b> &mdash; nur die unsichtbaren Zeilenenden unterscheiden sich. Also kein Stil-Problem, ein <em>Zeilenenden</em>-Problem.</dd></div>
+          <div class="row"><dt>Verst&auml;rker</dt><dd>Viele der 78 waren gar nicht <em>unser</em> Code: NX legt f&uuml;r mehrere KI-Assistenten <em>generierte</em> Skill-Ordner an (<code>.agents/</code>, <code>.cursor/</code>, <code>.opencode/</code>, <code>.gemini/</code>, <code>.github/skills/</code> &hellip;). Die will man <em>nicht</em> mitformatieren.</dd></div>
+        </dl>
+      </div>
+      <div class="vo"><span class="tag">&#127897;&#65039; So erkl&auml;rst du's im Video</span>
+        <p>&bdquo;Der Anf&auml;nger-Reflex ist jetzt: einfach <em>prettier --write .</em> und alles platt machen. Der Senior-Reflex ist: erst <em>verstehen, warum</em>. Es sind zwei Dinge &mdash; unsichtbare Windows-Zeilenenden und generierte Fremd-Dateien, die uns gar nicht geh&ouml;ren. Beides l&ouml;sen wir an der <em>Wurzel</em>, nicht mit dem Vorschlaghammer.&ldquo;</p>
+      </div>
+      <div class="check">
+        <span class="h">Die L&ouml;sung &mdash; an der Wurzel</span>
+        <b>1.</b> Eine <b>.gitattributes</b> erzwingt &uuml;berall LF. &nbsp;<b>2.</b> Die generierten Ordner kommen in <b>.prettierignore</b>. &nbsp;Danach ist <b>prettier --check .</b> gr&uuml;n &mdash; und bleibt es auch im CI (Linux) und f&uuml;r jeden im Team.
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">.gitattributes &mdash; NEU, von uns erstellt</span></div>
+        <pre><span class="o"># Kanonische Zeilenenden: im Repo UND im Working Tree immer LF.</span>
+<span class="o"># eol=lf erzwingt LF beim Checkout &mdash; macht Prettier teamweit stabil.</span>
+<span class="g">* text=auto eol=lf</span>
+
+*.png  binary
+*.jpg  binary
+*.woff2 binary   <span class="o"># &hellip; Bin&auml;rdateien nie normalisieren</span></pre>
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">.prettierignore &mdash; ERWEITERT von uns (Basis kam von NX)</span></div>
+        <pre>/dist
+/coverage
+
+<span class="o"># Generiertes AI-Assistenten-Scaffolding (von NX erzeugt &amp; gespiegelt):</span>
+<span class="g">.agents/</span>
+<span class="g">.cursor/</span>
+<span class="g">.opencode/</span>
+<span class="g">.gemini/</span>
+<span class="g">.github/skills/</span></pre>
+      </div>
+      <div class="def">
+        <div class="def-head">&#129504; Warum ignorieren statt mitformatieren?</div>
+        <dl>
+          <div class="row"><dt>Generiert</dt><dd>Die Ordner werden von NX <em>neu erzeugt</em>. Formatierst du sie heute, sind sie beim n&auml;chsten Generieren wieder &bdquo;unformatiert&ldquo; &mdash; ein Fass ohne Boden.</dd></div>
+          <div class="row"><dt>Nicht unser Stil</dt><dd>Es ist fremder, gespiegelter Code. Unser Formatter soll <em>unseren</em> Code regeln, nicht Fremd-Dateien.</dd></div>
+          <div class="row"><dt>Regel</dt><dd>Wie <code>dist</code> oder <code>coverage</code>: <b>Generiertes geh&ouml;rt in .prettierignore</b>, nicht unter den Formatter.</dd></div>
+        </dl>
+      </div>
+      <p class="note">&#128221; Merksatz f&uuml;rs Video: <b>&bdquo;Nicht raten, an der Wurzel fixen.&ldquo;</b> 78 rote Dateien sahen nach viel Arbeit aus &mdash; waren aber <em>zwei</em> Ursachen (Zeilenenden + Generiertes). Genau <em>zwei</em> kleine Dateien (<code>.gitattributes</code>, <code>.prettierignore</code>) l&ouml;sen sie.</p>
+    </div>
+
+    <!-- Beat 5 &middot; ESLint -->
+    <div class="beat">
+      <h3><span class="dot"></span> 5 &middot; ESLint &mdash; der Regelh&uuml;ter (mit Superkraft) <span class="dur">~3 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Der dritte W&auml;chter ist ESLint. W&auml;hrend Prettier aufs <em>Aussehen</em> schaut, achtet ESLint auf den <em>Inhalt</em>: Es warnt vor riskanten oder unsauberen Mustern &mdash; zum Beispiel eine Variable, die du anlegst, aber nie benutzt. So l&auml;sst du ESLint &uuml;ber unser Frontend laufen:&ldquo;</p>
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">Terminal &mdash; im Projekt-Ordner</span></div>
+        <div class="cmd-cwd">&#128193; <b>C:\Users\&lt;du&gt;\Desktop\stitchlab-yvr</b> &mdash; dein Projekt-Ordner</div>
+        <pre><span class="p">$</span> npx nx lint frontend
+<span class="g">&#10003;  Successfully ran target lint for project frontend</span>
+
+<span class="o"># alle Projekte auf einmal pr&uuml;fen:</span>
+<span class="p">$</span> npx nx run-many -t lint</pre>
+      </div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Und jetzt die eigentliche Superkraft. Sp&auml;ter (Teil&nbsp;3) teilen wir das Backend in vier saubere Schichten &mdash; und Frontend und Backend bleiben strikt getrennt. ESLint <em>bewacht</em> diese Grenzen f&uuml;r uns: Die reine <em>domain</em>-Schicht darf nichts von der Technik (<em>infrastructure</em>) wissen, und das Frontend darf <em>niemals</em> heimlich Backend-Code importieren. Versucht es doch jemand, bricht ESLint mit einem Fehler ab &mdash; der Computer sch&uuml;tzt unsere Architektur, ganz automatisch.&ldquo;</p>
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">eslint.config.mjs &mdash; @nx/enforce-module-boundaries (Ziel-Bild)</span></div>
+        <div class="cmd-cwd">&#128196; <b>C:\Users\&lt;du&gt;\Desktop\stitchlab-yvr\eslint.config.mjs</b></div>
+        <pre><span class="o">// jede Schicht darf nur bestimmte andere benutzen:</span>
+{ sourceTag: <span class="g">'scope:domain'</span>,      onlyDependOnLibsWithTags: [<span class="g">'scope:domain'</span>, <span class="g">'scope:shared'</span>] }
+<span class="o">// Frontend und Backend strikt getrennt:</span>
+{ sourceTag: <span class="g">'platform:frontend'</span>, onlyDependOnLibsWithTags: [<span class="g">'platform:frontend'</span>, <span class="g">'platform:universal'</span>] }</pre>
+      </div>
+      <p class="note">&#128221; <b>Ehrlich bleiben:</b> Solange es noch <em>keine</em> Dom&auml;nen-Libs gibt (die kommen in Teil&nbsp;3), steht in <code>eslint.config.mjs</code> noch die NX-Standardregel (<code>*</code> darf <code>*</code>). Die <em>scharfen</em> Grenzen oben tr&auml;gt man ein, sobald die erste getaggte Lib entsteht &mdash; dann hat der W&auml;chter etwas zu bewachen. Das Prinzip verstehst du aber schon jetzt.</p>
+      <div class="def">
+        <div class="def-head">&#128230; Begriff: ESLint (+ Linting)</div>
+        <dl>
+          <div class="row"><dt>Definition</dt><dd>Ein Werkzeug, das deinen Code auf Regelverst&ouml;&szlig;e durchsucht (&bdquo;linten&ldquo;). Bei uns bewacht es zus&auml;tzlich die Architektur-Grenzen.</dd></div>
+          <div class="row"><dt>Vorteil</dt><dd>F&auml;ngt Fehler &amp; schlechte Gewohnheiten fr&uuml;h, erzwingt teamweit dieselben Regeln, sch&uuml;tzt die saubere Struktur automatisch.</dd></div>
+          <div class="row"><dt>Nachteil</dt><dd>Kann am Anfang &bdquo;pingelig&ldquo; wirken &mdash; aber jede Warnung hat einen guten Grund.</dd></div>
+          <div class="row"><dt>Merke</dt><dd><em>ESLint</em> = Inhalt/Regeln, <em>Prettier</em> = Aussehen/Format. Sie erg&auml;nzen sich, sie &uuml;berschneiden sich nicht.</dd></div>
+        </dl>
+      </div>
+      <div class="warn">
+        <span class="h">Kleiner realer Fund &mdash; &bdquo;gr&uuml;n&ldquo; hei&szlig;t <em>warnungsfrei</em></span>
+        <code>run-many -t lint</code> lief zwar durch, meldete aber <b>4 Warnungen</b>: &bdquo;Unused eslint-disable directive&ldquo;. In vier NX-generierten Dateien stand ein pauschales <code>/* eslint-disable */</code>, das gar nichts mehr unterdr&uuml;ckte. <b>Weg damit</b> &mdash; dann f&auml;ngt ESLint diese Dateien auch wieder richtig ab, statt blind alles stumm zu schalten.
+      </div>
+    </div>
+
+    <!-- Beat 6 &middot; Rundum-Check -->
+    <div class="beat">
+      <h3><span class="dot"></span> 6 &middot; Ein Rundum-Check <span class="dur">~1 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Zum Schluss ein Handgriff, den du dir merken solltest: Bevor du Code abgibst, l&auml;sst du einmal alle W&auml;chter &uuml;ber das Projekt laufen. Ist alles gr&uuml;n &mdash; und <em>warnungsfrei</em> &mdash; ist dein Code sauber, einheitlich und regelkonform.&ldquo;</p>
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">Terminal &mdash; der Rundum-Check</span></div>
+        <div class="cmd-cwd">&#128193; <b>C:\Users\&lt;du&gt;\Desktop\stitchlab-yvr</b> &mdash; dein Projekt-Ordner</div>
+        <pre><span class="p">$</span> npx prettier --check .
+<span class="p">$</span> npx nx run-many -t lint typecheck
+<span class="g">&#10003; alles gr&uuml;n &rarr; bereit</span></pre>
+      </div>
+      <div class="check">
+        <span class="h">Erfolgskontrolle</span>
+        Prettier meldet &bdquo;All matched files use Prettier code style!&ldquo;, und <code>lint</code> + <code>typecheck</code> laufen f&uuml;r alle 4 Projekte ohne Fehler <em>und ohne Warnung</em> durch.
+      </div>
+      <p class="note">&#128221; Br&uuml;cke zum Anhang: In der CI f&auml;hrt unser Gate <code>lint test build typecheck</code> (seit Commit&nbsp;06). Prettier kannst du zus&auml;tzlich als eigenen Schritt oder Pre-Commit-Hook einh&auml;ngen &mdash; dank <code>.gitattributes</code> ist es jetzt auch auf dem Linux-Runner stabil.</p>
+    </div>
+
+    <!-- Beat 7 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 7 &middot; Abschluss &amp; Ausblick <span class="dur">~30 Sek</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Damit steht unser Fundament komplett: ein sauberes Monorepo, Frontend und Backend &mdash; und drei W&auml;chter, die auf unsere Qualit&auml;t aufpassen. <em>Teil 1 ist geschafft!</em> Im n&auml;chsten Kapitel beginnt Teil 2: die <em>Datenbank</em> &mdash; das Ged&auml;chtnis unserer App. Wir kl&auml;ren, was eine relationale Datenbank ist, und richten unsere Postgres-Datenbank bei Supabase in der Cloud ein. Bis gleich!&ldquo;</p>
+      </div>
+      <p class="note">&#128221; Kleiner Meilenstein-Moment: Teil 1 (Fundament) abgeschlossen. Ruhig kurz feiern &mdash; das motiviert die Zuschauer.</p>
+    </div>
+
+    <!-- Checklist -->
+    <div class="checklist">
+      <h4>&#127909; Aufnahme-Checkliste f&uuml;r dieses Kapitel</h4>
+      <ul>
+        <li>Live-Demo vorbereiten: die rote TypeScript-Wellenlinie (falscher Typ) zeigen</li>
+        <li><em>npx prettier --write .</em> und <em>--check .</em> vorab testen</li>
+        <li>Den 78-Dateien-Fallstrick nachstellen: einmal <em>ohne</em> .gitattributes, dann mit &mdash; der Aha-Moment</li>
+        <li>Prettier-VS-Code-Erweiterung + &bdquo;Format on Save&ldquo; einmal live vorf&uuml;hren</li>
+        <li><em>npx nx run-many -t lint typecheck</em> vorab laufen lassen (warnungsfrei)</li>
+        <li>Callback zu den 4 Schichten einbauen: ESLint sch&uuml;tzt die Architektur-Grenzen</li>
+        <li>Meilenstein feiern: &bdquo;Teil 1 fertig&ldquo;</li>
+      </ul>
+    </div>
+
+    <!-- Next up -->
+    <div class="nextup">
+      <span class="tag">&#9654; Als N&auml;chstes</span>
+      <h3>Teil 2 &middot; Kapitel 7 &mdash; Die Datenbank</h3>
+      <p>Was ist eine relationale Datenbank &mdash; und warum Postgres? Danach richten wir Supabase (Cloud) ein und verbinden Prisma. Das Ged&auml;chtnis unserer App entsteht.</p>
+    </div>
+  </article>
+
+  <!-- ============ ANHANG &middot; PRAXIS-FALLSTRICKE ============ -->
+  <article class="chapter" id="praxis">
+    <div class="chapter-head">
+      <div class="chip">&#9873; Anhang &middot; aus der Praxis</div>
+      <h2>Fallstricke, die dir fr&uuml;h begegnen</h2>
+      <div class="meta-row">
+        <span class="meta">&#128204; Sammelstelle</span>
+        <span class="meta">&#127916; Details in Teil 7&ndash;8</span>
+      </div>
+    </div>
+    <p class="note">&#128221; Diese F&auml;lle sind mir beim echten Bauen begegnet. Thematisch geh&ouml;ren sie in sp&auml;tere Teile (Qualit&auml;t &amp; Deployment) &mdash; ich sammle sie hier, damit du nicht stecken bleibst, wenn sie dir <em>jetzt schon</em> begegnen.</p>
+
+    <!-- Fallstrick 1 &middot; CI npm ci -->
+    <div class="beat">
+      <h3><span class="dot"></span> CI wird rot: <code style="font-family:var(--font-mono)">npm ci</code> beim ersten Push</h3>
+      <div class="screen"><span class="tag">&#127916; Situation</span><p>Erster Push nach GitHub &rarr; der CI-Workflow (Actions) startet automatisch &mdash; und der Schritt <em>Run npm ci</em> wird sofort rot (exit code 1). Alle folgenden Schritte werden &uuml;bersprungen.</p></div>
+      <div class="def">
+        <div class="def-head">&#128269; Warum passiert das?</div>
+        <dl>
+          <div class="row"><dt>Der Fehler</dt><dd><code style="font-family:var(--font-mono)">npm ci</code> installiert nur, wenn <code style="font-family:var(--font-mono)">package-lock.json</code> <em>byte-genau</em> zur <code style="font-family:var(--font-mono)">package.json</code> passt. Bei jeder Abweichung bricht es ab und druckt die Kommando-Hilfe (die <code style="font-family:var(--font-mono)">-w/--workspace</code>-Zeilen, die du im Log siehst).</dd></div>
+          <div class="row"><dt>Die Ursache</dt><dd>Deine <code style="font-family:var(--font-mono)">package-lock.json</code> entsteht lokal unter <em>Windows</em>; auf dem <em>Linux</em>-CI-Runner ist sie nicht &bdquo;streng deckungsgleich" &mdash; und <code style="font-family:var(--font-mono)">npm ci</code> verzeiht das nicht.</dd></div>
+          <div class="row"><dt>Verst&auml;rker</dt><dd>Der CI lief zus&auml;tzlich auf <em>Node 24</em>, unser Projekt aber auf <em>Node 22</em>. Versions-Unterschiede zwischen lokal / CI / Server machen extra &Auml;rger.</dd></div>
+        </dl>
+      </div>
+      <div class="vo"><span class="tag">&#127897;&#65039; So erkl&auml;rst du's im Video</span>
+        <p>&bdquo;Es gibt zwei Wege zu installieren. <em>npm install</em> ist nachsichtig &mdash; es aktualisiert die Sperrdatei bei Bedarf. <em>npm ci</em> ist streng: Es besteht auf eine perfekt passende Sperrdatei und ist f&uuml;r saubere CI-Server gedacht. Klingt ideal &mdash; aber wenn deine Sperrdatei unter Windows entsteht und der Server Linux ist, passt sie oft nicht <em>exakt</em>. Deshalb nehmen wir im CI bewusst <em>npm install</em>.&ldquo;</p>
+      </div>
+      <div class="check">
+        <span class="h">Die L&ouml;sung</span>
+        In <code style="font-family:var(--font-mono)">.github/workflows/ci.yml</code>: <b>npm ci &rarr; npm install</b> und <b>node-version 24 &rarr; 22</b>.
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">.github/workflows/ci.yml</span></div>
+        <pre>      - uses: actions/setup-node@v5
+        with:
+<span class="e">-         node-version: 24</span>
+<span class="g">+         node-version: 22</span>
+          cache: 'npm'
+
+<span class="e">-     - run: npm ci</span>
+<span class="g">+     - run: npm install</span></pre>
+      </div>
+      <div class="warn">
+        <span class="h">Merksatz</span>
+        Node-Version <b>&uuml;berall gleich</b> halten (lokal &middot; CI &middot; Server), und im CI <b>npm install</b> statt <b>npm ci</b> &mdash; das erspart dir genau diese roten H&auml;kchen.
+      </div>
+      <p class="note">&#128221; Nebenwirkung: L&auml;uft im CI danach auch <em>e2e</em> (Playwright), kann es <em>weiter</em> fehlschlagen &mdash; e2e braucht eine laufende App + Datenbank und geh&ouml;rt nicht ins schnelle CI-Gate. Dann e2e aus dem CI-Lauf nehmen (siehe Fallstrick 3 unten).</p>
+    </div>
+    <!-- Fallstrick 2 &middot; typecheck -->
+    <div class="beat">
+      <h3><span class="dot"></span> CI wird rot: <code style="font-family:var(--font-mono)">frontend:typecheck</code></h3>
+      <div class="screen"><span class="tag">&#127916; Situation</span><p>Nach dem <code style="font-family:var(--font-mono)">npm install</code>-Fix kommt CI weiter &mdash; und bleibt am Schritt <em>run-many &hellip; typecheck</em> h&auml;ngen. Lokal (<code style="font-family:var(--font-mono)">npx nx typecheck frontend</code>) exakt derselbe Fehler: &bdquo;Found 10 errors" &mdash; verteilt &uuml;ber <code style="font-family:var(--font-mono)">tsconfig.app.json</code> <em>und</em> <code style="font-family:var(--font-mono)">tsconfig.spec.json</code>.</p></div>
+      <div class="def">
+        <div class="def-head">&#128230; Erst mal: was ist <em>typecheck</em>?</div>
+        <dl>
+          <div class="row"><dt>build</dt><dd>&bdquo;L&auml;sst sich die App bauen?" &mdash; Angular baut mit <em>esbuild</em>, schaut nur auf die App-Config (<code style="font-family:var(--font-mono)">tsconfig.app.json</code>). &#9989;</dd></div>
+          <div class="row"><dt>test</dt><dd>&bdquo;Funktionieren die Tests?" &mdash; f&uuml;hrt den Code wirklich aus. &#9989;</dd></div>
+          <div class="row"><dt>typecheck</dt><dd>Ein <em>extra strenger</em> Kontrolleur: der pure TypeScript-Compiler geht mit <code style="font-family:var(--font-mono)">tsc --build &hellip; --emitDeclarationOnly</code> <em>alle</em> Typen durch &mdash; inkl. der <b>Test-Dateien</b>. Genau der stolpert.</dd></div>
+        </dl>
+      </div>
+      <div class="def">
+        <div class="def-head">&#128269; Warum stolpert er? (<em>eine</em> Wurzel, viele Folgefehler)</div>
+        <dl>
+          <div class="row"><dt>Wurzel</dt><dd>Der typecheck-Befehl (<code style="font-family:var(--font-mono)">tsc --build</code>) will <b>&bdquo;composite"-Projekte</b>, die Typ-Deklarationen (<code style="font-family:var(--font-mono)">.d.ts</code>) erzeugen. Angulars Config ist aber f&uuml;r den <em>esbuild</em>-Bauer getrimmt (<code style="font-family:var(--font-mono)">bundler</code>/<code style="font-family:var(--font-mono)">preserve</code>, <em>kein</em> composite). Die beiden bei&szlig;en sich.</dd></div>
+          <div class="row"><dt>+ Altlast</dt><dd>Die Test-Config hatte zus&auml;tzlich die <em>alte</em> Modul-Suche <code style="font-family:var(--font-mono)">moduleResolution: "node10"</code> &mdash; die vertr&auml;gt sich nicht mit <code style="font-family:var(--font-mono)">customConditions</code> (aus deinem Scope-Setup; braucht <code style="font-family:var(--font-mono)">node16</code>/<code style="font-family:var(--font-mono)">nodenext</code>/<code style="font-family:var(--font-mono)">bundler</code>).</dd></div>
+          <div class="row"><dt>&#128293; Dominosteine</dt><dd>Von den 10 Fehlern waren die meisten <b>Folgefehler</b>: weil <code style="font-family:var(--font-mono)">node10</code> das Modul <code style="font-family:var(--font-mono)">@angular/core/testing</code> nicht mehr findet, &bdquo;verschwand" auch der Typ dahinter &mdash; und pl&ouml;tzlich meckerte <code style="font-family:var(--font-mono)">test-setup.ts</code> &uuml;ber <code style="font-family:var(--font-mono)">errorOnUnknownElements</code>. <b>Kein eigener Bug</b> &mdash; nur ein Domino, der mit der Wurzel mitfiel.</dd></div>
+          <div class="row"><dt>Wichtig</dt><dd>Alles <b>von Nx generiert</b> (Commit&nbsp;01 war deshalb schon rot) &mdash; kein Fehler von dir. build &amp; test blieben die ganze Zeit gr&uuml;n, die App ist gesund.</dd></div>
+        </dl>
+      </div>
+      <div class="vo"><span class="tag">&#127897;&#65039; So erkl&auml;rst du's im Video</span>
+        <p>&bdquo;Zehn Fehler klingt nach Chaos &mdash; ist aber fast alles <em>ein</em> Problem, das Dominosteine umwirft. Und der Senior-Trick: nicht raten. Erst <b>messen</b> (die Fehler exakt lesen), dann eine <b>funktionierende Vorlage suchen</b> &mdash; unser Backend macht denselben typecheck und ist <em>gr&uuml;n</em>. Also schaue ich, was das Backend anders macht, und ziehe das Frontend nach.&ldquo;</p>
+      </div>
+      <div class="def">
+        <div class="def-head">&#129504; Der Senior-Weg: messen &rarr; Vorlage finden &rarr; angleichen &rarr; absichern</div>
+        <dl>
+          <div class="row"><dt>1. Messen</dt><dd><code style="font-family:var(--font-mono)">npx nx typecheck frontend</code> &mdash; die <em>echten</em> Fehler lesen, nicht raten.</dd></div>
+          <div class="row"><dt>2. Vorlage</dt><dd><code style="font-family:var(--font-mono)">npx nx typecheck backend</code> ist <b>gr&uuml;n</b>. Der Unterschied: Backend-Configs sind <code style="font-family:var(--font-mono)">composite</code> und referenzieren einander. <em>Das</em> ist das Muster.</dd></div>
+          <div class="row"><dt>3. Angleichen</dt><dd>Frontend-Configs auf dasselbe Muster ziehen (Diffs unten).</dd></div>
+          <div class="row"><dt>4. Absichern</dt><dd><b>Guardrail:</b> nach dem Fix m&uuml;ssen <code style="font-family:var(--font-mono)">typecheck</code> <em>und</em> <code style="font-family:var(--font-mono)">test</code>/<code style="font-family:var(--font-mono)">build</code>/<code style="font-family:var(--font-mono)">lint</code> <b>alle gr&uuml;n</b> sein &mdash; sonst zur&uuml;ck. Nie ein funktionierendes Ziel gegen ein kaputtes tauschen.</dd></div>
+        </dl>
+      </div>
+      <div class="check">
+        <span class="h">Sofortma&szlig;nahme (erst mal gr&uuml;n werden)</span>
+        Solange der Fix nicht sicher verifiziert ist: typecheck aus dem CI-Gate nehmen. CLAUDE.md definiert das schnelle Gate ohnehin als <b>lint &middot; test &middot; build</b>. So ist CI sofort gr&uuml;n, ohne etwas kaputtzumachen.
+      </div>
+      <div class="check">
+        <span class="h">&#9989; L&ouml;sung &mdash; erledigt (Commit 06): typecheck sauber scharf schalten</span>
+        Frontend-Configs auf das <code style="font-family:var(--font-mono)">composite</code>-Muster des Backends ziehen &mdash; danach darf typecheck zur&uuml;ck ins Gate.
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">apps/frontend/tsconfig.app.json</span></div>
+        <pre><span class="g">+     "composite": true,</span>
+<span class="g">+     "declaration": true,</span>
+<span class="g">+     "rootDir": "src",</span></pre>
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">apps/frontend/tsconfig.spec.json</span></div>
+        <pre><span class="e">-   "extends": "../../tsconfig.base.json"</span>
+<span class="e">-     "module": "commonjs", "target": "es2016",</span>
+<span class="e">-     "moduleResolution": "node10"</span>
+<span class="g">+   "extends": "./tsconfig.json"</span>
+<span class="g">+     "composite": true, "declaration": true,</span>
+<span class="g">+     "esModuleInterop": true</span>
+<span class="o">  // + references: [{ "path": "./tsconfig.app.json" }]  &larr; Test findet den App-Code</span></pre>
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">.github/workflows/ci.yml &mdash; typecheck zur&uuml;ck ins Gate</span></div>
+        <pre><span class="e">-     - run: npx nx run-many -t lint test build</span>
+<span class="g">+     - run: npx nx run-many -t lint test build typecheck</span></pre>
+      </div>
+      <p class="note">&#128221; <code style="font-family:var(--font-mono)">test-setup.ts</code> haben wir <b>nicht</b> angefasst &mdash; sobald <code style="font-family:var(--font-mono)">node10</code> weg war, l&ouml;ste sich <code style="font-family:var(--font-mono)">@angular/core/testing</code> wieder auf und der Domino-Fehler verschwand von selbst. <em>Weniger anfassen ist mehr.</em></p>
+    </div>
+
+    <!-- Fallstrick 3 &middot; e2e -->
+    <div class="beat">
+      <h3><span class="dot"></span> CI wird rot: <code style="font-family:var(--font-mono)">e2e</code>-Timeout (Playwright)</h3>
+      <div class="screen"><span class="tag">&#127916; Situation</span><p>Der Schritt <em>e2e</em> bricht ab: <code style="font-family:var(--font-mono)">Error: Timed out waiting 60000ms from config.webServer</code> &mdash; bei <code style="font-family:var(--font-mono)">frontend-e2e:e2e</code> und <code style="font-family:var(--font-mono)">backend-e2e:e2e</code>.</p></div>
+      <div class="def">
+        <div class="def-head">&#128269; Warum?</div>
+        <dl>
+          <div class="row"><dt>Was ist e2e?</dt><dd><em>End-to-End</em>: testet die <b>ganze App wie ein echter Nutzer</b> (ein Browser klickt sich durch) &mdash; und braucht dazu eine <b>laufende App</b> + <b>Datenbank</b>.</dd></div>
+          <div class="row"><dt>Das Problem</dt><dd>Playwright will die App starten (<code style="font-family:var(--font-mono)">webServer</code>) und aufrufen &mdash; im schnellen CI l&auml;uft aber keine App und keine DB. Nach 60&nbsp;Sekunden Warten: Timeout.</dd></div>
+          <div class="row"><dt>Unterschied</dt><dd><em>Unit-Tests</em> (test) pr&uuml;fen einzelne Bausteine isoliert &mdash; schnell, ohne App/DB. <em>e2e</em> pr&uuml;ft das Zusammenspiel &mdash; langsam, mit App/DB.</dd></div>
+        </dl>
+      </div>
+      <div class="check">
+        <span class="h">L&ouml;sung</span>
+        e2e geh&ouml;rt <b>nicht</b> ins schnelle Gate (CLAUDE.md sagt das ausdr&uuml;cklich). Erstmal raus &mdash; sp&auml;ter als <b>eigener Job</b> mit hochgefahrener App + Supabase-Test-DB (kommt in Teil&nbsp;8).
+      </div>
+      <p class="note">&#128221; Nach Commit&nbsp;06 f&auml;hrt unsere CI-Zeile <code style="font-family:var(--font-mono)">lint test build typecheck</code> &mdash; aber weiterhin <b>ohne</b> e2e (typecheck-Story: Fallstrick&nbsp;2).</p>
+    </div>
+
+    <!-- Merke &middot; CI-Gate -->
+    <div class="beat">
+      <h3><span class="dot"></span> Merke: Was geh&ouml;rt ins schnelle CI-Gate?</h3>
+      <div class="def">
+        <div class="def-head">&#128230; Lokales Schnell-Gate (CLAUDE.md): <code style="font-family:var(--font-mono)">nx affected -t lint test build</code> &middot; CI zus&auml;tzlich: <code style="font-family:var(--font-mono)">typecheck</code></div>
+        <dl>
+          <div class="row"><dt>&#9989; lint</dt><dd>Code-Stil &amp; Regeln &mdash; schnell, keine externen Abh&auml;ngigkeiten.</dd></div>
+          <div class="row"><dt>&#9989; test</dt><dd>Unit-Tests &mdash; schnell, isoliert.</dd></div>
+          <div class="row"><dt>&#9989; build</dt><dd>Baut die App(s).</dd></div>
+          <div class="row"><dt>&#9989; typecheck</dt><dd>Config-Macken gegl&auml;ttet (Fallstrick&nbsp;2) &mdash; l&auml;uft seit Commit&nbsp;06 <b>in der CI</b> mit. Schnell, ohne externe Dienste.</dd></div>
+          <div class="row"><dt>&#128034; e2e</dt><dd>Braucht App + DB &rarr; eigener, langsamerer Job (Teil&nbsp;8), nicht ins schnelle Gate.</dd></div>
+        </dl>
+      </div>
+      <p class="note">&#128221; Faustregel: Ins schnelle Gate kommt nur, was <em>schnell</em> und <em>ohne externe Dienste</em> l&auml;uft. Alles, was eine laufende App, Datenbank oder Secrets braucht, wird ein <em>eigener</em> Job.</p>
+    </div>
+
+  </article>
+
+  <footer class="foot">
+    StitchLab-YVR &middot; Tutorial-Skript-Mappe &middot; Kapitel 1&ndash;6 (+ Anhang: Praxis-Fallstricke) von (geplant) 38 &mdash; in Arbeit &#9998;
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  var btn = document.getElementById('chapnav-btn');
+  var panel = document.getElementById('chapnav-panel');
+  if (!btn || !panel) return;
+
+  function open()  { panel.hidden = false; btn.setAttribute('aria-expanded', 'true'); }
+  function close() { panel.hidden = true;  btn.setAttribute('aria-expanded', 'false'); }
+
+  btn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    panel.hidden ? open() : close();
+  });
+  // Klick auf einen Kapitel-Link schlie&szlig;t das Men&uuml;
+  panel.addEventListener('click', function (e) {
+    if (e.target.closest('a')) close();
+  });
+  // Klick au&szlig;erhalb schlie&szlig;t
+  document.addEventListener('click', function (e) {
+    if (!panel.hidden && !panel.contains(e.target) && e.target !== btn) close();
+  });
+  // Escape schlie&szlig;t
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') close();
+  });
+
+  // Scroll-Spy: aktuelles Kapitel im Men&uuml; hervorheben
+  var links = {};
+  panel.querySelectorAll('a[href^="#kap"]').forEach(function (a) {
+    links[a.getAttribute('href').slice(1)] = a;
+  });
+  var targets = Object.keys(links)
+    .map(function (id) { return document.getElementById(id); })
+    .filter(Boolean);
+
+  if ('IntersectionObserver' in window && targets.length) {
+    var visible = {};
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { visible[en.target.id] = en.isIntersecting; });
+      var currentId = null;
+      for (var i = 0; i < targets.length; i++) {
+        if (visible[targets[i].id]) { currentId = targets[i].id; break; }
+      }
+      Object.keys(links).forEach(function (id) {
+        links[id].classList.toggle('active', id === currentId);
+      });
+    }, { rootMargin: '-78px 0px -75% 0px', threshold: 0 });
+    targets.forEach(function (t) { io.observe(t); });
+  }
+})();
+</script>

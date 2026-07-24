@@ -1,0 +1,17 @@
+{
+  // Prettier formatiert bei jedem Speichern automatisch (Format-on-Save).
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // LF erzwingen — passt zu .gitattributes (eol=lf) und hält den Prettier-Wächter
+  // auf Windows grün, damit der Editor keine CRLF-Zeilenenden wieder einschleust.
+  "files.eol": "\n",
+
+  // ESLint-Autofixes (z. B. entfernbare Direktiven) beim Speichern anwenden.
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+
+  // ESLint nutzt die Flat-Config dieses Workspaces.
+  "eslint.useFlatConfig": true
+}

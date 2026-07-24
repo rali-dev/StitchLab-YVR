@@ -1,0 +1,25 @@
+# Kanonische Zeilenenden: im Repo UND im Working Tree immer LF.
+#
+# Warum: Ohne diese Datei erzeugt `core.autocrlf=true` unter Windows CRLF im
+# Working Tree. Prettier prüft mit `endOfLine: lf` und meldet dann reihenweise
+# "Code style issues" — obwohl inhaltlich nichts falsch ist. `eol=lf` erzwingt
+# LF beim Checkout und macht den Prettier-Wächter teamweit stabil (auch CI/Linux).
+* text=auto eol=lf
+
+# Binärdateien nie normalisieren
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.ico  binary
+*.webp binary
+*.avif binary
+*.woff  binary
+*.woff2 binary
+*.ttf  binary
+*.eot  binary
+*.otf  binary
+*.pdf  binary
+*.mp4  binary
+*.webm binary
+*.zip  binary

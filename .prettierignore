@@ -5,3 +5,19 @@
 /.nx/workspace-data
 .nx/self-healing
 .angular
+
+# --- Generiertes / vendored AI-Assistenten-Scaffolding (von Nx erzeugt & gespiegelt) ---
+# Kein handgeschriebener Projekt-Code — nicht unser Stil, wird regeneriert.
+# Würde bei jedem `prettier --write` sinnlos verändert und beim nächsten Nx-Regenerieren
+# wieder "unformatiert" → deshalb bewusst außen vor.
+.agents/
+.cursor/
+.opencode/
+.gemini/
+.claude/skills/
+.github/skills/
+.github/agents/
+.github/prompts/
+
+# --- Generiertes Tutorial-Artifact (separat als Claude-Artifact gepflegt) ---
+docs/tutorial/
