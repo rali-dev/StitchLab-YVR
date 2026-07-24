@@ -480,10 +480,16 @@
             <a href="#kap6"><span class="n">6</span> Sauberer Code (TS/ESLint/Prettier)</a>
           </div>
           <div class="chapnav-group">
+            <h4>Teil 2 &middot; Datenbank</h4>
+            <a href="#kap7"><span class="n">7</span> Die Datenbank</a>
+            <a href="#kap8"><span class="n">8</span> Supabase einrichten</a>
+            <a href="#kap9"><span class="n">9</span> Prisma &amp; Datenmodell</a>
+          </div>
+          <div class="chapnav-group">
             <h4>Anhang</h4>
             <a href="#praxis"><span class="n">&#9873;</span> Fallstricke aus der Praxis</a>
           </div>
-          <div class="soon">Kapitel 7&ndash;38 folgen &mdash; Skript wird pro Video erweitert.</div>
+          <div class="soon">Kapitel 10&ndash;38 folgen &mdash; Skript wird pro Video erweitert.</div>
         </nav>
       </div>
       <button class="printbtn" onclick="window.print()">&#128424; Drucken / PDF</button>
@@ -508,7 +514,7 @@
 
   <!-- ============ ROADMAP ============ -->
   <section class="roadmap">
-    <div class="section-label">Die Roadmap &middot; 8 Teile &middot; 38 Kapitel &middot; <span style="color:var(--ok)">Kap. 1&ndash;6 skriptet</span></div>
+    <div class="section-label">Die Roadmap &middot; 8 Teile &middot; 37 Kapitel &middot; <span style="color:var(--ok)">Kap. 1&ndash;9 skriptet</span></div>
     <div class="parts">
       <div class="part done">
         <div class="pnum">TEIL 0</div><span class="pstatus">&#10003; skriptet</span>
@@ -520,40 +526,40 @@
         <div class="ptitle">Fundament &amp; Werkzeuge</div>
         <div class="pchaps">Kap. 4&ndash;6 &middot; Monorepo (NX) &middot; Setup &middot; TypeScript &amp; Lint</div>
       </div>
-      <div class="part todo">
-        <div class="pnum">TEIL 2</div><span class="pstatus">geplant</span>
+      <div class="part done">
+        <div class="pnum">TEIL 2</div><span class="pstatus">&#10003; skriptet</span>
         <div class="ptitle">Die Datenbank</div>
-        <div class="pchaps">Kap. 7&ndash;10 &middot; Relationale DB &middot; Supabase &middot; Prisma &middot; Datenmodell</div>
+        <div class="pchaps">Kap. 7&ndash;9 &middot; Relationale DB &middot; Supabase &middot; Prisma &middot; Datenmodell</div>
       </div>
       <div class="part todo">
         <div class="pnum">TEIL 3</div><span class="pstatus">geplant</span>
         <div class="ptitle">Backend &amp; Architektur</div>
-        <div class="pchaps">Kap. 11&ndash;16 &middot; NestJS &middot; DDD &middot; Schichten &middot; CQRS &middot; Dom&auml;nen</div>
+        <div class="pchaps">Kap. 10&ndash;15 &middot; NestJS &middot; DDD &middot; Schichten &middot; CQRS &middot; Dom&auml;nen</div>
       </div>
       <div class="part todo">
         <div class="pnum">TEIL 4</div><span class="pstatus">geplant</span>
         <div class="ptitle">Security &#128274;</div>
-        <div class="pchaps">Kap. 17&ndash;21 &middot; Auth &middot; bcrypt &middot; JWT-Cookies &middot; Rollen &middot; Signed URLs</div>
+        <div class="pchaps">Kap. 16&ndash;20 &middot; Auth &middot; bcrypt &middot; JWT-Cookies &middot; Rollen &middot; Signed URLs</div>
       </div>
       <div class="part todo">
         <div class="pnum">TEIL 5</div><span class="pstatus">geplant</span>
         <div class="ptitle">Frontend mit Angular</div>
-        <div class="pchaps">Kap. 22&ndash;28 &middot; Libs &middot; data-access &middot; Seiten &middot; Login &middot; Admin &middot; i18n</div>
+        <div class="pchaps">Kap. 21&ndash;27 &middot; Libs &middot; data-access &middot; Seiten &middot; Login &middot; Admin &middot; i18n</div>
       </div>
       <div class="part todo">
         <div class="pnum">TEIL 6</div><span class="pstatus">geplant</span>
         <div class="ptitle">Design &amp; UI &#10024;</div>
-        <div class="pchaps">Kap. 29&ndash;32 &middot; Tailwind v4 &middot; Tokens &middot; Dark-Mode &middot; Responsive</div>
+        <div class="pchaps">Kap. 28&ndash;31 &middot; Tailwind v4 &middot; Tokens &middot; Dark-Mode &middot; Responsive</div>
       </div>
       <div class="part todo">
         <div class="pnum">TEIL 7</div><span class="pstatus">geplant</span>
         <div class="ptitle">Qualit&auml;t sichern</div>
-        <div class="pchaps">Kap. 33&ndash;34 &middot; Unit-Tests (Jest) &middot; E2E-Tests (Playwright)</div>
+        <div class="pchaps">Kap. 32&ndash;33 &middot; Unit-Tests (Jest) &middot; E2E-Tests (Playwright)</div>
       </div>
       <div class="part todo">
         <div class="pnum">TEIL 8</div><span class="pstatus">geplant</span>
         <div class="ptitle">Live gehen &#128640;</div>
-        <div class="pchaps">Kap. 35&ndash;38 &middot; Deployment &middot; Secrets &middot; Live schalten &middot; Abschluss</div>
+        <div class="pchaps">Kap. 34&ndash;37 &middot; Deployment &middot; Secrets &middot; Live schalten &middot; Abschluss</div>
       </div>
     </div>
   </section>
@@ -1764,11 +1770,975 @@ jahr = 'zweitausend';         <span class="e">// &#10006; Type 'string' is not a
       </ul>
     </div>
 
+  </article>
+
+  <!-- ============ CHAPTER 7 ============ -->
+  <article class="chapter" id="kap7">
+    <div class="chapter-head">
+      <div class="chip"><span class="num">07</span> Kapitel &middot; Teil 2</div>
+      <h2>Die Datenbank &mdash; das Ged&auml;chtnis der App</h2>
+      <div class="meta-row">
+        <span class="meta">&#9201; 8&ndash;10 Min</span>
+        <span class="meta">&#9000; 0 Zeilen Code (Konzept)</span>
+        <span class="meta">&#127919; Tabellen, Beziehungen &amp; PostgreSQL verstehen</span>
+      </div>
+    </div>
+
+    <!-- Beat 1 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 1 &middot; Teil 2 beginnt <span class="dur">~40 Sek</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Willkommen in Teil 2! Unser Fundament steht &mdash; Frontend, Backend, saubere Werkzeuge. Aber unsere App hat noch kein <em>Ged&auml;chtnis</em>. Legt ein Besucher ein Produkt in den Warenkorb oder markiert es als Favorit und l&auml;dt die Seite neu &mdash; alles weg. Genau das &auml;ndern wir jetzt mit einer <em>Datenbank</em>. Heute noch kein Code &mdash; erst verstehen wir in Ruhe, was eine Datenbank ist und warum wir ausgerechnet PostgreSQL nehmen. Im n&auml;chsten Kapitel richten wir sie dann echt bei Supabase ein.&ldquo;</p>
+      </div>
+      <p class="note">&#128221; Reines Konzept-Kapitel &mdash; keine Befehle. Nutze viel Excel-/Alltags-Bilder. Ziel: der Zuschauer &bdquo;sieht&ldquo; Tabellen &amp; Beziehungen vor sich.</p>
+    </div>
+
+    <!-- Beat 2 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 2 &middot; Was ist eine Datenbank? <span class="dur">~1,5 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Eine Datenbank ist einfach ein Ort, an dem Daten <em>dauerhaft</em> und <em>geordnet</em> gespeichert werden. Erinnerst du dich an die Vorratskammer aus unserem Restaurant-Bild? Genau das. Alles, was bleiben soll &mdash; jedes Konto, jedes Produkt, jeder Warenkorb-Eintrag &mdash; wohnt dort und ist auch morgen noch da. Der gro&szlig;e Unterschied zu einer simplen Datei: Eine Datenbank kann <em>blitzschnell suchen</em>, tausende Eintr&auml;ge sortieren und aufpassen, dass nichts durcheinanderger&auml;t.&ldquo;</p>
+      </div>
+      <div class="def">
+        <div class="def-head">&#128230; Begriff: Datenbank</div>
+        <dl>
+          <div class="row"><dt>Definition</dt><dd>Ein System, das Daten dauerhaft, geordnet und durchsuchbar speichert &mdash; das &bdquo;Langzeitged&auml;chtnis&ldquo; deiner App.</dd></div>
+          <div class="row"><dt>Vorteil</dt><dd>Schnelles Suchen &amp; Sortieren, viele Zugriffe gleichzeitig, sch&uuml;tzt vor widerspr&uuml;chlichen Daten.</dd></div>
+          <div class="row"><dt>Nachteil</dt><dd>Ein eigenes System, das man verstehen und pflegen muss (&uuml;bernimmt f&uuml;r uns sp&auml;ter die Cloud).</dd></div>
+          <div class="row"><dt>Alternative</dt><dd>Daten in einfachen Dateien speichern. Geht f&uuml;r Winziges, wird aber schnell langsam, unsicher und chaotisch. Deshalb: echte Datenbank.</dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <!-- Beat 3 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 3 &middot; Tabellen, Zeilen &amp; Spalten <span class="dur">~2 Min</span></h3>
+      <div class="screen"><span class="tag">&#127916; Bildschirm</span><p>Eine simple Excel-artige Tabelle einblenden (Kopfzeile + ein paar Zeilen).</p></div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Am einfachsten stellst du dir eine <em>relationale</em> Datenbank wie eine Sammlung von Excel-Tabellen vor. Jede Tabelle ist f&uuml;r <em>eine</em> Art von Ding zust&auml;ndig &mdash; eine f&uuml;r Nutzer, eine f&uuml;r Produkte. In der Kopfzeile stehen die <em>Spalten</em> &mdash; also welche Infos wir speichern. Jede <em>Zeile</em> ist ein einzelner Eintrag. Schau dir unsere Produkt-Tabelle an:&ldquo;</p>
+      </div>
+      <div class="tree">
+<span class="r">Tabelle: Product</span>
+&#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9516;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+&#9474; id      &#9474; name             &#9474; priceCents &#9474; isPublished &#9474;  <span class="c">← Spalten</span>
+&#9500;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9532;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9532;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9532;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9508;
+&#9474; a1b2c3&#8230; &#9474; Embroidered Cap  &#9474; 2500       &#9474; true        &#9474;  <span class="c">← eine Zeile</span>
+&#9474; d4e5f6&#8230; &#9474; Logo Patch &#8211; Set &#9474; 1200       &#9474; true        &#9474;  <span class="c">← noch eine Zeile</span>
+&#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9524;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9524;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9524;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+      </div>
+      <p class="note">&#128221; Zwei Senior-Details: Wir speichern <em>einsprachig (EN)</em> &mdash; deshalb genau <em>eine</em> <code>name</code>-Spalte, keine Sprach-Varianten. Und der Preis steckt als <em>ganze Zahl in Cent</em> in <code>priceCents</code> (2500 = 25,00&nbsp;CAD) &mdash; so gibt es beim Geld nie Rundungsfehler.</p>
+      <div class="def">
+        <div class="def-head">&#128230; Begriff: Tabelle &middot; Zeile &middot; Spalte &middot; Prim&auml;rschl&uuml;ssel</div>
+        <dl>
+          <div class="row"><dt>Definition</dt><dd><em>Tabelle</em> = eine Art Ding (Produkte). <em>Spalte</em> = eine Eigenschaft (Name). <em>Zeile</em> = ein einzelner Eintrag. <em>Prim&auml;rschl&uuml;ssel (id)</em> = die eindeutige Nummer jeder Zeile.</dd></div>
+          <div class="row"><dt>Vorteil</dt><dd>Klar, geordnet, jeder Eintrag eindeutig auffindbar &uuml;ber seine <em>id</em>.</dd></div>
+          <div class="row"><dt>Merke</dt><dd>Die <em>id</em> ist wie eine Ausweisnummer &mdash; keine zwei Zeilen haben dieselbe.</dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <!-- Beat 4 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 4 &middot; Das Wort &bdquo;relational&ldquo;: Beziehungen <span class="dur">~2 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Jetzt der wichtigste Teil &mdash; das Wort <em>relational</em>. Die Tabellen stehen n&auml;mlich nicht allein, sie sind <em>miteinander verbunden</em>. Ein Beispiel: Zu einem Produkt geh&ouml;ren mehrere <em>Bilder</em>. Wir speichern die Bilder aber nicht ins Produkt hinein &mdash; wir geben jedem Bild einfach die <em>id</em> seines Produkts mit. Das nennt man einen <em>Fremdschl&uuml;ssel</em>: ein Verweis von einer Tabelle auf eine andere.</p>
+        <p>Bei uns gibt es vier solche Beziehungen. Merk sie dir, sie erkl&auml;ren fast die ganze App:&ldquo;</p>
+      </div>
+      <div class="tree">
+<span class="r">Beziehungen im StitchLab-Datenmodell</span>
+
+Product   1 &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&lt; &#8734;  ProductImage            <span class="c"># ein Produkt hat viele Bilder (1:n)</span>
+Category  &#8734; &#9472;&#9472;&lt; ProductCategory &gt;&#9472;&#9472; &#8734;  Product  <span class="c"># Produkte in mehreren Kategorien (n:m)</span>
+User      &#8734; &#9472;&#9472;&lt; Favorite &gt;&#9472;&#9472; &#8734;  Product         <span class="c"># Favoriten (n:m)</span>
+User      &#8734; &#9472;&#9472;&lt; CartItem &gt;&#9472;&#9472; &#8734;  Product         <span class="c"># Warenkorb, mit quantity (n:m + Nutzlast)</span>
+      </div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Zwei Begriffe fallen dir vielleicht auf. Eine <em>Verbindungstabelle</em> wie <em>ProductCategory</em> steht in der Mitte, wenn <em>viele zu vielen</em> passt &mdash; ein Produkt in mehreren Kategorien, eine Kategorie mit vielen Produkten. Und <em>CartItem</em> ist so eine Verbindungstabelle, die zus&auml;tzlich noch etwas <em>mitbringt</em>: die Menge (<em>quantity</em>). So eine Tabelle darf also eigene Spalten haben.&ldquo;</p>
+      </div>
+      <div class="def">
+        <div class="def-head">&#128230; Begriff: Fremdschl&uuml;ssel &amp; Beziehungstypen</div>
+        <dl>
+          <div class="row"><dt>Definition</dt><dd>Ein <em>Fremdschl&uuml;ssel</em> ist die id eines anderen Eintrags, gespeichert als Verweis (z.&nbsp;B. <em>productId</em> in der Bild-Tabelle).</dd></div>
+          <div class="row"><dt>1-zu-&#8734;</dt><dd>Ein Produkt &rarr; viele Bilder. (Ein Bild geh&ouml;rt zu genau einem Produkt.)</dd></div>
+          <div class="row"><dt>&#8734;-zu-&#8734;</dt><dd>Viele Produkte &harr; viele Kategorien/Nutzer. Daf&uuml;r gibt es eine <em>Verbindungstabelle</em> (z.&nbsp;B. ProductCategory, Favorite, CartItem).</dd></div>
+          <div class="row"><dt>Vorteil</dt><dd>Keine Daten doppelt speichern, alles bleibt widerspruchsfrei &mdash; &auml;ndere ein Produkt an <em>einer</em> Stelle, &uuml;berall stimmt es.</dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <!-- Beat 5 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 5 &middot; Warum PostgreSQL? <span class="dur">~1,5 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Es gibt viele relationale Datenbanken. Wir nehmen <em>PostgreSQL</em> &mdash; oft nur &bdquo;Postgres&ldquo; genannt. Warum? Sie ist kostenlos und quelloffen, extrem verl&auml;sslich, seit Jahrzehnten bew&auml;hrt und trotzdem modern. Praktisch jeder Cloud-Anbieter unterst&uuml;tzt sie &mdash; auch unser kostenloser bei Supabase. F&uuml;r ein Projekt mit klar verkn&uuml;pften Daten wie unserem ist Postgres die sichere, professionelle Wahl.&ldquo;</p>
+      </div>
+      <div class="def">
+        <div class="def-head">&#128230; Begriff: PostgreSQL</div>
+        <dl>
+          <div class="row"><dt>Definition</dt><dd>Eine kostenlose, quelloffene relationale Datenbank &mdash; einer der ausgereiftesten &amp; beliebtesten Standards.</dd></div>
+          <div class="row"><dt>Vorteil</dt><dd>Sehr verl&auml;sslich, m&auml;chtig, &uuml;berall unterst&uuml;tzt, gro&szlig;e Community, gratis.</dd></div>
+          <div class="row"><dt>Nachteil</dt><dd>Man muss die Struktur (das &bdquo;Schema&ldquo;) im Voraus planen &mdash; was f&uuml;r Sauberkeit sorgt.</dd></div>
+          <div class="row"><dt>Alternative</dt><dd><em>MySQL</em> (&auml;hnlich, auch gut) oder <em>MongoDB</em> (Dokument-DB, flexibler aber weniger streng). F&uuml;r klar verkn&uuml;pfte Daten w&auml;hlen wir Postgres.</dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <!-- Beat 6 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 6 &middot; Unser Datenmodell im &Uuml;berblick <span class="dur">~1,5 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Zum Schluss die Landkarte unserer Daten &mdash; sieben Tabellen, das ist alles. Sie im Kopf zu haben hilft dir im ganzen Rest des Kurses:&ldquo;</p>
+      </div>
+      <div class="tree">
+<span class="r">User</span>             <span class="c"># Konten: email, Passwort (bcrypt), Rolle (USER/ADMIN)</span>
+<span class="r">Category</span>         <span class="c"># Kategorien im Shop: slug, name, sortOrder</span>
+<span class="r">Product</span>          <span class="c"># zentrales Ding: name, priceCents, isShowcased, isPublished</span>
+<span class="r">ProductImage</span>     <span class="c"># Bilder eines Produkts (-> productId), storagePath</span>
+<span class="r">ProductCategory</span>  <span class="c"># Verbindungstabelle: welches Produkt in welcher Kategorie</span>
+<span class="r">Favorite</span>         <span class="c"># Verbindungstabelle: welcher User mag welches Produkt</span>
+<span class="r">CartItem</span>         <span class="c"># Verbindungstabelle: Warenkorb (+ quantity)</span>
+      </div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Und dieselben sieben Tabellen als richtiges <em>Datenbank-Diagramm</em> &mdash; genau so zeichnet man es in einem Werkzeug wie <em>draw.io</em>. Jede Box ist eine Tabelle mit ihren Spalten: links der Spaltenname, rechts der Datentyp. Die K&uuml;rzel bedeuten <em>PK</em> = Prim&auml;rschl&uuml;ssel, <em>FK</em> = Fremdschl&uuml;ssel, <em>U</em> = eindeutig. Und die Linien sind die Beziehungen &mdash; der <em>Kr&auml;henfu&szlig;</em> hei&szlig;t &bdquo;viele&ldquo;, der einfache Strich &bdquo;eins&ldquo;. An jeder Linie steht sogar, &uuml;ber welches Feld sie verbindet.&ldquo;</p>
+      </div>
+
+<style>
+.erd{--erd-canvas:#f8f9fb;--erd-box:#ffffff;--erd-ink:#20242e;--erd-ink-muted:#7c828e;--erd-hair:#e7e9ee;--erd-gut:#d7dae1;--erd-line:#66696f;--erd-grid:#eceef2;--erd-badge-brd:#9aa0aa;--erd-badge-ink:#5c616b;margin:1.4rem 0;font-family:Helvetica,Arial,"Segoe UI",sans-serif;color:var(--erd-ink)}
+.erd .erd-scroll{overflow-x:auto;background:var(--erd-canvas);border:1px solid var(--erd-hair);border-radius:8px;padding:4px}
+.erd svg{display:block;width:100%;height:auto;min-width:820px}
+.erd .erd-canvas{fill:var(--erd-canvas)}
+.erd .erd-gridline{fill:none;stroke:var(--erd-grid);stroke-width:1}
+.erd .erd-box{fill:var(--erd-box);stroke:var(--brd);stroke-width:1}
+.erd .erd-hdr{fill:var(--hdr);stroke:var(--brd);stroke-width:1}
+.erd .erd-title{font-size:13px;font-weight:700;text-anchor:start;dominant-baseline:central;fill:var(--erd-ink)}
+.erd .erd-gut{stroke:var(--erd-gut);stroke-width:1}
+.erd .erd-hair{stroke:var(--erd-hair);stroke-width:1}
+.erd .erd-name{font-size:12px;text-anchor:start;dominant-baseline:central;fill:var(--erd-ink)}
+.erd .erd-pk{font-weight:700;text-decoration:underline}
+.erd .erd-type{font-size:11.5px;text-anchor:end;dominant-baseline:central;fill:var(--erd-ink-muted)}
+.erd .erd-tsmall{font-size:10px}
+.erd .erd-null{font-style:italic;fill:var(--erd-ink-muted)}
+.erd .erd-badge rect{fill:none;stroke:var(--erd-badge-brd);stroke-width:1}
+.erd .erd-badge text{font-size:8px;font-weight:700;text-anchor:middle;dominant-baseline:central;fill:var(--erd-badge-ink)}
+.erd .erd-conn{fill:none;stroke:var(--erd-line);stroke-width:1.3}
+.erd .erd-mk{stroke:var(--erd-line);stroke-width:1.4;fill:none}
+.erd .erd-elabel{font-size:9.5px;font-style:italic;fill:var(--erd-ink-muted);dominant-baseline:central}
+.erd .t-user{--hdr:#dae8fc;--brd:#7089b8}
+.erd .t-prod{--hdr:#d5e8d4;--brd:#86ad6b}
+.erd .t-img{--hdr:#ffe6cc;--brd:#d79b56}
+.erd .t-cat{--hdr:#e1d5e7;--brd:#9a7fb0}
+.erd .t-pc{--hdr:#fff2cc;--brd:#d7c25a}
+.erd .t-fav{--hdr:#f8cecc;--brd:#cd7f7c}
+.erd .t-cart{--hdr:#d5e8e2;--brd:#6fae9c}
+.erd figcaption{margin-top:.6rem;font-size:.85rem;color:var(--erd-ink-muted);line-height:1.4}
+.erd figcaption em{font-style:italic;color:var(--erd-ink)}
+@media (prefers-color-scheme:dark){
+.erd{--erd-canvas:#1b1b1b;--erd-box:#2a2a2a;--erd-ink:#e6e6e6;--erd-ink-muted:#aeb4be;--erd-hair:#3a3a3a;--erd-gut:#3f3f3f;--erd-line:#8b8e94;--erd-grid:#242424;--erd-badge-brd:#6b6f77;--erd-badge-ink:#b9bdc4}
+.erd .t-user{--hdr:#26374d;--brd:#5f7ba6}
+.erd .t-prod{--hdr:#26382a;--brd:#6f9a5b}
+.erd .t-img{--hdr:#3a2f22;--brd:#c08a4e}
+.erd .t-cat{--hdr:#322a3a;--brd:#9a7fb0}
+.erd .t-pc{--hdr:#38321f;--brd:#c9b24f}
+.erd .t-fav{--hdr:#3a2626;--brd:#c07a77}
+.erd .t-cart{--hdr:#24382f;--brd:#4f9a80}
+}
+:root[data-theme='dark'] .erd{--erd-canvas:#1b1b1b;--erd-box:#2a2a2a;--erd-ink:#e6e6e6;--erd-ink-muted:#aeb4be;--erd-hair:#3a3a3a;--erd-gut:#3f3f3f;--erd-line:#8b8e94;--erd-grid:#242424;--erd-badge-brd:#6b6f77;--erd-badge-ink:#b9bdc4}
+:root[data-theme='dark'] .erd .t-user{--hdr:#26374d;--brd:#5f7ba6}
+:root[data-theme='dark'] .erd .t-prod{--hdr:#26382a;--brd:#6f9a5b}
+:root[data-theme='dark'] .erd .t-img{--hdr:#3a2f22;--brd:#c08a4e}
+:root[data-theme='dark'] .erd .t-cat{--hdr:#322a3a;--brd:#9a7fb0}
+:root[data-theme='dark'] .erd .t-pc{--hdr:#38321f;--brd:#c9b24f}
+:root[data-theme='dark'] .erd .t-fav{--hdr:#3a2626;--brd:#c07a77}
+:root[data-theme='dark'] .erd .t-cart{--hdr:#24382f;--brd:#4f9a80}
+:root[data-theme='light'] .erd{--erd-canvas:#f8f9fb;--erd-box:#ffffff;--erd-ink:#20242e;--erd-ink-muted:#7c828e;--erd-hair:#e7e9ee;--erd-gut:#d7dae1;--erd-line:#66696f;--erd-grid:#eceef2;--erd-badge-brd:#9aa0aa;--erd-badge-ink:#5c616b}
+:root[data-theme='light'] .erd .t-user{--hdr:#dae8fc;--brd:#7089b8}
+:root[data-theme='light'] .erd .t-prod{--hdr:#d5e8d4;--brd:#86ad6b}
+:root[data-theme='light'] .erd .t-img{--hdr:#ffe6cc;--brd:#d79b56}
+:root[data-theme='light'] .erd .t-cat{--hdr:#e1d5e7;--brd:#9a7fb0}
+:root[data-theme='light'] .erd .t-pc{--hdr:#fff2cc;--brd:#d7c25a}
+:root[data-theme='light'] .erd .t-fav{--hdr:#f8cecc;--brd:#cd7f7c}
+:root[data-theme='light'] .erd .t-cart{--hdr:#d5e8e2;--brd:#6fae9c}
+</style>
+<figure class="erd">
+<div class="erd-scroll">
+<svg viewBox="0 0 1340 840" role="img" aria-label="ER-Diagramm des StitchLab-Datenmodells mit sieben Tabellen" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <pattern id="erd-grid" width="20" height="20" patternUnits="userSpaceOnUse">
+    <path class="erd-gridline" d="M20,0 H0 V20"/>
+  </pattern>
+  <filter id="erd-shadow" x="-6%" y="-6%" width="112%" height="118%">
+    <feDropShadow dx="2" dy="3" stdDeviation="2.2" flood-color="#000" flood-opacity="0.22"/>
+  </filter>
+  <marker id="erd-one" markerWidth="12" markerHeight="18" refX="6" refY="9" orient="auto" markerUnits="userSpaceOnUse">
+    <path class="erd-mk" d="M6,2 L6,16"/>
+  </marker>
+  <marker id="erd-crow" markerWidth="18" markerHeight="18" refX="15" refY="9" orient="auto" markerUnits="userSpaceOnUse">
+    <path class="erd-mk" fill="none" d="M1,9 L15,1 M1,9 L15,9 M1,9 L15,17"/>
+  </marker>
+</defs>
+<rect class="erd-canvas" x="0" y="0" width="1340" height="840"/>
+<rect x="0" y="0" width="1340" height="840" fill="url(#erd-grid)"/>
+<g class="erd-conns">
+  <path class="erd-conn" d="M880,480 H960" marker-start="url(#erd-one)" marker-end="url(#erd-crow)"/>
+  <path class="erd-conn" d="M700,380 V170" marker-start="url(#erd-one)" marker-end="url(#erd-crow)"/>
+  <path class="erd-conn" d="M440,110 H500 V100 H560" marker-start="url(#erd-one)" marker-end="url(#erd-crow)"/>
+  <path class="erd-conn" d="M200,254 V300" marker-start="url(#erd-one)" marker-end="url(#erd-crow)"/>
+  <path class="erd-conn" d="M540,500 H460 V380 H380" marker-start="url(#erd-one)" marker-end="url(#erd-crow)"/>
+  <path class="erd-conn" d="M720,646 V700" marker-start="url(#erd-one)" marker-end="url(#erd-crow)"/>
+  <path class="erd-conn" d="M420,690 H490 V740 H560" marker-start="url(#erd-one)" marker-end="url(#erd-crow)"/>
+</g>
+<g class="erd-elabels">
+  <text class="erd-elabel" x="955" y="470" text-anchor="end">productId</text>
+  <text class="erd-elabel" x="708" y="210" text-anchor="start">productId</text>
+  <text class="erd-elabel" x="556" y="90" text-anchor="end">userId</text>
+  <text class="erd-elabel" x="208" y="284" text-anchor="start">userId</text>
+  <text class="erd-elabel" x="384" y="362" text-anchor="end">productId</text>
+  <text class="erd-elabel" x="728" y="678" text-anchor="start">productId</text>
+  <text class="erd-elabel" x="556" y="728" text-anchor="end">categoryId</text>
+</g>
+  <g class="erd-table t-user" filter="url(#erd-shadow)">
+    <rect class="erd-box" x="80" y="40" width="360" height="214" rx="4"/>
+    <path class="erd-hdr" d="M80,48 q0,-8 8,-8 h344 q8,0 8,8 v24 h-360 Z"/>
+    <text class="erd-title" x="94" y="56">User</text>
+    <line class="erd-gut" x1="122" y1="72" x2="122" y2="254"/>
+    <g class="erd-badge"><rect x="84" y="78" width="15" height="14" rx="2.5"/><text x="91.5" y="85.5">PK</text></g>
+    <text class="erd-name erd-pk" x="130" y="85">id</text>
+    <text class="erd-type" x="428" y="85">uuid</text>
+    <line class="erd-hair" x1="80" y1="98" x2="440" y2="98"/>
+    <g class="erd-badge"><rect x="84" y="104" width="15" height="14" rx="2.5"/><text x="91.5" y="111.5">U</text></g>
+    <text class="erd-name" x="130" y="111">email</text>
+    <text class="erd-type" x="428" y="111">text</text>
+    <line class="erd-hair" x1="80" y1="124" x2="440" y2="124"/>
+    <text class="erd-name" x="130" y="137">hashedPassword</text>
+    <text class="erd-type" x="428" y="137">text</text>
+    <line class="erd-hair" x1="80" y1="150" x2="440" y2="150"/>
+    <text class="erd-name" x="130" y="163">hashedRefreshToken</text>
+    <text class="erd-type erd-null" x="428" y="163">text ?</text>
+    <line class="erd-hair" x1="80" y1="176" x2="440" y2="176"/>
+    <text class="erd-name" x="130" y="189">role</text>
+    <text class="erd-type erd-tsmall" x="428" y="189">enum &#183; USER|ADMIN &#183; def USER</text>
+    <line class="erd-hair" x1="80" y1="202" x2="440" y2="202"/>
+    <text class="erd-name" x="130" y="215">createdAt</text>
+    <text class="erd-type" x="428" y="215">timestamp</text>
+    <line class="erd-hair" x1="80" y1="228" x2="440" y2="228"/>
+    <text class="erd-name" x="130" y="241">updatedAt</text>
+    <text class="erd-type" x="428" y="241">timestamp</text>
+  </g>
+  <g class="erd-table t-fav" filter="url(#erd-shadow)">
+    <rect class="erd-box" x="560" y="60" width="300" height="110" rx="4"/>
+    <path class="erd-hdr" d="M560,68 q0,-8 8,-8 h284 q8,0 8,8 v24 h-300 Z"/>
+    <text class="erd-title" x="574" y="76">Favorite</text>
+    <line class="erd-gut" x1="602" y1="92" x2="602" y2="170"/>
+    <g class="erd-badge"><rect x="564" y="98" width="15" height="14" rx="2.5"/><text x="571.5" y="105.5">PK</text></g>
+    <g class="erd-badge"><rect x="581" y="98" width="15" height="14" rx="2.5"/><text x="588.5" y="105.5">FK</text></g>
+    <text class="erd-name erd-pk" x="610" y="105">userId</text>
+    <text class="erd-type" x="848" y="105">uuid</text>
+    <line class="erd-hair" x1="560" y1="118" x2="860" y2="118"/>
+    <g class="erd-badge"><rect x="564" y="124" width="15" height="14" rx="2.5"/><text x="571.5" y="131.5">PK</text></g>
+    <g class="erd-badge"><rect x="581" y="124" width="15" height="14" rx="2.5"/><text x="588.5" y="131.5">FK</text></g>
+    <text class="erd-name erd-pk" x="610" y="131">productId</text>
+    <text class="erd-type" x="848" y="131">uuid</text>
+    <line class="erd-hair" x1="560" y1="144" x2="860" y2="144"/>
+    <text class="erd-name" x="610" y="157">createdAt</text>
+    <text class="erd-type" x="848" y="157">timestamp</text>
+  </g>
+  <g class="erd-table t-cart" filter="url(#erd-shadow)">
+    <rect class="erd-box" x="80" y="300" width="300" height="136" rx="4"/>
+    <path class="erd-hdr" d="M80,308 q0,-8 8,-8 h284 q8,0 8,8 v24 h-300 Z"/>
+    <text class="erd-title" x="94" y="316">CartItem</text>
+    <line class="erd-gut" x1="122" y1="332" x2="122" y2="436"/>
+    <g class="erd-badge"><rect x="84" y="338" width="15" height="14" rx="2.5"/><text x="91.5" y="345.5">PK</text></g>
+    <g class="erd-badge"><rect x="101" y="338" width="15" height="14" rx="2.5"/><text x="108.5" y="345.5">FK</text></g>
+    <text class="erd-name erd-pk" x="130" y="345">userId</text>
+    <text class="erd-type" x="368" y="345">uuid</text>
+    <line class="erd-hair" x1="80" y1="358" x2="380" y2="358"/>
+    <g class="erd-badge"><rect x="84" y="364" width="15" height="14" rx="2.5"/><text x="91.5" y="371.5">PK</text></g>
+    <g class="erd-badge"><rect x="101" y="364" width="15" height="14" rx="2.5"/><text x="108.5" y="371.5">FK</text></g>
+    <text class="erd-name erd-pk" x="130" y="371">productId</text>
+    <text class="erd-type" x="368" y="371">uuid</text>
+    <line class="erd-hair" x1="80" y1="384" x2="380" y2="384"/>
+    <text class="erd-name" x="130" y="397">quantity</text>
+    <text class="erd-type erd-tsmall" x="368" y="397">int &#183; def 1</text>
+    <line class="erd-hair" x1="80" y1="410" x2="380" y2="410"/>
+    <text class="erd-name" x="130" y="423">createdAt</text>
+    <text class="erd-type" x="368" y="423">timestamp</text>
+  </g>
+  <g class="erd-table t-prod" filter="url(#erd-shadow)">
+    <rect class="erd-box" x="540" y="380" width="340" height="266" rx="4"/>
+    <path class="erd-hdr" d="M540,388 q0,-8 8,-8 h324 q8,0 8,8 v24 h-340 Z"/>
+    <text class="erd-title" x="554" y="396">Product</text>
+    <line class="erd-gut" x1="582" y1="412" x2="582" y2="646"/>
+    <g class="erd-badge"><rect x="544" y="418" width="15" height="14" rx="2.5"/><text x="551.5" y="425.5">PK</text></g>
+    <text class="erd-name erd-pk" x="590" y="425">id</text>
+    <text class="erd-type" x="868" y="425">uuid</text>
+    <line class="erd-hair" x1="540" y1="438" x2="880" y2="438"/>
+    <g class="erd-badge"><rect x="544" y="444" width="15" height="14" rx="2.5"/><text x="551.5" y="451.5">U</text></g>
+    <text class="erd-name" x="590" y="451">slug</text>
+    <text class="erd-type" x="868" y="451">text</text>
+    <line class="erd-hair" x1="540" y1="464" x2="880" y2="464"/>
+    <text class="erd-name" x="590" y="477">name</text>
+    <text class="erd-type" x="868" y="477">text</text>
+    <line class="erd-hair" x1="540" y1="490" x2="880" y2="490"/>
+    <text class="erd-name" x="590" y="503">description</text>
+    <text class="erd-type erd-null" x="868" y="503">text ?</text>
+    <line class="erd-hair" x1="540" y1="516" x2="880" y2="516"/>
+    <text class="erd-name" x="590" y="529">priceCents</text>
+    <text class="erd-type" x="868" y="529">int</text>
+    <line class="erd-hair" x1="540" y1="542" x2="880" y2="542"/>
+    <text class="erd-name" x="590" y="555">isShowcased</text>
+    <text class="erd-type erd-tsmall" x="868" y="555">bool &#183; def false</text>
+    <line class="erd-hair" x1="540" y1="568" x2="880" y2="568"/>
+    <text class="erd-name" x="590" y="581">isPublished</text>
+    <text class="erd-type erd-tsmall" x="868" y="581">bool &#183; def true</text>
+    <line class="erd-hair" x1="540" y1="594" x2="880" y2="594"/>
+    <text class="erd-name" x="590" y="607">createdAt</text>
+    <text class="erd-type" x="868" y="607">timestamp</text>
+    <line class="erd-hair" x1="540" y1="620" x2="880" y2="620"/>
+    <text class="erd-name" x="590" y="633">updatedAt</text>
+    <text class="erd-type" x="868" y="633">timestamp</text>
+  </g>
+  <g class="erd-table t-img" filter="url(#erd-shadow)">
+    <rect class="erd-box" x="960" y="400" width="320" height="188" rx="4"/>
+    <path class="erd-hdr" d="M960,408 q0,-8 8,-8 h304 q8,0 8,8 v24 h-320 Z"/>
+    <text class="erd-title" x="974" y="416">ProductImage</text>
+    <line class="erd-gut" x1="1002" y1="432" x2="1002" y2="588"/>
+    <g class="erd-badge"><rect x="964" y="438" width="15" height="14" rx="2.5"/><text x="971.5" y="445.5">PK</text></g>
+    <text class="erd-name erd-pk" x="1010" y="445">id</text>
+    <text class="erd-type" x="1268" y="445">uuid</text>
+    <line class="erd-hair" x1="960" y1="458" x2="1280" y2="458"/>
+    <g class="erd-badge"><rect x="964" y="464" width="15" height="14" rx="2.5"/><text x="971.5" y="471.5">FK</text></g>
+    <text class="erd-name" x="1010" y="471">productId</text>
+    <text class="erd-type" x="1268" y="471">uuid</text>
+    <line class="erd-hair" x1="960" y1="484" x2="1280" y2="484"/>
+    <text class="erd-name" x="1010" y="497">storagePath</text>
+    <text class="erd-type" x="1268" y="497">text</text>
+    <line class="erd-hair" x1="960" y1="510" x2="1280" y2="510"/>
+    <text class="erd-name" x="1010" y="523">altText</text>
+    <text class="erd-type erd-null" x="1268" y="523">text ?</text>
+    <line class="erd-hair" x1="960" y1="536" x2="1280" y2="536"/>
+    <text class="erd-name" x="1010" y="549">sortOrder</text>
+    <text class="erd-type erd-tsmall" x="1268" y="549">int &#183; def 0</text>
+    <line class="erd-hair" x1="960" y1="562" x2="1280" y2="562"/>
+    <text class="erd-name" x="1010" y="575">createdAt</text>
+    <text class="erd-type" x="1268" y="575">timestamp</text>
+  </g>
+  <g class="erd-table t-cat" filter="url(#erd-shadow)">
+    <rect class="erd-box" x="80" y="560" width="340" height="214" rx="4"/>
+    <path class="erd-hdr" d="M80,568 q0,-8 8,-8 h324 q8,0 8,8 v24 h-340 Z"/>
+    <text class="erd-title" x="94" y="576">Category</text>
+    <line class="erd-gut" x1="122" y1="592" x2="122" y2="774"/>
+    <g class="erd-badge"><rect x="84" y="598" width="15" height="14" rx="2.5"/><text x="91.5" y="605.5">PK</text></g>
+    <text class="erd-name erd-pk" x="130" y="605">id</text>
+    <text class="erd-type" x="408" y="605">uuid</text>
+    <line class="erd-hair" x1="80" y1="618" x2="420" y2="618"/>
+    <g class="erd-badge"><rect x="84" y="624" width="15" height="14" rx="2.5"/><text x="91.5" y="631.5">U</text></g>
+    <text class="erd-name" x="130" y="631">slug</text>
+    <text class="erd-type" x="408" y="631">text</text>
+    <line class="erd-hair" x1="80" y1="644" x2="420" y2="644"/>
+    <text class="erd-name" x="130" y="657">name</text>
+    <text class="erd-type" x="408" y="657">text</text>
+    <line class="erd-hair" x1="80" y1="670" x2="420" y2="670"/>
+    <text class="erd-name" x="130" y="683">description</text>
+    <text class="erd-type erd-null" x="408" y="683">text ?</text>
+    <line class="erd-hair" x1="80" y1="696" x2="420" y2="696"/>
+    <text class="erd-name" x="130" y="709">sortOrder</text>
+    <text class="erd-type erd-tsmall" x="408" y="709">int &#183; def 0</text>
+    <line class="erd-hair" x1="80" y1="722" x2="420" y2="722"/>
+    <text class="erd-name" x="130" y="735">createdAt</text>
+    <text class="erd-type" x="408" y="735">timestamp</text>
+    <line class="erd-hair" x1="80" y1="748" x2="420" y2="748"/>
+    <text class="erd-name" x="130" y="761">updatedAt</text>
+    <text class="erd-type" x="408" y="761">timestamp</text>
+  </g>
+  <g class="erd-table t-pc" filter="url(#erd-shadow)">
+    <rect class="erd-box" x="560" y="700" width="320" height="84" rx="4"/>
+    <path class="erd-hdr" d="M560,708 q0,-8 8,-8 h304 q8,0 8,8 v24 h-320 Z"/>
+    <text class="erd-title" x="574" y="716">ProductCategory</text>
+    <line class="erd-gut" x1="602" y1="732" x2="602" y2="784"/>
+    <g class="erd-badge"><rect x="564" y="738" width="15" height="14" rx="2.5"/><text x="571.5" y="745.5">PK</text></g>
+    <g class="erd-badge"><rect x="581" y="738" width="15" height="14" rx="2.5"/><text x="588.5" y="745.5">FK</text></g>
+    <text class="erd-name erd-pk" x="610" y="745">productId</text>
+    <text class="erd-type" x="868" y="745">uuid</text>
+    <line class="erd-hair" x1="560" y1="758" x2="880" y2="758"/>
+    <g class="erd-badge"><rect x="564" y="764" width="15" height="14" rx="2.5"/><text x="571.5" y="771.5">PK</text></g>
+    <g class="erd-badge"><rect x="581" y="764" width="15" height="14" rx="2.5"/><text x="588.5" y="771.5">FK</text></g>
+    <text class="erd-name erd-pk" x="610" y="771">categoryId</text>
+    <text class="erd-type" x="868" y="771">uuid</text>
+  </g>
+</svg>
+</div>
+<figcaption>ER-Diagramm: das StitchLab-Datenmodell (7 Tabellen). Kr&auml;henfu&szlig;-Notation; alle Fremdschl&uuml;ssel mit <em>onDelete&nbsp;Cascade</em>.</figcaption>
+</figure>
+
+      <p class="note">&#128214; <b>Legende:</b> <b>PK</b> = Prim&auml;rschl&uuml;ssel (eindeutige id) &middot; <b>FK</b> = Fremdschl&uuml;ssel (Verweis auf eine andere Tabelle) &middot; <b>U</b> = eindeutig (unique) &middot; <em>text&nbsp;?</em> = darf leer sein (nullable) &middot; <b>&mdash;&lt;</b> Kr&auml;henfu&szlig; = &bdquo;viele&ldquo;, <b>&mdash;|</b> = &bdquo;eins&ldquo;. Alle Fremdschl&uuml;ssel mit <em>onDelete&nbsp;Cascade</em>: l&ouml;schst du ein Produkt, verschwinden auch seine Bilder, Kategorie-Verkn&uuml;pfungen, Favoriten- und Warenkorb-Eintr&auml;ge.</p>
+      <p class="note">&#128221; Landkarte <em>und</em> Diagramm ruhig als Grafik speichern &mdash; du blendest sie in sp&auml;teren Kapiteln immer wieder ein. (Das Diagramm ist im draw.io-Stil gebaut; du kannst es 1:1 nachzeichnen.)</p>
+    </div>
+
+    <!-- Beat 7 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 7 &middot; Abschluss &amp; Ausblick <span class="dur">~30 Sek</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Jetzt hast du das Bild: Tabellen mit Zeilen und Spalten, verbunden &uuml;ber Schl&uuml;ssel &mdash; und mit PostgreSQL als solidem Fundament. Im n&auml;chsten Kapitel wird&rsquo;s praktisch: Wir legen unsere echte Datenbank in der Cloud an &mdash; kostenlos bei <em>Supabase</em> &mdash; und holen uns die Zugangsdaten. Bis gleich!&ldquo;</p>
+      </div>
+    </div>
+
+    <!-- Checklist -->
+    <div class="checklist">
+      <h4>&#127909; Aufnahme-Checkliste f&uuml;r dieses Kapitel</h4>
+      <ul>
+        <li>Excel-artige Beispiel-Tabelle (Product) als Grafik vorbereiten (ein paar Zeilen)</li>
+        <li>Beziehungs-Diagramm (1-zu-&#8734; und &#8734;-zu-&#8734;) als einblendbare Grafik</li>
+        <li>Die 7-Tabellen-Landkarte als wiederverwendbare Grafik anlegen</li>
+        <li><span class="ph">PLATZHALTER: ein, zwei echte StitchLab-Produkte als Beispiel zeigen</span></li>
+        <li>Ruhig &amp; bildhaft bleiben &mdash; hier wird nichts getippt, nur erkl&auml;rt</li>
+      </ul>
+    </div>
+
+  </article>
+
+  <!-- ============ CHAPTER 8 ============ -->
+  <article class="chapter" id="kap8">
+    <div class="chapter-head">
+      <div class="chip"><span class="num">08</span> Kapitel &middot; Teil 2</div>
+      <h2>Supabase einrichten (Cloud-Datenbank)</h2>
+      <div class="meta-row">
+        <span class="meta">&#9201; 11&ndash;15 Min</span>
+        <span class="meta">&#9000; Web-Klicks + .env</span>
+        <span class="meta">&#127919; Echte Postgres-DB + Storage in der Cloud</span>
+      </div>
+    </div>
+
+    <!-- Beat 1 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 1 &middot; R&uuml;ckblick &amp; heute <span class="dur">~40 Sek</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Willkommen zur&uuml;ck! Wir wissen jetzt, <em>was</em> eine Datenbank ist. Heute besorgen wir uns eine <em>echte</em> &mdash; kostenlos, in der Cloud, bei einem Dienst namens <em>Supabase</em>. Am Ende haben wir eine laufende PostgreSQL-Datenbank <em>und</em> einen Speicher f&uuml;r unsere Produktbilder, plus alle Zugangsdaten sicher in unserer <em>.env</em>-Datei. Kein eigener Server n&ouml;tig. Los geht&rsquo;s.&ldquo;</p>
+      </div>
+      <p class="note">&#128221; Dieses Kapitel ist zum Teil im Browser (Supabase-Dashboard), zum Teil im Editor (.env). Sag klar an, wann du wo bist.</p>
+    </div>
+
+    <!-- Ressourcen / Links -->
+    <div class="links">
+      <span class="tag">&#128279; Offizielle Links (f&uuml;r die Video-Beschreibung)</span>
+      <ul>
+        <li><a href="https://supabase.com" target="_blank" rel="noreferrer">https://supabase.com</a> <span class="desc">&mdash; Konto &amp; Dashboard (kostenlos)</span></li>
+        <li><a href="https://supabase.com/docs/guides/storage" target="_blank" rel="noreferrer">supabase.com/docs/guides/storage</a> <span class="desc">&mdash; Storage-Doku</span></li>
+        <li><a href="https://resend.com" target="_blank" rel="noreferrer">https://resend.com</a> <span class="desc">&mdash; E-Mail (erst sp&auml;ter f&uuml;rs Passwort-Zur&uuml;cksetzen)</span></li>
+      </ul>
+    </div>
+
+    <!-- Beat 2 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 2 &middot; Was ist Supabase? <span class="dur">~1,5 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Supabase ist im Grunde ein <em>Rundum-sorglos-Paket</em> rund um eine PostgreSQL-Datenbank. Du bekommst die Datenbank selbst, dazu einen Datei-Speicher und noch mehr &mdash; alles in der Cloud, ohne dass du irgendeinen Server aufsetzen musst. F&uuml;r uns perfekt: Der kostenlose Tarif reicht f&uuml;r den ganzen Kurs, und wir nutzen genau zwei Dinge davon &mdash; die <em>Datenbank</em> f&uuml;r unsere Tabellen und den <em>Storage</em> f&uuml;r die Produktbilder.&ldquo;</p>
+      </div>
+      <div class="def">
+        <div class="def-head">&#128230; Begriff: Supabase (Managed Postgres + Storage)</div>
+        <dl>
+          <div class="row"><dt>Definition</dt><dd>Ein Cloud-Dienst, der dir eine fertige PostgreSQL-Datenbank + Datei-Speicher bereitstellt &mdash; verwaltet, gesichert, sofort nutzbar.</dd></div>
+          <div class="row"><dt>Vorteil</dt><dd>Kein eigener Server, kostenloser Einstieg, echtes Postgres (kein Spezial-Format), Storage inklusive.</dd></div>
+          <div class="row"><dt>Nachteil</dt><dd>Der Gratis-Tarif pausiert ein Projekt nach ~1 Woche ohne Nutzung (im Dashboard mit einem Klick reaktivierbar).</dd></div>
+          <div class="row"><dt>Alternative</dt><dd>Postgres lokal selbst installieren, oder andere Cloud-DBs (Neon, Railway, AWS RDS). Wir nehmen Supabase wegen &bdquo;DB + Storage gratis aus einer Hand&ldquo;.</dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <!-- Beat 3 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 3 &middot; Supabase-Projekt anlegen <span class="dur">~2 Min</span></h3>
+      <div class="screen"><span class="tag">&#127916; Bildschirm</span><p>Browser: supabase.com &rarr; einloggen (z.&nbsp;B. mit GitHub) &rarr; <em>New project</em>.</p></div>
+      <div class="onscreen">
+        <span class="tag">&#128421;&#65039; Schritt f&uuml;r Schritt (im Dashboard)</span>
+        <ul>
+          <li>Auf <b>New project</b> klicken.</li>
+          <li>Einen <b>Namen</b> w&auml;hlen (z.&nbsp;B. <em>stitchlab-yvr</em>).</li>
+          <li>Ein <b>Database Password</b> setzen &mdash; und <b>sofort notieren!</b> (brauchen wir gleich).</li>
+          <li><b>Region</b> nah bei dir w&auml;hlen: <em>Canada (Central)</em> &mdash; so bleiben die Kundendaten in Kanada.</li>
+          <li><b>Create new project</b> &mdash; dann ~1&ndash;2&nbsp;Min warten, bis es bereit ist.</li>
+        </ul>
+      </div>
+      <div class="warn">
+        <span class="h">Wichtig</span>
+        Das <b>Database Password</b> wird dir nur einmal beim Anlegen gezeigt. Notiere es sofort an einem sicheren Ort &mdash; ohne es kommst du nicht an die Datenbank.
+      </div>
+      <div class="check">
+        <span class="h">Erfolgskontrolle</span>
+        Das Projekt-Dashboard &ouml;ffnet sich und zeigt oben gr&uuml;n &bdquo;Project is ready&ldquo; (kein Ladebalken mehr).
+      </div>
+    </div>
+
+    <!-- Einschub &middot; Region &amp; Zugriff -->
+    <div class="beat">
+      <h3><span class="dot"></span> &#10067; H&auml;ufige Frage: &bdquo;Kanada-Region &mdash; komme ich aus Berlin &uuml;berhaupt dran?&ldquo; <span class="dur">~1,5 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Kurzer Einschub, weil ich das oft gefragt werde: Ich wohne in <em>Berlin</em>, aber gerade habe ich als Region <em>Canada (Central)</em> gew&auml;hlt. Komme ich da &uuml;berhaupt dran? &mdash; Ja, uneingeschr&auml;nkt. Die Region legt nur fest, <em>wo die Server physisch stehen</em> &mdash; nicht, wer von wo zugreifen darf. Eine Cloud-Datenbank h&auml;ngt am Internet; mit den Zugangsdaten komme ich aus Berlin, Vancouver oder sonstwo dran. <em>Region ist keine Zugriffssperre.</em>&ldquo;</p>
+        <p>&bdquo;Was die Region <em>wirklich</em> beeinflusst, sind zwei Dinge: die <em>Latenz</em> &mdash; wie weit die Daten reisen &mdash; und die <em>Datenresidenz</em>, also der rechtliche Speicherort (Stichwort DSGVO / PIPEDA).&ldquo;</p>
+      </div>
+      <div class="onscreen">
+        <span class="tag">&#128421;&#65039; Latenz einblenden (grobe Roundtrip-Werte)</span>
+        <ul>
+          <li>Berlin &rarr; <b>Frankfurt</b> (eu-central-1): ~10&ndash;20 ms</li>
+          <li>Berlin &rarr; <b>Canada Central</b> / Montreal (ca-central-1): ~90&ndash;110 ms</li>
+          <li>Berlin &rarr; <b>West US</b> (us-west-1): ~150&ndash;160 ms</li>
+        </ul>
+      </div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Und jetzt die eigentliche Frage: Latenz <em>f&uuml;r wen</em>? Beim <em>Entwickeln</em> hier in Berlin sind meine Anfragen gegen die Kanada-Datenbank rund 100 Millisekunden langsamer &mdash; sp&uuml;rbar, aber v&ouml;llig verkraftbar; das nervt h&ouml;chstens bei vielen Migrationen. In der <em>Produktion</em> z&auml;hlt aber etwas anderes: wo mein <em>Backend</em> und meine <em>Kunden</em> sitzen &mdash; nicht mein Wohnort. Als Profi optimiert man auf die <em>echten Nutzer</em>: Die Dev-Latenz zahle ich einmal, die Produktions-Latenz zahlt jeder Kunde bei jedem Klick.&ldquo;</p>
+        <p>&bdquo;Deshalb meine Wahl: Mein Studio und mein Publikum sind in <em>Vancouver / Kanada</em> &mdash; also bleibt die Datenbank in <em>Canada Central</em>. Mein Berliner Entwickler-Alltag ist daf&uuml;r etwas tr&auml;ger, und das ist genau der richtige Trade-off. W&auml;re mein Publikum in Europa, w&uuml;rde ich <em>Frankfurt</em> nehmen.&ldquo;</p>
+      </div>
+      <div class="def">
+        <div class="def-head">&#128230; Merksatz: Region = Standort, nicht Zugriff</div>
+        <dl>
+          <div class="row"><dt>Zugriff</dt><dd>Von &uuml;berall &mdash; die DB h&auml;ngt am Internet, nicht an einem Land. Die Region sperrt niemanden aus.</dd></div>
+          <div class="row"><dt>Beeinflusst</dt><dd><em>Latenz</em> (Entfernung Client &harr; Server) und <em>Datenresidenz</em> (rechtlicher Speicherort &mdash; DSGVO / PIPEDA).</dd></div>
+          <div class="row"><dt>Faustregel</dt><dd>DB nah ans <em>Backend</em>, Backend/Frontend nah an die <em>Kunden</em> &mdash; <em>nicht</em> nach dem Entwickler-Standort w&auml;hlen.</dd></div>
+          <div class="row"><dt>Unsere Wahl</dt><dd>Kunden in Kanada &rarr; <em>ca-central-1</em>. Entwickeln aus Berlin bleibt problemlos m&ouml;glich (nur ~100 ms mehr pro Anfrage).</dd></div>
+        </dl>
+      </div>
+      <p class="note">&#128221; Optional als Schaubild: eine Weltkarte mit Pfeil Berlin &rarr; Montreal (&bdquo;geht problemlos&ldquo;) und den drei Latenz-Werten daneben &mdash; macht den Punkt in f&uuml;nf Sekunden sichtbar.</p>
+    </div>
+
+    <!-- Beat 4 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 4 &middot; Den Verbindungs-String holen (Session-Pooler!) <span class="dur">~2,5 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Damit unser Backend mit der Datenbank reden kann, braucht es eine <em>Verbindungs-Adresse</em> &mdash; die <em>DATABASE_URL</em>. Achtung, hier gibt es einen Stolperstein, der viele Stunden kostet: Supabase bietet drei Varianten an, und wir brauchen ganz gezielt die <em>Session-Pooler</em>-Variante.&ldquo;</p>
+      </div>
+      <div class="screen"><span class="tag">&#127916; Bildschirm</span><p>Im Dashboard oben rechts auf <em>Connect</em> &rarr; Abschnitt <em>Connection string</em>.</p></div>
+      <div class="onscreen">
+        <span class="tag">&#128421;&#65039; Schritt f&uuml;r Schritt</span>
+        <ul>
+          <li>Oben rechts auf <b>Connect</b> klicken.</li>
+          <li>Zum Abschnitt <b>Connection string</b> gehen.</li>
+          <li><b>Session pooler</b> w&auml;hlen &mdash; <em>nicht</em> &bdquo;Direct connection&ldquo;, <em>nicht</em> &bdquo;Transaction pooler&ldquo;.</li>
+          <li>Den String kopieren (Host endet auf <em>pooler.supabase.com</em>, Port <b>5432</b>).</li>
+          <li>Im String <b>[YOUR-PASSWORD]</b> durch dein Database-Password aus Beat&nbsp;3 ersetzen.</li>
+        </ul>
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">So sieht der String aus (Session-Pooler, Port 5432)</span></div>
+        <div class="cmd-cwd">&#128203; <b>aus dem Supabase-Dashboard kopieren</b> &mdash; kommt gleich in die <code>.env</code></div>
+        <pre>postgresql://postgres.<span class="g">&lt;project-ref&gt;</span>:<span class="e">&lt;DB_PASSWORD&gt;</span>@aws-0-<span class="g">ca-central-1</span>.pooler.supabase.com:<span class="g">5432</span>/postgres</pre>
+      </div>
+      <div class="def">
+        <div class="def-head">&#128269; Warum ausgerechnet der Session-Pooler?</div>
+        <dl>
+          <div class="row"><dt>Kurz</dt><dd>Er ist &uuml;ber IPv4 erreichbar und liefert eine <em>dauerhafte Sitzung</em> &mdash; genau das, was das DB-Werkzeug (Prisma) f&uuml;r Migrationen braucht.</dd></div>
+          <div class="row"><dt>Direct connection</dt><dd>Nur &uuml;ber IPv6 &mdash; funktioniert sp&auml;ter auf manchen Hostern (z.&nbsp;B. Render) gar nicht. Meiden.</dd></div>
+          <div class="row"><dt>Transaction pooler (6543)</dt><dd>F&uuml;r Migrationen ungeeignet. Meiden.</dd></div>
+          <div class="row"><dt>Merke</dt><dd>Immer den <em>exakten</em> Host aus dem Dashboard nehmen (das Pr&auml;fix <em>aws-0-</em> oder <em>aws-1-</em> variiert je Projekt).</dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <!-- Beat 5 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 5 &middot; Storage-Bucket anlegen <span class="dur">~1,5 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Erinnerst du dich an die Bilder zu den Produkten? Die liegen nicht in der Datenbank, sondern in einem <em>Datei-Speicher</em> &mdash; einem &bdquo;Bucket&ldquo;. Legen wir ihn an. Weil unsere Produktbilder im Shop f&uuml;r <em>alle</em> sichtbar sein sollen &mdash; auch f&uuml;r nicht eingeloggte Besucher &mdash; machen wir diesen Bucket <em>&ouml;ffentlich</em>.&ldquo;</p>
+      </div>
+      <div class="onscreen">
+        <span class="tag">&#128421;&#65039; Schritt f&uuml;r Schritt</span>
+        <ul>
+          <li>Links im Men&uuml; auf <b>Storage</b> &rarr; <b>New bucket</b>.</li>
+          <li>Name: <b>product-images</b> &mdash; genau merken (wird gleich <em>SUPABASE_BUCKET</em>).</li>
+          <li><b>&Ouml;ffentlich (Public bucket)</b> aktivieren &mdash; die Bilder werden direkt &uuml;ber ihre URL ausgeliefert.</li>
+        </ul>
+      </div>
+      <div class="def">
+        <div class="def-head">&#128230; Begriff: Storage-Bucket</div>
+        <dl>
+          <div class="row"><dt>Definition</dt><dd>Ein benannter Datei-Beh&auml;lter in der Cloud &mdash; hier landen die Produktbilder (JPG/PNG/WebP).</dd></div>
+          <div class="row"><dt>Warum &ouml;ffentlich?</dt><dd>Ein Produktkatalog wie ein Online-Shop zeigt seine Bilder jedem. &Ouml;ffentliche URLs sind einfach, schnell und gut cachebar &mdash; kein Umweg &uuml;ber das Backend n&ouml;tig.</dd></div>
+          <div class="row"><dt>Und private Dateien?</dt><dd>Sp&auml;ter, wenn Kunden f&uuml;r Custom-Auftr&auml;ge <em>eigene</em> Fotos hochladen, kommt ein <em>privater</em> Bucket dazu &mdash; mit kurzlebigen &bdquo;Signed URLs&ldquo; (Sicherheits-Kapitel in Teil&nbsp;4).</dd></div>
+        </dl>
+      </div>
+      <div class="check">
+        <span class="h">Erfolgskontrolle</span>
+        Unter <b>Storage</b> erscheint ein Bucket namens <b>product-images</b> (Status: <em>Public</em>).
+      </div>
+      <p class="note">&#128221; <b>Abweichung zur Referenz:</b> Das Muster-Projekt nutzte hier einen <em>privaten</em> Bucket mit Signed URLs. Bei uns sind Shop-Bilder bewusst &ouml;ffentlich &mdash; die Signed-URL-Lehre heben wir uns f&uuml;r die privaten Kunden-Uploads (Custom-Auftr&auml;ge) auf.</p>
+    </div>
+
+    <!-- Beat 6 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 6 &middot; Die API-Zugangsdaten holen <span class="dur">~1,5 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Auch wenn die Bilder &ouml;ffentlich <em>lesbar</em> sind &mdash; sie <em>hochladen</em> darf nur unser Backend (wenn der Admin ein Produkt anlegt). Daf&uuml;r braucht das Backend zwei Werte aus den Projekt-Einstellungen.&ldquo;</p>
+      </div>
+      <div class="onscreen">
+        <span class="tag">&#128421;&#65039; Schritt f&uuml;r Schritt</span>
+        <ul>
+          <li>Links auf <b>Project Settings</b> &rarr; <b>API</b>.</li>
+          <li><b>Project URL</b> kopieren (<em>https://&lt;project-ref&gt;.supabase.co</em>) &rarr; wird <b>SUPABASE_URL</b>.</li>
+          <li>Den geheimen <b>service_role / secret key</b> kopieren &rarr; wird <b>SUPABASE_SECRET_KEY</b>.</li>
+        </ul>
+      </div>
+      <div class="warn">
+        <span class="h">Sicherheit</span>
+        Der <b>secret / service_role key</b> ist ein <b>Generalschl&uuml;ssel</b> zu deinen Daten. Er geh&ouml;rt <b>nur</b> ins Backend / in die <em>.env</em> &mdash; <b>niemals</b> ins Frontend und <b>niemals</b> in git!
+      </div>
+    </div>
+
+    <!-- Beat 7 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 7 &middot; Alles sicher in die <em>.env</em>-Datei <span class="dur">~3 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Jetzt sammeln wir alle Geheimnisse an einem Ort: der <em>.env</em>-Datei. Das ist eine spezielle Datei f&uuml;r vertrauliche Werte, die <em>nie</em> ins Internet oder zu git gelangt. Praktischerweise haben wir eine Vorlage &mdash; die <em>.env.example</em>. Die kopieren wir. Dieser Befehl l&auml;uft im Projekt-Ordner:&ldquo;</p>
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">Terminal (PowerShell) &mdash; im Projekt-Ordner</span></div>
+        <div class="cmd-cwd">&#128193; <b>C:\Users\&lt;du&gt;\Desktop\StitchLab-YVR</b> &mdash; dein Projekt-Ordner (dort liegt <code>nx.json</code>)</div>
+        <pre><span class="p">$</span> Copy-Item .env.example .env
+<span class="o"># (Git-Bash/Mac stattdessen:  cp .env.example .env )</span></pre>
+      </div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Zwei Werte fehlen noch: die geheimen Schl&uuml;ssel f&uuml;rs Login, <em>JWT_SECRET</em> und <em>JWT_REFRESH_SECRET</em>. Die d&uuml;rfen keine simplen W&ouml;rter sein &mdash; wir lassen sie vom Computer zuf&auml;llig erzeugen. F&uuml;hr diesen Befehl <em>zweimal</em> aus (einmal pro Schl&uuml;ssel):&ldquo;</p>
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">Terminal &mdash; zwei starke Zufallswerte erzeugen</span></div>
+        <div class="cmd-cwd">&#128193; <b>egal wo</b> &mdash; erzeugt nur je einen Zufallswert zum Hineinkopieren</div>
+        <pre><span class="p">$</span> node -e "console.log(require('crypto').randomBytes(48).toString('base64'))"
+<span class="g">k7Yb2p...langer-zufalls-string...=</span>   <span class="o"># &rarr; JWT_SECRET</span>
+
+<span class="p">$</span> node -e "console.log(require('crypto').randomBytes(48).toString('base64'))"
+<span class="g">Qw9Zx1...anderer-zufalls-string...=</span>   <span class="o"># &rarr; JWT_REFRESH_SECRET</span></pre>
+      </div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Und jetzt &ouml;ffnen wir die <em>.env</em> im Editor und tragen alle Werte ein &mdash; den Verbindungs-String, die zwei Schl&uuml;ssel und die drei Supabase-Werte:&ldquo;</p>
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">Konfigurationsdatei &mdash; Werte eintragen</span></div>
+        <div class="cmd-cwd">&#128196; <b>C:\Users\&lt;du&gt;\Desktop\StitchLab-YVR\.env</b> &mdash; im Projekt-Hauptordner (wird NIE committet)</div>
+        <pre><span class="o"># PostgreSQL &mdash; der Session-Pooler-String aus Beat 4</span>
+DATABASE_URL=<span class="g">"postgresql://postgres.abcd1234:DEIN_PW@aws-0-ca-central-1.pooler.supabase.com:5432/postgres"</span>
+
+<span class="o"># Login-Schluessel &mdash; die zwei erzeugten Zufallswerte (verschieden!)</span>
+JWT_SECRET=<span class="g">"k7Yb2p...="</span>
+JWT_REFRESH_SECRET=<span class="g">"Qw9Zx1...="</span>
+
+<span class="o"># Supabase Storage</span>
+SUPABASE_URL=<span class="g">"https://abcd1234.supabase.co"</span>
+SUPABASE_SECRET_KEY=<span class="g">"sb_secret_..."</span>   <span class="o"># der service_role / secret key</span>
+SUPABASE_BUCKET=<span class="g">"product-images"</span>
+
+<span class="o"># E-Mail &mdash; erst im Passwort-Reset-Kapitel noetig, Platzhalter ok</span>
+RESEND_API_KEY=<span class="g">"re_..."</span>
+RESEND_FROM_ADDRESS=<span class="g">"onboarding@resend.dev"</span></pre>
+      </div>
+      <div class="warn">
+        <span class="h">Niemals committen</span>
+        Die <b>.env</b> steht schon in der <b>.gitignore</b> &mdash; sie darf <b>nie</b> in git landen. Committe nur die <b>.env.example</b> (ohne echte Werte). Pr&uuml;fen: <code style="font-family:var(--font-mono)">git status</code> darf <b>.env</b> <em>nicht</em> anzeigen.
+      </div>
+      <div class="check">
+        <span class="h">Erfolgskontrolle</span>
+        Im Projekt-Ordner liegt eine <b>.env</b> mit echten Werten. <b>git status</b> listet sie <em>nicht</em> auf (sie ist ignoriert). DATABASE_URL enth&auml;lt <b>pooler.supabase.com:5432</b>, und die zwei JWT-Werte sind verschieden.
+      </div>
+    </div>
+
+    <!-- Beat 8 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 8 &middot; Abschluss &amp; Ausblick <span class="dur">~30 Sek</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Stark! Wir haben jetzt eine echte PostgreSQL-Datenbank und einen Datei-Speicher in der Cloud &mdash; und alle Zugangsdaten sicher in der <em>.env</em>. Aber die Datenbank ist noch <em>leer</em>: keine Tabellen. Im n&auml;chsten Kapitel &auml;ndern wir das mit <em>Prisma</em>: Wir beschreiben unser Datenmodell aus Kapitel&nbsp;7 in Code und lassen Prisma die Tabellen in Supabase anlegen. Bis gleich!&ldquo;</p>
+      </div>
+    </div>
+
+    <!-- Checklist -->
+    <div class="checklist">
+      <h4>&#127909; Aufnahme-Checkliste f&uuml;r dieses Kapitel</h4>
+      <ul>
+        <li>Supabase-Konto vorher anlegen; ggf. ein Test-Projekt zum Vorf&uuml;hren bereit</li>
+        <li>Database-Password &amp; Keys griffbereit (aber im Video <em>unkenntlich</em> machen/zensieren!)</li>
+        <li>Beim Connection-String klar zeigen: <em>Session pooler</em>, Port <em>5432</em>, Region <em>ca-central-1</em></li>
+        <li>Bucket <em>product-images</em>, <em>&ouml;ffentlich</em></li>
+        <li>JWT-Befehl vorab testen, dass ein Zufallswert erscheint</li>
+        <li><em>git status</em> zeigen: .env taucht nicht auf</li>
+        <li><b>Echte Secrets im Schnitt verpixeln</b> &mdash; niemals echte Keys im Video zeigen</li>
+      </ul>
+    </div>
+
+  </article>
+
+  <!-- ============ CHAPTER 9 ============ -->
+  <article class="chapter" id="kap9">
+    <div class="chapter-head">
+      <div class="chip"><span class="num">09</span> Kapitel &middot; Teil 2</div>
+      <h2>Prisma &amp; das Datenmodell</h2>
+      <div class="meta-row">
+        <span class="meta">&#9201; 13&ndash;16 Min</span>
+        <span class="meta">&#9000; schema.prisma + migrate</span>
+        <span class="meta">&#127919; Echte Tabellen in Supabase anlegen</span>
+      </div>
+    </div>
+
+    <!-- Beat 1 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 1 &middot; R&uuml;ckblick &amp; heute <span class="dur">~40 Sek</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Willkommen zur&uuml;ck! Wir haben eine leere Datenbank in der Cloud. Heute f&uuml;llen wir sie mit <em>Struktur</em> &mdash; unseren sieben Tabellen. Aber wir schreiben daf&uuml;r keine kryptischen Datenbank-Befehle. Wir beschreiben unser Modell in gut lesbarem Code und lassen ein Werkzeug namens <em>Prisma</em> die Tabellen f&uuml;r uns anlegen. Genau das Diagramm aus Kapitel&nbsp;7 wird jetzt echt.&ldquo;</p>
+      </div>
+      <p class="note">&#128221; Callback: Blende hier das ER-Diagramm aus Kapitel&nbsp;7 kurz ein &mdash; &bdquo;das bauen wir jetzt in echt&ldquo;.</p>
+    </div>
+
+    <!-- Links -->
+    <div class="links">
+      <span class="tag">&#128279; Offizielle Links (f&uuml;r die Video-Beschreibung)</span>
+      <ul>
+        <li><a href="https://www.prisma.io" target="_blank" rel="noreferrer">https://www.prisma.io</a> <span class="desc">&mdash; Prisma</span></li>
+        <li><a href="https://www.prisma.io/docs/orm/prisma-schema" target="_blank" rel="noreferrer">prisma.io/docs &mdash; Schema-Referenz</a></li>
+        <li><a href="https://pris.ly/d/config-datasource" target="_blank" rel="noreferrer">pris.ly/d/config-datasource</a> <span class="desc">&mdash; Prisma-7-Config (Datasource)</span></li>
+      </ul>
+    </div>
+
+    <!-- Beat 2 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 2 &middot; Was ist Prisma (ein ORM)? <span class="dur">~1,5 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Datenbanken sprechen eine eigene Sprache namens <em>SQL</em>. Man kann sie lernen &mdash; aber Prisma nimmt uns den Gro&szlig;teil ab. Prisma ist ein <em>ORM</em>, ein &Uuml;bersetzer zwischen unserem TypeScript-Code und der Datenbank. Wir beschreiben unsere Tabellen einmal in einer Datei, und Prisma erledigt den Rest: Es legt die Tabellen an und gibt uns bequeme, <em>typsichere</em> Funktionen zum Speichern und Abfragen. Und weil es typsicher ist, warnt uns der Editor sofort, wenn wir etwas Falsches abfragen.&ldquo;</p>
+      </div>
+      <div class="def">
+        <div class="def-head">&#128230; Begriff: ORM (Object-Relational Mapping) &mdash; Prisma</div>
+        <dl>
+          <div class="row"><dt>Definition</dt><dd>Ein &Uuml;bersetzer zwischen Code-Objekten und Datenbank-Tabellen. Du schreibst normalen Code, das ORM erzeugt daraus die SQL-Befehle.</dd></div>
+          <div class="row"><dt>Vorteil</dt><dd>Kein SQL von Hand, <em>typsicher</em>, Autovervollst&auml;ndigung, ein Modell als &bdquo;einzige Wahrheit&ldquo;.</dd></div>
+          <div class="row"><dt>Nachteil</dt><dd>F&uuml;r sehr komplexe Spezial-Abfragen st&ouml;&szlig;t man irgendwann an Grenzen (dann schreibt man gezielt doch SQL).</dd></div>
+          <div class="row"><dt>Alternative</dt><dd>SQL direkt, oder andere ORMs (TypeORM, Drizzle). Wir nehmen Prisma wegen Typsicherheit &amp; Lesbarkeit.</dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <!-- Beat 3 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 3 &middot; Prisma installieren <span class="dur">~1,5 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Erst holen wir Prisma ins Projekt. Vier Teile: das <em>Werkzeug</em> (zum Anlegen der Tabellen), den <em>Client</em> (nutzt sp&auml;ter unser Code) und einen <em>Treiber</em> f&uuml;r Postgres. Warum ein extra Treiber? Prisma&nbsp;7 arbeitet ohne die alte Rust-Engine &mdash; es braucht daf&uuml;r einen <em>Driver-Adapter</em>, hier <code>@prisma/adapter-pg</code> mit <code>pg</code>.&ldquo;</p>
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">Terminal &mdash; im Projekt-Ordner</span></div>
+        <div class="cmd-cwd">&#128193; <b>C:\Users\&lt;du&gt;\Desktop\StitchLab-YVR</b> &mdash; dein Projekt-Ordner (dort liegt <code>nx.json</code>)</div>
+        <pre><span class="p">$</span> npm i -D prisma@latest
+<span class="p">$</span> npm i @prisma/client@latest @prisma/adapter-pg@latest pg@latest</pre>
+      </div>
+      <div class="check">
+        <span class="h">Erfolgskontrolle</span>
+        <code>npx prisma --version</code> zeigt <b>Prisma 7.x</b> und &bdquo;Query Compiler: enabled&ldquo;. Die Pakete stehen in der <b>package.json</b>.
+      </div>
+    </div>
+
+    <!-- Beat 4 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 4 &middot; Das Datenmodell schreiben <span class="dur">~3 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Jetzt der Kern: Wir beschreiben unsere Tabellen in einer Datei &mdash; tief in unserer Backend-Struktur, passend zur sauberen Architektur aus Teil&nbsp;1. In Prisma hei&szlig;t eine Tabelle ein <em>model</em>, jede Zeile darin eine Spalte. Schau, wie direkt das unser Diagramm abbildet:&ldquo;</p>
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">schema.prisma (Auszug)</span></div>
+        <div class="cmd-cwd">&#128196; <b>libs\backend\shared\database\prisma\schema.prisma</b></div>
+        <pre><span class="o">// Prisma 7: die Verbindungs-URL steht in prisma.config.ts (Beat 5), NICHT hier.</span>
+datasource db { provider = <span class="g">"postgresql"</span> }
+generator client { provider = <span class="g">"prisma-client"</span>  output = <span class="g">"../generated/prisma"</span> }
+
+enum Role { USER  ADMIN }                     <span class="o">// feste Auswahl</span>
+
+model Product {
+  id          String  <span class="g">@id</span> @default(uuid()) @db.Uuid   <span class="o">// PK</span>
+  slug        String  <span class="g">@unique</span>                     <span class="o">// U (eindeutig)</span>
+  name        String                              <span class="o">// EN-only: EINE name-Spalte</span>
+  priceCents  Int                                 <span class="o">// Geld als Integer-Cent</span>
+  isShowcased Boolean @default(false)
+  isPublished Boolean @default(true)
+  images      ProductImage[]                      <span class="o">// 1:n</span>
+  categories  ProductCategory[]                   <span class="o">// n:m</span>
+}
+
+model ProductImage {
+  id          String  @id @default(uuid()) @db.Uuid
+  productId   String  @db.Uuid                    <span class="o">// FK-Feld</span>
+  product     Product <span class="g">@relation</span>(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model Favorite {                                  <span class="o">// Verbindungstabelle (n:m)</span>
+  userId    String @db.Uuid
+  productId String @db.Uuid
+  <span class="g">@@id</span>([userId, productId])                     <span class="o">// zusammengesetzter Prim&auml;rschl&uuml;ssel</span>
+}</pre>
+      </div>
+      <div class="def">
+        <div class="def-head">&#128269; Die Schema-Bausteine (= dein ER-Diagramm)</div>
+        <dl>
+          <div class="row"><dt>model</dt><dd>Eine Tabelle (z.&nbsp;B. <em>Product</em>). Jede Zeile = eine Spalte.</dd></div>
+          <div class="row"><dt>@id / @@id</dt><dd>Der Prim&auml;rschl&uuml;ssel. <em>@@id([a, b])</em> = <em>zusammengesetzter</em> PK (die Verbindungstabellen).</dd></div>
+          <div class="row"><dt>@unique</dt><dd>Dieses Feld darf nur einmal vorkommen (das &bdquo;U&ldquo; im Diagramm).</dd></div>
+          <div class="row"><dt>@relation &middot; onDelete: Cascade</dt><dd>Der Fremdschl&uuml;ssel (FK). Cascade = l&ouml;schst du ein Produkt, verschwinden auch seine Bilder/Verkn&uuml;pfungen.</dd></div>
+          <div class="row"><dt>? &middot; @db.Uuid</dt><dd><em>String?</em> = darf leer sein (nullable). <em>@db.Uuid</em> = echter Postgres-UUID-Typ statt Text.</dd></div>
+        </dl>
+      </div>
+      <p class="note">&#128221; Die restlichen Modelle (User, Category, ProductCategory, CartItem &mdash; mit der Nutzlast <em>quantity</em>) folgen exakt demselben Muster. Zeig sie im Diagramm-Vergleich.</p>
+    </div>
+
+    <!-- Beat 5 -->
+    <div class="beat">
+      <h3><span class="dot"></span> 5 &middot; Verdrahtung: <em>prisma.config.ts</em> &amp; Scripts <span class="dur">~2 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Zwei kleine Dinge verbinden alles. Erstens die <em>prisma.config.ts</em>: Sie sagt Prisma, wo unser Schema liegt und woher die Verbindung kommt &mdash; n&auml;mlich <em>DATABASE_URL</em> aus unserer <em>.env</em> von letztem Kapitel. Achtung: Prisma&nbsp;7 l&auml;dt die <em>.env</em> nicht mehr von allein &mdash; wir laden sie hier selbst.&ldquo;</p>
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">prisma.config.ts</span></div>
+        <div class="cmd-cwd">&#128196; <b>C:\Users\&lt;du&gt;\Desktop\StitchLab-YVR\prisma.config.ts</b> &mdash; im Projekt-Hauptordner</div>
+        <pre>import { defineConfig } from <span class="g">'prisma/config'</span>;
+
+<span class="o">// Prisma 7 laedt .env NICHT mehr automatisch -> per Node-Builtin laden.</span>
+try { process.loadEnvFile(); } catch { <span class="o">/* keine .env (z. B. CI) -> ok */</span> }
+
+export default defineConfig({
+  schema: <span class="g">'libs/backend/shared/database/prisma/schema.prisma'</span>,
+  migrations: { path: <span class="g">'libs/backend/shared/database/prisma/migrations'</span> },
+  datasource: { url: <span class="g">process.env.DATABASE_URL</span> },
+});</pre>
+      </div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Zweitens ein paar Abk&uuml;rzungen in der <em>package.json</em>, damit wir nicht immer die langen Befehle tippen:&ldquo;</p>
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">package.json &rarr; "scripts"</span></div>
+        <div class="cmd-cwd">&#128196; <b>C:\Users\&lt;du&gt;\Desktop\StitchLab-YVR\package.json</b></div>
+        <pre>"scripts": {
+  "db:generate": <span class="g">"prisma generate"</span>,
+  "db:migrate":  <span class="g">"prisma migrate dev"</span>,
+  "db:deploy":   <span class="g">"prisma migrate deploy"</span>,
+  "db:studio":   <span class="g">"prisma studio"</span>
+}</pre>
+      </div>
+      <p class="note">&#128221; Der Schema-Pfad steht jetzt in der <em>prisma.config.ts</em> &mdash; deshalb brauchen die Scripts <b>kein</b> <code>--schema</code> mehr.</p>
+    </div>
+
+    <!-- Beat 6 · Fallstricke -->
+    <div class="beat">
+      <h3><span class="dot"></span> 6 &middot; Prisma-7-Fallstricke (real passiert) <span class="dur">~2 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Genau hier bin ich beim echten Bauen in vier Stolpersteine gelaufen &mdash; alle typisch f&uuml;r <em>Prisma&nbsp;7</em>. Zeige ich dir, damit sie dich nicht kosten, was sie mich gekostet haben.&ldquo;</p>
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">der erste Fehler beim db:generate</span></div>
+        <div class="cmd-cwd">&#128269; <b>Ausgabe</b> &mdash; so sieht der Stolperstein aus</div>
+        <pre><span class="e">Error code: P1012</span>
+<span class="e">The datasource property `url` is no longer supported in schema files.</span>
+<span class="e">Move connection URLs for Migrate to `prisma.config.ts` ...</span></pre>
+      </div>
+      <div class="def">
+        <div class="def-head">&#128293; Die vier Fallstricke &amp; ihre L&ouml;sung</div>
+        <dl>
+          <div class="row"><dt>1 &middot; url im Schema</dt><dd><b>P1012:</b> <code>url = env(...)</code> im <em>datasource</em>-Block ist in Prisma&nbsp;7 verboten. &rarr; Verbindung wandert in die <em>prisma.config.ts</em> (Beat&nbsp;5).</dd></div>
+          <div class="row"><dt>2 &middot; .env nicht geladen</dt><dd>Prisma&nbsp;7 liest die <em>.env</em> nicht mehr automatisch. &rarr; <code>process.loadEnvFile()</code> in der Config, sonst ist <em>DATABASE_URL</em> leer.</dd></div>
+          <div class="row"><dt>3 &middot; neuer Generator</dt><dd>Statt <em>prisma-client-js</em> hei&szlig;t der Generator jetzt <em>prisma-client</em> und braucht ein <em>output</em>-Ziel. &rarr; wir generieren nach <code>generated/prisma</code> (gitignored).</dd></div>
+          <div class="row"><dt>4 &middot; Shadow-DB? Nein!</dt><dd>Der ber&uuml;chtigte Supabase-Fallstrick (Migration scheitert an der Shadow-DB) blieb <b>aus</b> &mdash; die Session-Pooler-URL aus Kap&nbsp;8 lief glatt durch.</dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <!-- Beat 7 · Migration -->
+    <div class="beat">
+      <h3><span class="dot"></span> 7 &middot; Die erste Migration &mdash; Tabellen anlegen <span class="dur">~2 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Jetzt der gro&szlig;e Moment: Wir lassen Prisma unser Modell in echte Tabellen verwandeln. Das nennt man eine <em>Migration</em>. Wir geben ihr gleich einen Namen mit &mdash; <em>init</em> &mdash; damit im Terminal keine R&uuml;ckfrage kommt:&ldquo;</p>
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">Terminal &mdash; im Projekt-Ordner</span></div>
+        <div class="cmd-cwd">&#128193; <b>C:\Users\&lt;du&gt;\Desktop\StitchLab-YVR</b></div>
+        <pre><span class="p">$</span> npm run db:migrate -- --name init
+<span class="o">Datasource "db": PostgreSQL ... at "aws-0-ca-central-1.pooler.supabase.com:5432"</span>
+<span class="g">Applying migration `20260724..._init`</span>
+<span class="g">&#10004; Your database is now in sync with your schema.</span></pre>
+      </div>
+      <div class="def">
+        <div class="def-head">&#128230; Begriff: Migration</div>
+        <dl>
+          <div class="row"><dt>Definition</dt><dd>Ein aufgezeichneter Schritt, der die Datenbank-Struktur ver&auml;ndert (Tabellen anlegen). Wird als <em>.sql</em>-Datei gespeichert.</dd></div>
+          <div class="row"><dt>Vorteil</dt><dd>Nachvollziehbare Historie: Jeder im Team &mdash; und der Server beim Deploy (<em>db:deploy</em>) &mdash; bekommt exakt dieselbe Struktur.</dd></div>
+          <div class="row"><dt>Merke</dt><dd>&Auml;nderst du sp&auml;ter das Schema, wieder <em>db:migrate</em> &mdash; Prisma erzeugt den n&auml;chsten Schritt.</dd></div>
+        </dl>
+      </div>
+      <div class="check">
+        <span class="h">Erfolgskontrolle</span>
+        Prisma meldet &bdquo;in sync&ldquo;. Es entsteht <b>&hellip;/prisma/migrations/&hellip;_init/migration.sql</b>. Im <b>Supabase-Dashboard &rarr; Table Editor</b> erscheinen jetzt <b>User, Category, Product, ProductImage, ProductCategory, Favorite, CartItem</b>. &#127881;
+      </div>
+      <p class="note">&#128221; Fehler beim Verbinden? Fast immer die <em>DATABASE_URL</em>: Session-Pooler, Port 5432, richtiges Passwort (Kap&nbsp;8). Sonderzeichen im Passwort? &rarr; percent-encoden.</p>
+    </div>
+
+    <!-- Beat 8 · Generate + Studio -->
+    <div class="beat">
+      <h3><span class="dot"></span> 8 &middot; Client erzeugen &amp; Daten ansehen <span class="dur">~2 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Zwei letzte Handgriffe. Erstens der <em>Prisma Client</em> &mdash; der ma&szlig;geschneiderte Code, mit dem unser Backend sp&auml;ter auf genau diese Tabellen zugreift:&ldquo;</p>
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">Terminal</span></div>
+        <div class="cmd-cwd">&#128193; <b>C:\Users\&lt;du&gt;\Desktop\StitchLab-YVR</b></div>
+        <pre><span class="p">$</span> npm run db:generate
+<span class="g">&#10004; Generated Prisma Client (7.9.0) to ./libs/backend/shared/database/generated/prisma</span></pre>
+      </div>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Und zweitens ein tolles Werkzeug: <em>Prisma Studio</em> &mdash; eine kleine Oberfl&auml;che im Browser, um in unsere Tabellen zu schauen und Daten von Hand anzulegen:&ldquo;</p>
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">Terminal</span></div>
+        <div class="cmd-cwd">&#128193; <b>C:\Users\&lt;du&gt;\Desktop\StitchLab-YVR</b></div>
+        <pre><span class="p">$</span> npm run db:studio
+<span class="g">&#10148; Prisma Studio: http://localhost:5555</span></pre>
+      </div>
+      <div class="check">
+        <span class="h">Erfolgskontrolle</span>
+        <b>db:generate</b> meldet &bdquo;Generated Prisma Client&ldquo;. <b>db:studio</b> &ouml;ffnet <b>localhost:5555</b> und zeigt alle 7 Tabellen &mdash; noch leer, aber da. (Stoppen: <b>Strg&nbsp;+&nbsp;C</b>.)
+      </div>
+      <p class="note">&#128221; Gegencheck aus der Praxis: Eine direkte Abfrage der <em>information_schema</em> zeigte 8 Tabellen &mdash; unsere 7 plus <em>_prisma_migrations</em> (da f&uuml;hrt Prisma Buch &uuml;ber angewandte Migrationen).</p>
+    </div>
+
+    <!-- Beat 9 · Design-Entscheidung EN-only -->
+    <div class="beat">
+      <h3><span class="dot"></span> 9 &middot; Kurz &amp; wichtig: warum <em>einsprachig</em>? <span class="dur">~1,5 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Dir ist vielleicht aufgefallen: eine einzige <em>name</em>-Spalte, keine drei Sprach-Spalten. Das ist eine <em>bewusste Design-Entscheidung</em> &mdash; und genau so denken Profis: nicht raten, sondern die L&ouml;sung <em>zum Problem</em> w&auml;hlen. StitchLab-YVR ist einsprachig Englisch, also reicht eine Spalte. Das h&auml;lt Schema und Abfragen einfach.&ldquo;</p>
+      </div>
+      <div class="def">
+        <div class="def-head">&#9989; Entscheidung: einsprachig (EN) &mdash; und wann es anders w&auml;re</div>
+        <dl>
+          <div class="row"><dt>Unsere Realit&auml;t</dt><dd>Ein Publikum, eine Sprache (EN). Eine <em>name</em>-Spalte &mdash; simpel, schnell, selbsterkl&auml;rend.</dd></div>
+          <div class="row"><dt>Wenige feste Sprachen?</dt><dd>Dann pro Sprache eine Spalte (<em>nameEn</em>, <em>nameFr</em>&hellip;) &mdash; alle in einer Zeile, Typpr&uuml;fung erzwingt sie.</dd></div>
+          <div class="row"><dt>Viele/offene Sprachen?</dt><dd>Dann eine eigene <em>&Uuml;bersetzungstabelle</em> (eine Zeile pro Sprache) &mdash; flexibel, aber aufw&auml;ndiger.</dd></div>
+          <div class="row"><dt>Die Kunst</dt><dd>Passt die L&ouml;sung <em>zum Problem</em>? Bei uns: ja &mdash; eine Spalte. Kommt sp&auml;ter eine zweite Sprache, migrieren wir bewusst.</dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <!-- Beat 10 · Abschluss -->
+    <div class="beat">
+      <h3><span class="dot"></span> 10 &middot; Abschluss &amp; Ausblick <span class="dur">~30 Sek</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Wahnsinn &mdash; unser Diagramm ist jetzt eine echte, lebende Datenbank in der Cloud! Modell in Code beschrieben, Migration ausgef&uuml;hrt, sieben Tabellen stehen. <em>Teil 2 ist geschafft!</em> Im n&auml;chsten Teil kehren wir zum <em>Backend</em> zur&uuml;ck und bauen die eigentliche Logik &mdash; die Bausteine von NestJS, mit denen unsere App wirklich etwas <em>tut</em>. Bis gleich!&ldquo;</p>
+      </div>
+      <p class="note">&#128221; Meilenstein: Teil 2 (Datenbank) abgeschlossen &mdash; von &bdquo;was ist eine DB&ldquo; bis zu echten Tabellen in der Cloud. Kurz feiern.</p>
+    </div>
+
+    <!-- Checklist -->
+    <div class="checklist">
+      <h4>&#127909; Aufnahme-Checkliste f&uuml;r dieses Kapitel</h4>
+      <ul>
+        <li>.env aus Kapitel&nbsp;8 korrekt gef&uuml;llt (sonst schl&auml;gt die Migration fehl)</li>
+        <li>ER-Diagramm aus Kapitel&nbsp;7 zum Einblenden bereit (Callback)</li>
+        <li>Die vier Prisma-7-Fallstricke vorab nachstellen (v.&nbsp;a. den P1012-Fehler zeigen)</li>
+        <li>Supabase Table Editor offen, um die 7 neuen Tabellen live zu zeigen</li>
+        <li>Prisma Studio (localhost:5555) einmal &ouml;ffnen &amp; die leeren Tabellen zeigen</li>
+        <li>Migrations-Ordner im Editor zeigen (die entstandene <em>migration.sql</em>)</li>
+      </ul>
+    </div>
+
     <!-- Next up -->
     <div class="nextup">
       <span class="tag">&#9654; Als N&auml;chstes</span>
-      <h3>Teil 2 &middot; Kapitel 7 &mdash; Die Datenbank</h3>
-      <p>Was ist eine relationale Datenbank &mdash; und warum Postgres? Danach richten wir Supabase (Cloud) ein und verbinden Prisma. Das Ged&auml;chtnis unserer App entsteht.</p>
+      <h3>Teil 3 &middot; Backend &amp; Architektur</h3>
+      <p>Das Daten-Fundament steht. Jetzt kehren wir zum Backend zur&uuml;ck: die Bausteine von NestJS, DDD &amp; Modular Monolith, die vier Schichten, CQRS &mdash; und die erste echte Dom&auml;ne, die unsere Produkte verwaltet.</p>
     </div>
   </article>
 
