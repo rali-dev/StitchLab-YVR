@@ -6,7 +6,11 @@
     "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo",
     "emitDeclarationOnly": false,
     "forceConsistentCasingInFileNames": true,
-    "types": ["node"]
+    "types": ["node"],
+    // class-validator/class-transformer arbeiten mit den alten (TC39-Stage-2)
+    // Decorators; ohne diese beiden Flags kompilieren die DTO-Annotationen nicht.
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "include": ["src/**/*.ts"],
   "references": [],

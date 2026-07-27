@@ -23,7 +23,16 @@
   ],
   "references": [
     {
+      "path": "../../libs/shared/contracts/tsconfig.lib.json"
+    },
+    {
       "path": "../../libs/backend/shared/database/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/backend/product/infrastructure/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/backend/product/adapters/tsconfig.lib.json"
     }
   ]
 }

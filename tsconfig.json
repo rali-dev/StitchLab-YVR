@@ -17,6 +17,18 @@
     },
     {
       "path": "./libs/backend/shared/database"
+    },
+    {
+      "path": "./libs/backend/product/domain"
+    },
+    {
+      "path": "./libs/backend/product/application"
+    },
+    {
+      "path": "./libs/backend/product/infrastructure"
+    },
+    {
+      "path": "./libs/backend/product/adapters"
     }
   ],
   "compilerOptions": {}

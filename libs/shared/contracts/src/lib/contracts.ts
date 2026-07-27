@@ -14,3 +14,26 @@ export class DomainException extends Error {
     this.name = 'DomainException';
   }
 }
+
+/**
+ * Die angefragte Ressource existiert nicht. Eigene Klasse (statt nur einer
+ * Meldung), damit der ExceptionFilter der Adapter-Schicht sie auf HTTP 404
+ * abbilden kann - die Anwendungsschicht bleibt dabei frei von HTTP-Wissen.
+ */
+export class ResourceNotFoundException extends DomainException {
+  constructor(message: string) {
+    super(message);
+    this.name = 'ResourceNotFoundException';
+  }
+}
+
+/**
+ * Kollision mit dem bestehenden Zustand (z. B. ein bereits vergebener Slug).
+ * Wird vom ExceptionFilter auf HTTP 409 abgebildet.
+ */
+export class ResourceConflictException extends DomainException {
+  constructor(message: string) {
+    super(message);
+    this.name = 'ResourceConflictException';
+  }
+}
