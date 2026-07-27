@@ -1,0 +1,9 @@
+{
+  "name": "@stitchlab-yvr/backend-shared-database",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/backend/shared/database/src",
+  "projectType": "library",
+  "tags": ["scope:shared", "platform:backend"],
+  "// targets": "to see all targets run: nx show project @stitchlab-yvr/backend-shared-database --web",
+  "targets": {}
+}

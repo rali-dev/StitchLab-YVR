@@ -11,6 +11,12 @@
     },
     {
       "path": "./apps/backend"
+    },
+    {
+      "path": "./libs/shared/contracts"
+    },
+    {
+      "path": "./libs/backend/shared/database"
     }
   ],
   "compilerOptions": {}

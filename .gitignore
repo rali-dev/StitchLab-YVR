@@ -58,4 +58,4 @@ test-output
 !.env.example
 
 # Prisma: generierter Client (wird bei db:generate erzeugt)
-/libs/backend/shared/database/generated
+/libs/backend/shared/database/src/generated

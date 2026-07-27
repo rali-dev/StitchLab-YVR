@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "nx": {
-    "name": "backend"
+    "name": "backend",
+    "tags": ["platform:backend"]
   },
   "dependencies": {
     "@nestjs/common": "^11.0.0",
