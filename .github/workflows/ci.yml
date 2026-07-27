@@ -32,6 +32,10 @@ jobs:
 
       - run: npm install
 
+      # Prisma-Client generieren: er ist gitignored (nicht im Repo), muss also VOR
+      # build/typecheck erzeugt werden. Kein DB-Zugriff noetig (prisma generate ist offline).
+      - run: npm run db:generate
+
       # Prepend any command with "nx record --" to record its logs to Nx Cloud
       - run: npx nx record -- npx nx format:check --base="remotes/origin/main"
       - run: npx nx run-many -t lint test build typecheck

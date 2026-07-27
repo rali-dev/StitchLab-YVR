@@ -2917,6 +2917,38 @@ export default defineConfig({
       <p class="note">&#128221; Nach Commit&nbsp;06 f&auml;hrt unsere CI-Zeile <code style="font-family:var(--font-mono)">lint test build typecheck</code> &mdash; aber weiterhin <b>ohne</b> e2e (typecheck-Story: Fallstrick&nbsp;2).</p>
     </div>
 
+    <!-- Fallstrick 4 &middot; Prisma-Client fehlt in CI -->
+    <div class="beat">
+      <h3><span class="dot"></span> CI wird rot: <code style="font-family:var(--font-mono)">backend-shared-database:build</code> &mdash; der Prisma-Client fehlt</h3>
+      <div class="screen"><span class="tag">&#127916; Situation</span><p>Lokal ist alles gr&uuml;n (<code style="font-family:var(--font-mono)">nx run-many -t lint test build typecheck</code>), aber nach dem Push wird die CI rot: <code style="font-family:var(--font-mono)">@stitchlab-yvr/backend-shared-database:build</code> schl&auml;gt fehl &mdash; und via <em>nx-bail</em> fallen <code style="font-family:var(--font-mono)">backend:build/test/typecheck</code> gleich mit weg.</p></div>
+      <div class="def">
+        <div class="def-head">&#128269; Warum lokal gr&uuml;n, in CI rot?</div>
+        <dl>
+          <div class="row"><dt>Die Ursache</dt><dd>Der <em>generierte</em> Prisma-Client (<code style="font-family:var(--font-mono)">src/generated/prisma</code>) ist bewusst <b>gitignored</b> &mdash; generierter Code geh&ouml;rt nicht ins Repo. <em>Lokal</em> hast du ihn (von <code style="font-family:var(--font-mono)">db:generate</code>); die frische CI-Checkout-Kopie hat ihn <b>nicht</b>.</dd></div>
+          <div class="row"><dt>Die Folge</dt><dd>Der <code style="font-family:var(--font-mono)">tsc</code>-Build der Datenbank-Lib importiert <code style="font-family:var(--font-mono)">../generated/prisma/client</code> &mdash; findet ihn nicht &rarr; rot. Der Rest kippt per <em>nx-bail</em> hinterher.</dd></div>
+          <div class="row"><dt>Merke</dt><dd>Generierter Code wird <b>nicht committet</b>, sondern in <em>jeder</em> Umgebung neu erzeugt &mdash; lokal, in CI, beim Deploy.</dd></div>
+        </dl>
+      </div>
+      <div class="vo"><span class="tag">&#127897;&#65039; So erkl&auml;rst du's im Video</span>
+        <p>&bdquo;Klassischer &bdquo;works on my machine&ldquo;-Fall: Der Prisma-Client wird <em>generiert</em>, nicht von Hand geschrieben &mdash; deshalb ignorieren wir ihn in git. Aber dann muss ihn <em>jede</em> Maschine selbst erzeugen. Lokal habe ich das l&auml;ngst gemacht, die CI startet bei null. L&ouml;sung: ein <em>db:generate</em>-Schritt in die CI, <em>vor</em> dem Build.&ldquo;</p>
+      </div>
+      <div class="check">
+        <span class="h">Die L&ouml;sung</span>
+        In <code style="font-family:var(--font-mono)">.github/workflows/ci.yml</code> nach <b>npm install</b> einen Schritt <b>npm run db:generate</b> einf&uuml;gen (vor <em>nx run-many</em>). Braucht keine DB-Verbindung &mdash; <em>prisma generate</em> ist offline.
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">.github/workflows/ci.yml</span></div>
+        <pre>        - run: npm install
+<span class="g">+       # Prisma-Client (gitignored) VOR build/typecheck erzeugen - offline, ohne DB</span>
+<span class="g">+       - run: npm run db:generate</span>
+        - run: npx nx run-many -t lint test build typecheck</pre>
+      </div>
+      <div class="warn">
+        <span class="h">Gilt auch f&uuml;rs Deployment</span>
+        Dasselbe Muster beim Deploy (Render): der Build-Befehl muss <b>prisma generate</b> enthalten &mdash; z.&nbsp;B. <code style="font-family:var(--font-mono)">npm ci &amp;&amp; prisma generate &amp;&amp; nx build backend &amp;&amp; prisma migrate deploy</code>.
+      </div>
+    </div>
+
     <!-- Merke &middot; CI-Gate -->
     <div class="beat">
       <h3><span class="dot"></span> Merke: Was geh&ouml;rt ins schnelle CI-Gate?</h3>
@@ -2936,7 +2968,7 @@ export default defineConfig({
   </article>
 
   <footer class="foot">
-    StitchLab-YVR &middot; Tutorial-Skript-Mappe &middot; Kapitel 1&ndash;6 (+ Anhang: Praxis-Fallstricke) von (geplant) 38 &mdash; in Arbeit &#9998;
+    StitchLab-YVR &middot; Tutorial-Skript-Mappe &middot; Kapitel 1&ndash;9 (+ Anhang: Praxis-Fallstricke) von (geplant) 37 &mdash; in Arbeit &#9998;
   </footer>
 
 </div>
