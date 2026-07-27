@@ -532,9 +532,9 @@
         <div class="pchaps">Kap. 7&ndash;9 &middot; Relationale DB &middot; Supabase &middot; Prisma &middot; Datenmodell</div>
       </div>
       <div class="part todo">
-        <div class="pnum">TEIL 3</div><span class="pstatus">geplant</span>
+        <div class="pnum">TEIL 3</div><span class="pstatus">Skript folgt</span>
         <div class="ptitle">Backend &amp; Architektur</div>
-        <div class="pchaps">Kap. 10&ndash;15 &middot; NestJS &middot; DDD &middot; Schichten &middot; CQRS &middot; Dom&auml;nen</div>
+        <div class="pchaps">Kap. 10&ndash;15 &middot; NestJS &middot; DDD &middot; Schichten &middot; CQRS &middot; Dom&auml;nen<br><b style="color:var(--ok)">&#10003; Code steht bereits</b> &mdash; erste Dom&auml;ne (Product) gebaut &amp; live gepr&uuml;ft. <a href="#praxis" style="color:var(--accent);text-decoration:none;border-bottom:1px solid currentColor">Drei Notizen f&uuml;rs Skript &rarr;</a></div>
       </div>
       <div class="part todo">
         <div class="pnum">TEIL 4</div><span class="pstatus">geplant</span>
@@ -2792,10 +2792,10 @@ export default defineConfig({
       <h2>Fallstricke, die dir fr&uuml;h begegnen</h2>
       <div class="meta-row">
         <span class="meta">&#128204; Sammelstelle</span>
-        <span class="meta">&#127916; Details in Teil 7&ndash;8</span>
+        <span class="meta">&#127916; Details in Teil 3 &amp; 7&ndash;8</span>
       </div>
     </div>
-    <p class="note">&#128221; Diese F&auml;lle sind mir beim echten Bauen begegnet. Thematisch geh&ouml;ren sie in sp&auml;tere Teile (Qualit&auml;t &amp; Deployment) &mdash; ich sammle sie hier, damit du nicht stecken bleibst, wenn sie dir <em>jetzt schon</em> begegnen.</p>
+    <p class="note">&#128221; Diese F&auml;lle sind mir beim echten Bauen begegnet. Thematisch geh&ouml;ren sie in sp&auml;tere Teile (Backend-Architektur, Qualit&auml;t &amp; Deployment) &mdash; ich sammle sie hier, damit du nicht stecken bleibst, wenn sie dir <em>jetzt schon</em> begegnen.</p>
 
     <!-- Fallstrick 1 &middot; CI npm ci -->
     <div class="beat">
@@ -2946,6 +2946,97 @@ export default defineConfig({
       <div class="warn">
         <span class="h">Gilt auch f&uuml;rs Deployment</span>
         Dasselbe Muster beim Deploy (Render): der Build-Befehl muss <b>prisma generate</b> enthalten &mdash; z.&nbsp;B. <code style="font-family:var(--font-mono)">npm ci &amp;&amp; prisma generate &amp;&amp; nx build backend &amp;&amp; prisma migrate deploy</code>.
+      </div>
+    </div>
+
+    <!-- Fallstrick 5 &middot; class-transformer @Transform -->
+    <div class="beat">
+      <h3><span class="dot"></span> Der gemeinste: gr&uuml;ner Test, roter Server (<code style="font-family:var(--font-mono)">@Transform</code>)</h3>
+      <div class="screen"><span class="tag">&#127916; Situation</span><p>Die erste Dom&auml;ne ist fertig, alle Tests gr&uuml;n. Dann der echte Aufruf im Browser: <code style="font-family:var(--font-mono)">GET /api/products?showcased=true</code> &rarr; <b>400 Bad Request</b>, &bdquo;showcased must be a boolean value". Derselbe Fall, den der Unit-Test gerade <em>bestanden</em> hat.</p></div>
+      <div class="def">
+        <div class="def-head">&#128269; Warum ist der Test gr&uuml;n und der Server rot?</div>
+        <dl>
+          <div class="row"><dt>Was sollte passieren</dt><dd>Query-Parameter kommen <b>immer als Text</b> an. Der Decorator <code style="font-family:var(--font-mono)">@Transform</code> aus <em>class-transformer</em> sollte den String <code style="font-family:var(--font-mono)">"true"</code> in ein echtes <code style="font-family:var(--font-mono)">true</code> verwandeln, bevor gepr&uuml;ft wird.</dd></div>
+          <div class="row"><dt>Die Ursache</dt><dd><em>class-transformer</em> merkt sich seine Decorator-Notizen in einer <b>modul-eigenen</b> Variablen. Wird das Paket <b>zweimal geladen</b> &mdash; im Monorepo der Normalfall (einmal &uuml;ber den Workspace-Link, einmal weil der Bundler eine andere Variante nimmt als NestJS intern) &mdash;, gibt es <b>zwei getrennte Notizb&uuml;cher</b>. <code style="font-family:var(--font-mono)">@Transform</code> schreibt ins eine, der Umwandler liest im anderen nach.</dd></div>
+          <div class="row"><dt>&#128163; Das T&uuml;ckische</dt><dd>Es kracht <b>nicht</b>. Der Transform passiert einfach <em>stumm</em> nicht &mdash; und die nachfolgende Pr&uuml;fung sieht noch den Text und lehnt ab.</dd></div>
+          <div class="row"><dt>Warum der Test log</dt><dd>Jest l&auml;dt die Quelldatei <b>direkt</b> &rarr; nur <em>eine</em> Kopie des Pakets, ein Notizbuch, alles funktioniert. Der geb&uuml;ndelte Server hat zwei. Der Test hat also nie das gepr&uuml;ft, was sp&auml;ter wirklich l&auml;uft.</dd></div>
+          <div class="row"><dt>&#10024; Der Kontrast</dt><dd><em>class-validator</em> (<code style="font-family:var(--font-mono)">@IsString</code>, <code style="font-family:var(--font-mono)">@IsInt</code> &hellip;) hat das Problem <b>nicht</b> &mdash; es legt sein Notizbuch bewusst global ab. Deshalb funktionierte die halbe Validierung und nur der Transform nicht.</dd></div>
+        </dl>
+      </div>
+      <div class="vo"><span class="tag">&#127897;&#65039; So erkl&auml;rst du's im Video</span>
+        <p>&bdquo;Das hier ist die wichtigste Lektion des ganzen Kapitels &mdash; und sie hat nichts mit dieser einen Bibliothek zu tun. Mein Test war <em>gr&uuml;n</em>. Und trotzdem war der Server <em>kaputt</em>. Warum? Weil der Test das Programm anders l&auml;dt als der echte Betrieb.</p>
+        <p>Ein gr&uuml;ner Test beweist nicht, dass es funktioniert &mdash; er beweist nur, dass es <em>unter Testbedingungen</em> funktioniert. Deshalb starte ich nach jeder &Auml;nderung die App wirklich und rufe die Adresse wirklich auf. Diese zwei Minuten haben mir hier einen Fehler gezeigt, den 109 gr&uuml;ne Tests nicht gefunden haben.&ldquo;</p>
+      </div>
+      <div class="check">
+        <span class="h">Die L&ouml;sung &mdash; das Problem gar nicht erst haben</span>
+        Kein <code style="font-family:var(--font-mono)">@Transform</code> in den geteilten Vertr&auml;gen. Query-Parameter bleiben <b>Text</b> (<code style="font-family:var(--font-mono)">@IsIn(['true','false'])</code>), und die Umwandlung passiert <b>sichtbar im Controller</b>.
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">libs/shared/contracts/&hellip;/list-products-query.dto.ts</span></div>
+        <pre><span class="e">-   @Transform(({ value }) =&gt; value === 'true')   // greift im Bundle stumm nicht</span>
+<span class="e">-   @IsBoolean()</span>
+<span class="e">-   showcased?: boolean;</span>
+<span class="g">+   @IsIn(['true', 'false'])   // Query-Parameter SIND Text</span>
+<span class="g">+   showcased?: 'true' | 'false';</span>
+
+<span class="o">  // und im Controller, sichtbar statt magisch:</span>
+<span class="g">+   new ListProductsQuery(true, query.showcased === 'true')</span></pre>
+      </div>
+      <div class="warn">
+        <span class="h">Merksatz</span>
+        <b>Gr&uuml;ner Test &ne; funktionierender Code.</b> Nach jeder &Auml;nderung an einem Datenvertrag: App starten, Adresse aufrufen, Antwort ansehen. Und: Decorators, die sich Dinge <em>global merken</em>, sind im Monorepo mit Vorsicht zu genie&szlig;en.
+      </div>
+      <p class="note">&#128221; Nebenbei ein sch&ouml;ner Bonus f&uuml;r den Nutzer: Mit <code style="font-family:var(--font-mono)">@IsIn</code> bekommt ein Tippfehler wie <code style="font-family:var(--font-mono)">?showcased=yes</code> jetzt ein klares 400 &mdash; vorher w&auml;re er still als &bdquo;nicht gefiltert" durchgerutscht.</p>
+    </div>
+
+    <!-- Fallstrick 6 &middot; TS1272 import type -->
+    <div class="beat">
+      <h3><span class="dot"></span> Build bricht ab: <code style="font-family:var(--font-mono)">TS1272</code> &mdash; &bdquo;must be imported with import type"</h3>
+      <div class="screen"><span class="tag">&#127916; Situation</span><p>Die CQRS-Handler sind geschrieben, der Typecheck bricht in <em>jedem einzelnen</em> ab: <code style="font-family:var(--font-mono)">TS1272: A type referenced in a decorated signature must be imported with 'import type'&hellip;</code></p></div>
+      <div class="def">
+        <div class="def-head">&#128269; Warum?</div>
+        <dl>
+          <div class="row"><dt>Der Hintergrund</dt><dd>Damit NestJS wei&szlig;, was es in einen Konstruktor hineinreichen soll, schreibt TypeScript die Parameter-Typen als <b>Notiz f&uuml;r die Laufzeit</b> mit (<code style="font-family:var(--font-mono)">emitDecoratorMetadata</code>).</dd></div>
+          <div class="row"><dt>Das Problem</dt><dd>Ein <em>Interface</em> ist aber reine Bauzeit-Information &mdash; zur Laufzeit existiert es <b>nicht</b>. TypeScript m&uuml;sste also etwas notieren, das es gar nicht gibt, und bricht lieber ehrlich ab.</dd></div>
+          <div class="row"><dt>Merke</dt><dd>Das <b>Token</b> (das <code style="font-family:var(--font-mono)">Symbol</code>) ist ein echter Wert und wird normal importiert &mdash; nur das <b>Interface</b> braucht das Wort <code style="font-family:var(--font-mono)">type</code> davor.</dd></div>
+        </dl>
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">jeder Handler mit injiziertem Repository</span></div>
+        <pre>import {
+<span class="g">    PRODUCT_REPOSITORY,           // Wert (Symbol) - zur Laufzeit gebraucht</span>
+<span class="g">    type IProductRepository,      // nur Typ - MUSS "type" haben</span>
+  } from '@stitchlab-yvr/backend-product-domain';</pre>
+      </div>
+      <div class="check">
+        <span class="h">Zweiter Teil derselben Geschichte</span>
+        Bibliotheken, die <em>class-validator</em>-Decorators enthalten (bei uns <code style="font-family:var(--font-mono)">shared-contracts</code>), brauchen in ihrer <code style="font-family:var(--font-mono)">tsconfig.lib.json</code> <b>und</b> <code style="font-family:var(--font-mono)">tsconfig.spec.json</code> die Zeilen <code style="font-family:var(--font-mono)">experimentalDecorators</code> + <code style="font-family:var(--font-mono)">emitDecoratorMetadata</code>. Neu generierte NX-Libs bekommen das automatisch &mdash; eine <em>&auml;ltere</em> Lib, in die du sp&auml;ter das erste DTO legst, nicht.
+      </div>
+    </div>
+
+    <!-- Notiz &middot; Stand der ersten Dom&auml;ne -->
+    <div class="beat">
+      <h3><span class="dot"></span> Notiz zum Skript von Teil 3: drei Dinge, die du wissen musst</h3>
+      <p class="note">&#128221; Die erste Dom&auml;ne (<b>Product</b>) ist bereits gebaut &mdash; Code liegt im Repo, das Skript zu Teil&nbsp;3 folgt. Diese drei Punkte <b>geh&ouml;ren ins Video</b>, sonst erz&auml;hlst du etwas anderes, als im Repo steht.</p>
+      <div class="warn">
+        <span class="h">1 &middot; Die Schreib-Routen sind noch ungesch&uuml;tzt</span>
+        Es gibt noch keine Auth-Dom&auml;ne, also auch keinen <code style="font-family:var(--font-mono)">JwtAuthGuard</code>. Aktuell kann <b>jeder</b> Produkte anlegen, &auml;ndern und l&ouml;schen. Im Controller mit <code style="font-family:var(--font-mono)">TODO(auth)</code> markiert &mdash; <b>dieser Stand geh&ouml;rt nicht &ouml;ffentlich deployt</b>. Der Schutz kommt in Teil&nbsp;4 (Security). Im Video ehrlich ansprechen, statt es stillschweigend zu &uuml;bergehen.
+      </div>
+      <div class="def">
+        <div class="def-head">2 &middot; Abweichungen vom Standard-Rezept (bewusst, nicht vergessen)</div>
+        <dl>
+          <div class="row"><dt>Kein <code style="font-family:var(--font-mono)">BaseCommandHandler</code></dt><dd>Das Rezept setzt eine gemeinsame Basisklasse und einen Helfer <code style="font-family:var(--font-mono)">mustExist()</code> voraus &mdash; die geh&ouml;ren zu einer <em>shared-application</em>-Bibliothek, die es bei uns noch nicht gibt. Wir nehmen direkt <code style="font-family:var(--font-mono)">ICommandHandler</code>.</dd></div>
+          <div class="row"><dt>Kein <code style="font-family:var(--font-mono)">@nestjs/event-emitter</code></dt><dd>Ein Paket weniger: die Dom&auml;nen-Ereignisse laufen &uuml;ber den <b>EventBus, der in <code style="font-family:var(--font-mono)">@nestjs/cqrs</code> schon drin ist</b>.</dd></div>
+          <div class="row"><dt>Regel dahinter</dt><dd>Ein Rezept ist eine <em>Vorlage</em>, kein Gesetz. Wenn ein Baustein noch fehlt, baust du entweder den Baustein &mdash; oder du weichst bewusst ab und <b>schreibst auf, warum</b>. Was du nicht tust: den Import trotzdem hinschreiben und hoffen.</dd></div>
+        </dl>
+      </div>
+      <div class="def">
+        <div class="def-head">3 &middot; <code style="font-family:var(--font-mono)">save()</code> gibt die Entity zur&uuml;ck statt <code style="font-family:var(--font-mono)">void</code></div>
+        <dl>
+          <div class="row"><dt>Das Rezept sagt</dt><dd><code style="font-family:var(--font-mono)">save(entity): Promise&lt;void&gt;</code> &mdash; speichern und fertig.</dd></div>
+          <div class="row"><dt>Wir machen</dt><dd><code style="font-family:var(--font-mono)">save(entity): Promise&lt;ProductEntity&gt;</code> &mdash; das Repository gibt zur&uuml;ck, was <em>tats&auml;chlich</em> gespeichert wurde.</dd></div>
+          <div class="row"><dt>Warum</dt><dd>Die Datenbank setzt Felder selbst &mdash; <code style="font-family:var(--font-mono)">updatedAt</code> tr&auml;gt <code style="font-family:var(--font-mono)">@updatedAt</code>. G&auml;be <code style="font-family:var(--font-mono)">save</code> nichts zur&uuml;ck, m&uuml;sste die Anwendung den Zeitstempel <b>raten</b> und w&uuml;rde dem Nutzer eine Zahl anzeigen, die nicht in der DB steht. Zwei Quellen f&uuml;r dieselbe Wahrheit sind immer ein Bug in Wartestellung.</dd></div>
+        </dl>
       </div>
     </div>
 
