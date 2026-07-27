@@ -2202,7 +2202,7 @@ User      &#8734; &#9472;&#9472;&lt; CartItem &gt;&#9472;&#9472; &#8734;  Produc
       <div class="chip"><span class="num">08</span> Kapitel &middot; Teil 2</div>
       <h2>Supabase einrichten (Cloud-Datenbank)</h2>
       <div class="meta-row">
-        <span class="meta">&#9201; 11&ndash;15 Min</span>
+        <span class="meta">&#9201; 13&ndash;17 Min</span>
         <span class="meta">&#9000; Web-Klicks + .env</span>
         <span class="meta">&#127919; Echte Postgres-DB + Storage in der Cloud</span>
       </div>
@@ -2255,6 +2255,7 @@ User      &#8734; &#9472;&#9472;&lt; CartItem &gt;&#9472;&#9472; &#8734;  Produc
           <li>Einen <b>Namen</b> w&auml;hlen (z.&nbsp;B. <em>stitchlab-yvr</em>).</li>
           <li>Ein <b>Database Password</b> setzen &mdash; und <b>sofort notieren!</b> (brauchen wir gleich).</li>
           <li><b>Region</b> nah bei dir w&auml;hlen: <em>Canada (Central)</em> &mdash; so bleiben die Kundendaten in Kanada.</li>
+          <li>Unter <b>Security</b> das H&auml;kchen <b>&bdquo;Enable Data API&ldquo; abw&auml;hlen</b> &mdash; wir greifen nur &uuml;bers Backend zu (warum: n&auml;chster Beat).</li>
           <li><b>Create new project</b> &mdash; dann ~1&ndash;2&nbsp;Min warten, bis es bereit ist.</li>
         </ul>
       </div>
@@ -2266,6 +2267,28 @@ User      &#8734; &#9472;&#9472;&lt; CartItem &gt;&#9472;&#9472; &#8734;  Produc
         <span class="h">Erfolgskontrolle</span>
         Das Projekt-Dashboard &ouml;ffnet sich und zeigt oben gr&uuml;n &bdquo;Project is ready&ldquo; (kein Ladebalken mehr).
       </div>
+    </div>
+
+    <!-- Einschub &middot; Security: Data API abschalten -->
+    <div class="beat">
+      <h3><span class="dot"></span> &#128274; Sicherheit: warum wir die <em>Data API</em> abschalten <span class="dur">~1,5 Min</span></h3>
+      <div class="vo"><span class="tag">&#127897;&#65039; Sprechtext</span>
+        <p>&bdquo;Kurz, aber wichtig: Im Security-Abschnitt beim Anlegen ist die <em>Voreinstellung</em> ausgerechnet die unsicherste. <em>&bdquo;Enable Data API&ldquo;</em> baut dir automatisch eine <em>&ouml;ffentliche REST-Schnittstelle</em> &uuml;ber deine Tabellen &mdash; gedacht f&uuml;r Leute, die <code>supabase-js</code> direkt im Frontend nutzen. Wir machen das bewusst <em>nicht</em>: Bei uns redet <em>nur das Backend</em> &uuml;ber Prisma mit der Datenbank. Also schalten wir die Data API ab &mdash; kleinere Angriffsfl&auml;che, mehr Sicherheit. Genau die Senior-Denke: keine T&uuml;r offen lassen, durch die niemand gehen soll.&ldquo;</p>
+      </div>
+      <div class="def">
+        <div class="def-head">&#128274; Entscheidung: Data API AUS (Zugriff nur &uuml;bers Backend)</div>
+        <dl>
+          <div class="row"><dt>Was ist das?</dt><dd>Eine auto-generierte REST-API (PostgREST) direkt &uuml;ber deine Tabellen &mdash; f&uuml;r Frontend-Direktzugriff. Brauchen wir nicht.</dd></div>
+          <div class="row"><dt>Warum aus?</dt><dd>Unser NestJS-Backend ist das <em>einzige</em>, das die DB ber&uuml;hrt (&uuml;ber Prisma, den Session-Pooler-String). Was du nicht brauchst, machst du zu.</dd></div>
+          <div class="row"><dt>Kein RLS n&ouml;tig</dt><dd>&bdquo;Row Level Security&ldquo; sch&uuml;tzt die Data-API-Ebene. Ohne Data API sitzt unsere Sicherheit im <em>Backend</em> (Guards + Rollen) &mdash; das reicht.</dd></div>
+          <div class="row"><dt>Prisma &amp; Storage?</dt><dd>Bleiben unber&uuml;hrt &mdash; die laufen &uuml;ber eigene Kan&auml;le (Postgres-Verbindung bzw. Storage-API), nicht &uuml;ber die Data API.</dd></div>
+        </dl>
+      </div>
+      <div class="warn">
+        <span class="h">Fallstrick: &bdquo;rote&ldquo; Logs nach dem Abschalten &mdash; harmlos!</span>
+        Danach steht im Dashboard <b>PostgREST: Disabled</b>, und im Log tauchen rote Fehler auf (<em>&bdquo;schema pg_pgrst_no_exposed_schemas does not exist&ldquo;</em>, <em>&bdquo;FATAL: terminating connection&ldquo;</em>). Das ist <b>kein Bug</b>, sondern der <em>Mechanismus des Abschaltens</em>: PostgREST wird absichtlich auf ein nicht-existentes Schema gezeigt. Postgres selbst ist gesund &mdash; siehst du an <em>&bdquo;Successfully connected to PostgreSQL&ldquo;</em>. <b>Einfach ignorieren.</b>
+      </div>
+      <p class="note">&#128221; Willst du die Data API doch anlassen: dann <em>&bdquo;Automatically expose new tables&ldquo;</em> AUS und <em>&bdquo;Enable automatic RLS&ldquo;</em> AN. F&uuml;r uns ist Abschalten sauberer.</p>
     </div>
 
     <!-- Einschub &middot; Region &amp; Zugriff -->
@@ -2329,6 +2352,10 @@ User      &#8734; &#9472;&#9472;&lt; CartItem &gt;&#9472;&#9472; &#8734;  Produc
           <div class="row"><dt>Transaction pooler (6543)</dt><dd>F&uuml;r Migrationen ungeeignet. Meiden.</dd></div>
           <div class="row"><dt>Merke</dt><dd>Immer den <em>exakten</em> Host aus dem Dashboard nehmen (das Pr&auml;fix <em>aws-0-</em> oder <em>aws-1-</em> variiert je Projekt).</dd></div>
         </dl>
+      </div>
+      <div class="warn">
+        <span class="h">Fallstrick: Sonderzeichen im Passwort</span>
+        Enth&auml;lt dein <b>Database-Password</b> Sonderzeichen (<code>@ # % / ? : &amp; &hellip;</code>), musst du sie im String <b>percent-encoden</b> (z.&nbsp;B. <code>@</code> &rarr; <code>%40</code>) &mdash; sonst scheitert die Verbindung mit einem kryptischen Fehler. <b>Einfacher:</b> im Dashboard (Reset-Button) ein Passwort <b>nur aus Buchstaben + Zahlen</b> setzen &mdash; dann passt der String 1:1.
       </div>
     </div>
 
@@ -2428,8 +2455,24 @@ RESEND_API_KEY=<span class="g">"re_..."</span>
 RESEND_FROM_ADDRESS=<span class="g">"onboarding@resend.dev"</span></pre>
       </div>
       <div class="warn">
+        <span class="h">Kritisch: ist die <em>.env</em> wirklich ge-gitignore-t?</span>
+        <b>Vertrau nicht darauf &mdash; pr&uuml;fe es!</b> In einem frischen Nx-Workspace steht <b>.env</b> oft <em>noch nicht</em> in der <code style="font-family:var(--font-mono)">.gitignore</code> (mir genau so passiert &mdash; ein echtes Sicherheitsloch). Trag sie ein, <em>bevor</em> du Secrets eintr&auml;gst, und verifiziere:
+      </div>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="lbl">.gitignore absichern &amp; verifizieren</span></div>
+        <div class="cmd-cwd">&#128193; <b>C:\Users\&lt;du&gt;\Desktop\StitchLab-YVR</b></div>
+        <pre><span class="o"># in die .gitignore aufnehmen (falls noch nicht drin):</span>
+.env
+.env.*
+!.env.example
+
+<span class="o"># dann verifizieren &mdash; muss ".env" ausgeben (= ignoriert):</span>
+<span class="p">$</span> git check-ignore .env
+<span class="g">.env</span></pre>
+      </div>
+      <div class="warn">
         <span class="h">Niemals committen</span>
-        Die <b>.env</b> steht schon in der <b>.gitignore</b> &mdash; sie darf <b>nie</b> in git landen. Committe nur die <b>.env.example</b> (ohne echte Werte). Pr&uuml;fen: <code style="font-family:var(--font-mono)">git status</code> darf <b>.env</b> <em>nicht</em> anzeigen.
+        Committe nur die <b>.env.example</b> (Vorlage ohne echte Werte). Die echte <b>.env</b> bleibt <b>immer lokal</b>. Vor jedem Commit ein Blick auf <code style="font-family:var(--font-mono)">git status</code> &mdash; taucht <b>.env</b> auf, sofort stoppen.
       </div>
       <div class="check">
         <span class="h">Erfolgskontrolle</span>
