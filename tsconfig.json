@@ -29,6 +29,18 @@
     },
     {
       "path": "./libs/backend/product/adapters"
+    },
+    {
+      "path": "./libs/backend/auth/domain"
+    },
+    {
+      "path": "./libs/backend/auth/application"
+    },
+    {
+      "path": "./libs/backend/auth/infrastructure"
+    },
+    {
+      "path": "./libs/backend/auth/adapters"
     }
   ],
   "compilerOptions": {}

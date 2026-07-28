@@ -33,6 +33,12 @@
     },
     {
       "path": "../../libs/backend/product/adapters/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/backend/auth/infrastructure/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/backend/auth/adapters/tsconfig.lib.json"
     }
   ]
 }

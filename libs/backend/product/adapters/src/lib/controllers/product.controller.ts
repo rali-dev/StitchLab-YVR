@@ -10,8 +10,14 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import {
+  JwtAuthGuard,
+  Roles,
+  RolesGuard,
+} from '@stitchlab-yvr/backend-auth-adapters';
 import {
   CreateProductCommand,
   DeleteProductCommand,
@@ -22,6 +28,7 @@ import {
 import {
   CreateProductDto,
   ListProductsQueryDto,
+  Role,
   UpdateProductDto,
   type ProductDto,
 } from '@stitchlab-yvr/shared-contracts';
@@ -45,10 +52,11 @@ export class ProductController {
   ) {}
 
   /**
-   * Oeffentlicher Katalog. `onlyPublished` ist hier fest `true`: solange es
-   * keine Authentifizierung gibt, darf diese Route keine unveroeffentlichten
-   * Produkte zeigen. Die Verwaltungssicht bekommt spaeter eine eigene,
-   * geschuetzte Route - nicht einen Query-Parameter, den jeder setzen kann.
+   * Oeffentlicher Katalog - ohne Guard, jeder darf ihn sehen.
+   *
+   * `onlyPublished` ist fest `true` und bewusst KEIN Query-Parameter: Sonst
+   * koennte jeder Besucher mit `?includeUnpublished=true` die Entwuerfe lesen.
+   * Die Verwaltungssicht bekommt spaeter eine eigene, geschuetzte Route.
    */
   @Get()
   listProducts(@Query() query: ListProductsQueryDto): Promise<ProductDto[]> {
@@ -65,11 +73,17 @@ export class ProductController {
     return this.queryBus.execute(new GetProductBySlugQuery(slug, true));
   }
 
-  // TODO(auth): Schreibzugriffe mit `@UseGuards(JwtAuthGuard, RolesGuard)` und
-  // `@Roles('ADMIN')` absichern, sobald die Auth-Domaene steht. Bis dahin kann
-  // JEDER Produkte anlegen, aendern und loeschen - dieser Stand gehoert nicht
-  // oeffentlich deployt.
+  /**
+   * Ab hier: nur Verwaltung.
+   *
+   * Die Reihenfolge der Guards ist bedeutsam - der `JwtAuthGuard` muss zuerst
+   * laufen, denn er stellt `request.user` bereit, das der `RolesGuard` auswertet.
+   * Wer nicht angemeldet ist, bekommt 401; wer angemeldet, aber kein Admin ist,
+   * bekommt 403.
+   */
   @Post()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   createProduct(@Body() dto: CreateProductDto): Promise<ProductDto> {
     return this.commandBus.execute(
       new CreateProductCommand(
@@ -83,8 +97,9 @@ export class ProductController {
     );
   }
 
-  // TODO(auth): siehe createProduct.
   @Patch(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   updateProduct(
     // `ParseUUIDPipe` faengt Unsinn ab, bevor die Datenbank ihn sieht: ohne ihn
     // wuerde Postgres bei einer kaputten UUID einen 500er werfen statt eines 400.
@@ -94,8 +109,9 @@ export class ProductController {
     return this.commandBus.execute(new UpdateProductCommand(id, dto));
   }
 
-  // TODO(auth): siehe createProduct.
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   // 204: erfolgreich, aber es gibt nichts mehr zurueckzugeben.
   @HttpCode(HttpStatus.NO_CONTENT)
   deleteProduct(@Param('id', ParseUUIDPipe) id: string): Promise<void> {

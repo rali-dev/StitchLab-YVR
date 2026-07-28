@@ -1,11 +1,18 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import cookieParser from 'cookie-parser';
 import { AppModule } from './app/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
+
+  // Muss VOR den Guards greifen: Die Passport-Strategien lesen ihr Token aus
+  // `req.cookies`, und diese Eigenschaft existiert ohne cookie-parser gar nicht.
+  // Ohne diese Zeile schlaegt jede geschuetzte Route mit 401 fehl - und zwar
+  // ohne erkennbaren Grund, weil das Cookie im Browser sichtbar gesetzt ist.
+  app.use(cookieParser());
 
   app.useGlobalPipes(
     new ValidationPipe({

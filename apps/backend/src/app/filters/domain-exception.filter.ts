@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
 import {
+  AuthenticationException,
   DomainException,
   ResourceConflictException,
   ResourceNotFoundException,
@@ -23,6 +24,7 @@ import {
  * Zuordnung:
  * - `ResourceNotFoundException` -> 404
  * - `ResourceConflictException` -> 409
+ * - `AuthenticationException`   -> 401
  * - jede andere `DomainException` -> 400 (verletzte Geschaeftsregel)
  */
 @Catch(DomainException)
@@ -59,6 +61,9 @@ export class DomainExceptionFilter implements ExceptionFilter<DomainException> {
     }
     if (exception instanceof ResourceConflictException) {
       return HttpStatus.CONFLICT;
+    }
+    if (exception instanceof AuthenticationException) {
+      return HttpStatus.UNAUTHORIZED;
     }
 
     return HttpStatus.BAD_REQUEST;

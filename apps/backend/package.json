@@ -4,7 +4,9 @@
   "private": true,
   "nx": {
     "name": "backend",
-    "tags": ["platform:backend"]
+    "tags": [
+      "platform:backend"
+    ]
   },
   "dependencies": {
     "@nestjs/common": "^11.0.0",
@@ -12,7 +14,14 @@
     "@nestjs/platform-express": "^11.0.0",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.0",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "@nestjs/config": "^4.0.2",
+    "@nestjs/jwt": "^11.0.0",
+    "@nestjs/passport": "^11.0.5",
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1"
   },
   "devDependencies": {
     "@nestjs/testing": "^11.0.0"

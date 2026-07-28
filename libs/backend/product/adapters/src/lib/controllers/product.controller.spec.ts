@@ -1,6 +1,10 @@
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Test } from '@nestjs/testing';
 import {
+  JwtAuthGuard,
+  RolesGuard,
+} from '@stitchlab-yvr/backend-auth-adapters';
+import {
   CreateProductCommand,
   DeleteProductCommand,
   GetProductBySlugQuery,
@@ -18,6 +22,11 @@ import { ProductController } from './product.controller.js';
  * so wird mitgeprueft, dass die Dependency Injection tatsaechlich verdrahtet
  * ist. Command- und QueryBus sind Attrappen - was die Handler tun, ist hier
  * nicht Gegenstand des Tests.
+ *
+ * Die Guards werden bewusst ueberbrueckt: Hier geht es um die Uebersetzung
+ * HTTP -> Command/Query. DASS die Schreibrouten geschuetzt sind, prueft
+ * `product.controller.guards.spec.ts` - getrennt, damit ein durchgelassener
+ * Guard hier nicht faelschlich als "Verhalten in Ordnung" durchgeht.
  */
 describe('ProductController', () => {
   let controller: ProductController;
@@ -34,7 +43,12 @@ describe('ProductController', () => {
         { provide: CommandBus, useValue: commandBus },
         { provide: QueryBus, useValue: queryBus },
       ],
-    }).compile();
+    })
+      .overrideGuard(JwtAuthGuard)
+      .useValue({ canActivate: () => true })
+      .overrideGuard(RolesGuard)
+      .useValue({ canActivate: () => true })
+      .compile();
 
     controller = moduleRef.get(ProductController);
   });
